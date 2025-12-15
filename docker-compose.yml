@@ -17,11 +17,13 @@ services:
     image: mysql:8.0
     container_name: leyeco_forms_db
     restart: always
+    command: --default-time-zone=+08:00
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: leyeco_forms_db
       MYSQL_USER: leyeco_user
       MYSQL_PASSWORD: leyeco_pass
+      TZ: Asia/Manila
     ports:
       - "3306:3306"
     volumes:

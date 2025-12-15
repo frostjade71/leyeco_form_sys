@@ -65,6 +65,13 @@ require_once __DIR__ . '/../includes/header.php';
                     'description' => 'Request electric meter replacement or upgrade',
                     'url' => BASE_URL . '/forms/meter_replacement_form.php',
                     'button_text' => 'Request Replacement'
+                ],
+                [
+                    'name' => 'Requisition Form',
+                    'icon' => 'fa-file-alt',
+                    'description' => 'Request for requisition of materials and such and such',
+                    'url' => BASE_URL . '/forms/requisition_form.php',
+                    'button_text' => 'Request Requisition'
                 ]
             ];
             
@@ -132,12 +139,12 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
             
             <div class="stat-card">
-                <div class="stat-number">24</div>
+                <div class="stat-number">72</div>
                 <div class="stat-label">Average Processing Hours</div>
             </div>
             
             <div class="stat-card">
-                <div class="stat-number">156</div>
+                <div class="stat-number">40</div>
                 <div class="stat-label">Active Requests</div>
             </div>
         </div>

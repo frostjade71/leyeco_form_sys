@@ -32,11 +32,6 @@
                     <p><i class="fas fa-globe"></i> <a href="https://www.leyeco3.com/" target="_blank" style="color: var(--light-gray);">www.leyeco3.com</a></p>
                 </div>
             </div>
-            
-            <div class="footer-bottom" style="font-size: 0.85rem; margin-top: var(--spacing-md);">
-                <p style="margin-bottom: 0.5rem;">&copy; <?php echo date('Y'); ?> LEYECO III. All rights reserved.</p>
-                <p style="margin: 0;">Forms Management System v<?php echo SYSTEM_VERSION; ?></p>
-            </div>
         </div>
     </footer>
     

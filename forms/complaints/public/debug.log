@@ -1,0 +1,318 @@
+[2025-12-11 14:35:41] === New Request ===
+[2025-12-11 14:35:41] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251211-0001
+)
+
+[2025-12-11 14:35:41] Reference code after trim: 'LEY-20251211-0001'
+[2025-12-11 14:35:41] Reference code length: 17
+[2025-12-11 14:35:41] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 49 45 48 48 48 49
+[2025-12-11 14:35:41] Exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[2025-12-11 14:35:41] Stack trace: #0 /var/www/html/forms/complaints/public/view_complaint.php(46): PDO->prepare('\r\n            S...')
+#1 {main}
+[2025-12-11 14:36:46] === New Request ===
+[2025-12-11 14:36:46] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251211-0001
+)
+
+[2025-12-11 14:36:46] Reference code after trim: 'LEY-20251211-0001'
+[2025-12-11 14:36:46] Reference code length: 17
+[2025-12-11 14:36:46] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 49 45 48 48 48 49
+[2025-12-11 14:36:46] Complaint found with ID: 1
+[2025-12-11 14:37:00] === New Request ===
+[2025-12-11 14:37:00] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251209-0002
+)
+
+[2025-12-11 14:37:00] Reference code after trim: 'LEY-20251209-0002'
+[2025-12-11 14:37:00] Reference code length: 17
+[2025-12-11 14:37:00] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 48 57 45 48 48 48 50
+[2025-12-11 14:37:00] No complaint found. Available reference codes:
+Data: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [reference_code] => LEY-20251211-0001
+        )
+
+)
+
+[2025-12-11 14:37:04] === New Request ===
+[2025-12-11 14:37:04] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251211-0001
+)
+
+[2025-12-11 14:37:04] Reference code after trim: 'LEY-20251211-0001'
+[2025-12-11 14:37:04] Reference code length: 17
+[2025-12-11 14:37:04] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 49 45 48 48 48 49
+[2025-12-11 14:37:04] Complaint found with ID: 1
+[2025-12-11 14:42:31] === New Request ===
+[2025-12-11 14:42:31] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251211-0001
+)
+
+[2025-12-11 14:42:31] Reference code after trim: 'LEY-20251211-0001'
+[2025-12-11 14:42:31] Reference code length: 17
+[2025-12-11 14:42:31] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 49 45 48 48 48 49
+[2025-12-11 14:42:31] Complaint found with ID: 1
+[2025-12-12 10:34:31] === New Request ===
+[2025-12-12 10:34:31] GET Parameters:
+Data: Array
+(
+    [ref] => CMPF32C63C8
+)
+
+[2025-12-12 10:34:31] Reference code after trim: 'CMPF32C63C8'
+[2025-12-12 10:34:31] Reference code length: 11
+[2025-12-12 10:34:31] Reference code bytes: 67 77 80 70 51 50 67 54 51 67 56
+[2025-12-12 10:34:31] Complaint found with ID: 3
+[2025-12-12 10:35:18] === New Request ===
+[2025-12-12 10:35:18] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251211-0001
+)
+
+[2025-12-12 10:35:18] Reference code after trim: 'LEY-20251211-0001'
+[2025-12-12 10:35:18] Reference code length: 17
+[2025-12-12 10:35:18] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 49 45 48 48 48 49
+[2025-12-12 10:35:18] No complaint found. Available reference codes:
+Data: Array
+(
+    [0] => Array
+        (
+            [id] => 3
+            [reference_code] => CMPF32C63C8
+        )
+
+)
+
+[2025-12-12 10:38:23] === New Request ===
+[2025-12-12 10:38:23] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251212-0001
+)
+
+[2025-12-12 10:38:23] Reference code after trim: 'LEY-20251212-0001'
+[2025-12-12 10:38:23] Reference code length: 17
+[2025-12-12 10:38:23] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 50 45 48 48 48 49
+[2025-12-12 10:38:23] Complaint found with ID: 4
+[2025-12-12 10:38:33] === New Request ===
+[2025-12-12 10:38:33] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251212-0001
+)
+
+[2025-12-12 10:38:33] Reference code after trim: 'LEY-20251212-0001'
+[2025-12-12 10:38:33] Reference code length: 17
+[2025-12-12 10:38:33] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 50 45 48 48 48 49
+[2025-12-12 10:38:33] Complaint found with ID: 4
+[2025-12-12 10:52:44] === New Request ===
+[2025-12-12 10:52:44] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251212-0001
+)
+
+[2025-12-12 10:52:44] Reference code after trim: 'LEY-20251212-0001'
+[2025-12-12 10:52:44] Reference code length: 17
+[2025-12-12 10:52:44] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 50 45 48 48 48 49
+[2025-12-12 10:52:44] Complaint found with ID: 4
+[2025-12-12 11:05:56] === New Request ===
+[2025-12-12 11:05:56] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251212-0001
+)
+
+[2025-12-12 11:05:56] Reference code after trim: 'LEY-20251212-0001'
+[2025-12-12 11:05:56] Reference code length: 17
+[2025-12-12 11:05:56] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 50 45 48 48 48 49
+[2025-12-12 11:05:56] Complaint found with ID: 5
+[2025-12-12 11:12:40] === New Request ===
+[2025-12-12 11:12:40] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251212-0001
+)
+
+[2025-12-12 11:12:40] Reference code after trim: 'LEY-20251212-0001'
+[2025-12-12 11:12:40] Reference code length: 17
+[2025-12-12 11:12:40] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 50 45 48 48 48 49
+[2025-12-12 11:12:40] Complaint found with ID: 6
+[2025-12-12 11:12:53] === New Request ===
+[2025-12-12 11:12:53] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251211-0001
+)
+
+[2025-12-12 11:12:53] Reference code after trim: 'LEY-20251211-0001'
+[2025-12-12 11:12:53] Reference code length: 17
+[2025-12-12 11:12:53] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 49 45 48 48 48 49
+[2025-12-12 11:12:53] No complaint found. Available reference codes:
+Data: Array
+(
+    [0] => Array
+        (
+            [id] => 6
+            [reference_code] => LEY-20251212-0001
+        )
+
+)
+
+[2025-12-12 11:12:58] === New Request ===
+[2025-12-12 11:12:58] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251212-0001
+)
+
+[2025-12-12 11:12:58] Reference code after trim: 'LEY-20251212-0001'
+[2025-12-12 11:12:58] Reference code length: 17
+[2025-12-12 11:12:58] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 50 45 48 48 48 49
+[2025-12-12 11:12:58] Complaint found with ID: 6
+[2025-12-12 11:14:32] === New Request ===
+[2025-12-12 11:14:32] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251212-0001
+)
+
+[2025-12-12 11:14:32] Reference code after trim: 'LEY-20251212-0001'
+[2025-12-12 11:14:32] Reference code length: 17
+[2025-12-12 11:14:32] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 50 45 48 48 48 49
+[2025-12-12 11:14:32] Complaint found with ID: 6
+[2025-12-12 11:15:53] === New Request ===
+[2025-12-12 11:15:53] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251212-0001
+)
+
+[2025-12-12 11:15:53] Reference code after trim: 'LEY-20251212-0001'
+[2025-12-12 11:15:53] Reference code length: 17
+[2025-12-12 11:15:53] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 50 45 48 48 48 49
+[2025-12-12 11:15:53] Complaint found with ID: 6
+[2025-12-15 09:00:13] === New Request ===
+[2025-12-15 09:00:13] GET Parameters:
+Data: Array
+(
+    [ref] => LEY-20251212-0001
+)
+
+[2025-12-15 09:00:13] Reference code after trim: 'LEY-20251212-0001'
+[2025-12-15 09:00:13] Reference code length: 17
+[2025-12-15 09:00:13] Reference code bytes: 76 69 89 45 50 48 50 53 49 50 49 50 45 48 48 48 49
+[2025-12-15 09:00:13] Complaint found with ID: 6
+[2025-12-15 09:08:51] === New Request ===
+[2025-12-15 09:08:51] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-15 09:08:51] Reference code after trim: 'CLN20251215-0001'
+[2025-12-15 09:08:51] Reference code length: 16
+[2025-12-15 09:08:51] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-15 09:08:51] Complaint found with ID: 7
+[2025-12-15 13:39:48] === New Request ===
+[2025-12-15 13:39:48] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-15 13:39:48] Reference code after trim: 'CLN20251215-0001'
+[2025-12-15 13:39:48] Reference code length: 16
+[2025-12-15 13:39:48] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-15 13:39:48] Complaint found with ID: 7
+[2025-12-15 13:47:15] === New Request ===
+[2025-12-15 13:47:15] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-15 13:47:15] Reference code after trim: 'CLN20251215-0001'
+[2025-12-15 13:47:15] Reference code length: 16
+[2025-12-15 13:47:15] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-15 13:47:15] Complaint found with ID: 7
+[2025-12-15 13:51:56] === New Request ===
+[2025-12-15 13:51:56] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-15 13:51:56] Reference code after trim: 'CLN20251215-0001'
+[2025-12-15 13:51:56] Reference code length: 16
+[2025-12-15 13:51:56] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-15 13:51:56] Complaint found with ID: 7
+[2025-12-15 13:55:39] === New Request ===
+[2025-12-15 13:55:39] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-15 13:55:39] Reference code after trim: 'CLN20251215-0001'
+[2025-12-15 13:55:39] Reference code length: 16
+[2025-12-15 13:55:39] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-15 13:55:39] Complaint found with ID: 7
+[2025-12-15 13:58:11] === New Request ===
+[2025-12-15 13:58:11] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-15 13:58:11] Reference code after trim: 'CLN20251215-0001'
+[2025-12-15 13:58:11] Reference code length: 16
+[2025-12-15 13:58:11] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-15 13:58:11] Complaint found with ID: 7
+[2025-12-15 14:01:23] === New Request ===
+[2025-12-15 14:01:23] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-15 14:01:23] Reference code after trim: 'CLN20251215-0001'
+[2025-12-15 14:01:23] Reference code length: 16
+[2025-12-15 14:01:23] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-15 14:01:23] Complaint found with ID: 7
+[2025-12-15 14:03:06] === New Request ===
+[2025-12-15 14:03:06] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-15 14:03:06] Reference code after trim: 'CLN20251215-0001'
+[2025-12-15 14:03:06] Reference code length: 16
+[2025-12-15 14:03:06] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-15 14:03:06] Complaint found with ID: 7
+[2025-12-15 14:15:46] === New Request ===
+[2025-12-15 14:15:46] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-15 14:15:46] Reference code after trim: 'CLN20251215-0001'
+[2025-12-15 14:15:46] Reference code length: 16
+[2025-12-15 14:15:46] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-15 14:15:46] Complaint found with ID: 7

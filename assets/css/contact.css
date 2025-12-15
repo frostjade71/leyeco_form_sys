@@ -79,6 +79,7 @@
     gap: var(--spacing-lg);
     max-width: 1200px;
     margin: 0 auto;
+    gap: 5px
 }
 
 .contact-card {
@@ -92,13 +93,13 @@
 }
 
 .contact-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-15px);
     box-shadow: var(--shadow-lg);
     border-top-color: var(--accent-color);
 }
 
 .contact-icon {
-    font-size: 3rem;
+    font-size: 1.9rem;
     color: var(--primary-color);
     margin-bottom: var(--spacing-md);
     transition: color 0.3s ease;
@@ -149,7 +150,7 @@
     border-radius: 50%;
     background: var(--primary-color);
     color: var(--white);
-    font-size: 1.5rem;
+    font-size: 1rem;
     transition: all 0.3s ease;
 }
 

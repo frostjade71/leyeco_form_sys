@@ -7,13 +7,25 @@
  * Modify the constants below to match your database credentials.
  */
 
+// Set PHP timezone to Philippine Standard Time
+date_default_timezone_set('Asia/Manila');
+
 // Database Configuration Constants
 // For Docker environment, use 'db' as host (service name in docker-compose)
 // For local XAMPP, use 'localhost'
-define('DB_HOST', getenv('DB_HOST') ?: 'db');
-define('DB_USER', getenv('DB_USER') ?: 'leyeco_user');
-define('DB_PASS', getenv('DB_PASS') ?: 'leyeco_pass');
-define('DB_NAME', getenv('DB_NAME') ?: 'leyeco_forms_db');
+// Only define if not already defined
+if (!defined('DB_HOST')) {
+    define('DB_HOST', getenv('DB_HOST') ?: 'db');
+}
+if (!defined('DB_USER')) {
+    define('DB_USER', getenv('DB_USER') ?: 'leyeco_user');
+}
+if (!defined('DB_PASS')) {
+    define('DB_PASS', getenv('DB_PASS') ?: 'leyeco_pass');
+}
+if (!defined('DB_NAME')) {
+    define('DB_NAME', getenv('DB_NAME') ?: 'leyeco_forms_db');
+}
 
 // Create database connection
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -25,6 +37,9 @@ if ($conn->connect_error) {
 
 // Set charset to UTF-8 for proper character encoding
 $conn->set_charset("utf8mb4");
+
+// Set database timezone to Philippine Time (+08:00)
+$conn->query("SET time_zone = '+08:00'");
 
 /**
  * Future Database Schema Structure (For Reference)
