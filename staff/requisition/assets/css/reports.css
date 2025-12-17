@@ -1,0 +1,70 @@
+/* Requisition Reports Styles */
+
+.report-form {
+    max-width: 100%;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 16px;
+    align-items: end;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.report-header {
+    background: var(--bg-secondary);
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.report-header p {
+    margin: 4px 0;
+    color: var(--text-primary);
+}
+
+@media print {
+    .sidebar,
+    .header,
+    .card-header button,
+    .report-form {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin: 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}

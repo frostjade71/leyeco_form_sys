@@ -16,8 +16,13 @@ $method = $_SERVER['REQUEST_METHOD'];
 // Handle GET requests
 if ($method === 'GET') {
     if (isset($_GET['id'])) {
-        // Get single user
-        $stmt = $conn->prepare("SELECT id, username, email, full_name, role, is_active FROM users WHERE id = ?");
+        // Get single user with approver level if applicable
+        $stmt = $conn->prepare("
+            SELECT u.id, u.username, u.email, u.full_name, u.role, u.is_active, a.approval_level as approver_level
+            FROM users u
+            LEFT JOIN approvers a ON u.email = a.email
+            WHERE u.id = ?
+        ");
         $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -59,6 +64,7 @@ elseif ($method === 'POST') {
         $username = $input['username'] ?? '';
         $password = $input['password'] ?? '';
         $role = $input['role'] ?? 'staff';
+        $approverLevel = $input['approver_level'] ?? null;
         
         if (empty($fullName) || empty($email) || empty($username) || empty($password)) {
             echo json_encode([
@@ -83,19 +89,37 @@ elseif ($method === 'POST') {
         // Hash password
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         
-        // Insert user
-        $stmt = $conn->prepare("INSERT INTO users (username, password, email, full_name, role) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $username, $hashedPassword, $email, $fullName, $role);
+        // Start transaction
+        $conn->begin_transaction();
         
-        if ($stmt->execute()) {
+        try {
+            // Insert user
+            $stmt = $conn->prepare("INSERT INTO users (username, password, email, full_name, role) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssss", $username, $hashedPassword, $email, $fullName, $role);
+            $stmt->execute();
+            
+            // If approver role is selected, add to approvers table
+            if (strpos($role, 'approver') !== false && $approverLevel) {
+                require_once __DIR__ . '/../../forms/requisition_form/app/config.php';
+                $approverRole = REQ_APPROVAL_LEVELS[$approverLevel] ?? 'Approver';
+                
+                $stmt = $conn->prepare("INSERT INTO approvers (name, role, approval_level, email, password, is_admin) VALUES (?, ?, ?, ?, ?, ?)");
+                $isAdmin = strpos($role, 'admin') !== false ? 1 : 0;
+                $stmt->bind_param("ssissi", $fullName, $approverRole, $approverLevel, $email, $hashedPassword, $isAdmin);
+                $stmt->execute();
+            }
+            
+            $conn->commit();
+            
             echo json_encode([
                 'success' => true,
                 'message' => 'User created successfully'
             ]);
-        } else {
+        } catch (Exception $e) {
+            $conn->rollback();
             echo json_encode([
                 'success' => false,
-                'error' => 'Failed to create user'
+                'error' => 'Failed to create user: ' . $e->getMessage()
             ]);
         }
     }
@@ -107,6 +131,7 @@ elseif ($method === 'POST') {
         $email = $input['email'] ?? '';
         $username = $input['username'] ?? '';
         $role = $input['role'] ?? 'staff';
+        $approverLevel = $input['approver_level'] ?? null;
         
         if (empty($id) || empty($fullName) || empty($email) || empty($username)) {
             echo json_encode([
@@ -128,27 +153,80 @@ elseif ($method === 'POST') {
             exit;
         }
         
-        // Update user
-        if (isset($input['password']) && !empty($input['password'])) {
-            // Update with new password
-            $hashedPassword = password_hash($input['password'], PASSWORD_BCRYPT);
-            $stmt = $conn->prepare("UPDATE users SET username = ?, password = ?, email = ?, full_name = ?, role = ? WHERE id = ?");
-            $stmt->bind_param("sssssi", $username, $hashedPassword, $email, $fullName, $role, $id);
-        } else {
-            // Update without changing password
-            $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, full_name = ?, role = ? WHERE id = ?");
-            $stmt->bind_param("ssssi", $username, $email, $fullName, $role, $id);
-        }
+        // Start transaction
+        $conn->begin_transaction();
         
-        if ($stmt->execute()) {
+        try {
+            // Get old email before update (for approvers table lookup)
+            $stmt = $conn->prepare("SELECT email FROM users WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $oldEmail = $result->fetch_assoc()['email'];
+            $stmt->close();
+            
+            // Update user
+            if (isset($input['password']) && !empty($input['password'])) {
+                // Update with new password
+                $hashedPassword = password_hash($input['password'], PASSWORD_BCRYPT);
+                $stmt = $conn->prepare("UPDATE users SET username = ?, password = ?, email = ?, full_name = ?, role = ? WHERE id = ?");
+                $stmt->bind_param("sssssi", $username, $hashedPassword, $email, $fullName, $role, $id);
+            } else {
+                // Update without changing password
+                $stmt = $conn->prepare("UPDATE users SET username = ?, email = ?, full_name = ?, role = ? WHERE id = ?");
+                $stmt->bind_param("ssssi", $username, $email, $fullName, $role, $id);
+            }
+            $stmt->execute();
+            
+            // Handle approvers table sync
+            $hasApproverRole = strpos($role, 'approver') !== false;
+            
+            // Check if user exists in approvers table (using OLD email)
+            $stmt = $conn->prepare("SELECT id FROM approvers WHERE email = ?");
+            $stmt->bind_param("s", $oldEmail);
+            $stmt->execute();
+            $existsInApprovers = $stmt->get_result()->num_rows > 0;
+            
+            if ($hasApproverRole && $approverLevel) {
+                require_once __DIR__ . '/../../forms/requisition_form/app/config.php';
+                $approverRole = REQ_APPROVAL_LEVELS[$approverLevel] ?? 'Approver';
+                $isAdmin = strpos($role, 'admin') !== false ? 1 : 0;
+                
+                if ($existsInApprovers) {
+                    // Update existing approver (including email change)
+                    if (isset($input['password']) && !empty($input['password'])) {
+                        $stmt = $conn->prepare("UPDATE approvers SET name = ?, role = ?, approval_level = ?, email = ?, password = ?, is_admin = ? WHERE email = ?");
+                        $stmt->bind_param("ssissis", $fullName, $approverRole, $approverLevel, $email, $hashedPassword, $isAdmin, $oldEmail);
+                    } else {
+                        $stmt = $conn->prepare("UPDATE approvers SET name = ?, role = ?, approval_level = ?, email = ?, is_admin = ? WHERE email = ?");
+                        $stmt->bind_param("ssiiss", $fullName, $approverRole, $approverLevel, $email, $isAdmin, $oldEmail);
+                    }
+                    $stmt->execute();
+                } else {
+                    // Insert new approver
+                    $password = isset($input['password']) && !empty($input['password']) ? password_hash($input['password'], PASSWORD_BCRYPT) : password_hash($username, PASSWORD_BCRYPT);
+                    $stmt = $conn->prepare("INSERT INTO approvers (name, role, approval_level, email, password, is_admin) VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("ssissi", $fullName, $approverRole, $approverLevel, $email, $password, $isAdmin);
+                    $stmt->execute();
+                }
+            } elseif (!$hasApproverRole && $existsInApprovers) {
+                // Remove from approvers table if approver role was removed
+                $stmt = $conn->prepare("DELETE FROM approvers WHERE email = ?");
+                $stmt->bind_param("s", $oldEmail);
+                $stmt->execute();
+            }
+            
+            $conn->commit();
+            
             echo json_encode([
                 'success' => true,
                 'message' => 'User updated successfully'
             ]);
-        } else {
+        } catch (Exception $e) {
+            $conn->rollback();
             echo json_encode([
                 'success' => false,
-                'error' => 'Failed to update user'
+                'error' => 'Failed to update user: ' . $e->getMessage()
             ]);
         }
     }

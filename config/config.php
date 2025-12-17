@@ -61,6 +61,12 @@ define('FORM_TYPES', [
         'slug' => 'meter_replacement_form',
         'icon' => 'fa-bolt',
         'description' => 'Request electric meter replacement or upgrade'
+    ],
+    'requisition' => [
+        'name' => 'Requisition Form',
+        'slug' => 'requisition_form',
+        'icon' => 'fa-clipboard-list',
+        'description' => 'Submit material and supply requisition requests'
     ]
 ]);
 

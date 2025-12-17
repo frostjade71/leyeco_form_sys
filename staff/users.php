@@ -103,9 +103,15 @@ include __DIR__ . '/includes/header.php';
                             </code>
                         </td>
                         <td>
-                            <span class="role-badge <?php echo strtolower($user['role']); ?>">
-                                <?php echo htmlspecialchars($user['role']); ?>
-                            </span>
+                            <?php 
+                            $roles = explode(',', $user['role']);
+                            foreach ($roles as $role): 
+                                $role = trim($role);
+                            ?>
+                                <span class="role-badge <?php echo strtolower($role); ?>" style="margin: 2px;">
+                                    <?php echo htmlspecialchars($role); ?>
+                                </span>
+                            <?php endforeach; ?>
                         </td>
                         <td>
                             <div class="status-indicator">
@@ -258,16 +264,57 @@ include __DIR__ . '/includes/header.php';
                 </div>
 
                 <div class="form-group">
-                    <label for="role">
+                    <label>
                         <i class="fas fa-shield-alt" style="margin-right: 6px; color: var(--primary-color);"></i>
-                        Role *
+                        Roles * <span style="font-weight: 400; font-size: 12px; color: var(--text-secondary);">(Select one or more)</span>
                     </label>
-                    <select id="role" name="role" required style="background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; appearance: none; padding-right: 40px;">
-                        <option value="staff">Staff - Regular access to forms</option>
-                        <option value="admin">Admin - Full system access</option>
-                    </select>
-                    <small style="color: var(--text-secondary); font-size: 11px; display: block; margin-top: 4px;">
-                        <i class="fas fa-info-circle"></i> Admins can manage users and settings
+                    <div class="roles-container">
+                        <div class="roles-list">
+                            <label class="role-option">
+                                <input type="checkbox" name="roles[]" value="staff" class="role-checkbox">
+                                <div>
+                                    <div class="role-title">Staff</div>
+                                    <div class="role-description">Regular access to forms and submissions</div>
+                                </div>
+                            </label>
+                            
+                            <label class="role-option role-option-approver">
+                                <input type="checkbox" id="approverCheckbox" name="roles[]" value="approver" class="role-checkbox" onchange="toggleApproverLevel()">
+                                <div style="flex: 1;">
+                                    <div class="role-title">Approver</div>
+                                    <div class="role-description">Can approve/reject requisition requests</div>
+                                    
+                                    <div id="approverLevelContainer" class="approver-level-container">
+                                        <label for="approverLevel" class="level-label">
+                                            Select Approval Level:
+                                        </label>
+                                        <select id="approverLevel" name="approver_level" class="level-select">
+                                            <option value="">Choose level...</option>
+                                            <?php 
+                                            require_once __DIR__ . '/../forms/requisition_form/app/config.php';
+                                            foreach (REQ_APPROVAL_LEVELS as $level => $role): 
+                                            ?>
+                                                <option value="<?php echo $level; ?>">Level <?php echo $level; ?> - <?php echo $role; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <small class="level-hint">
+                                            <i class="fas fa-info-circle"></i> This user will be added to the approvers table
+                                        </small>
+                                    </div>
+                                </div>
+                            </label>
+                            
+                            <label class="role-option">
+                                <input type="checkbox" name="roles[]" value="admin" class="role-checkbox">
+                                <div>
+                                    <div class="role-title">Admin</div>
+                                    <div class="role-description">Full system access, can manage users and settings</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <small style="color: var(--text-secondary); font-size: 11px; display: block; margin-top: 8px;">
+                        <i class="fas fa-info-circle"></i> Users can have multiple roles. At least one role must be selected.
                     </small>
                 </div>
 
@@ -322,6 +369,22 @@ function togglePasswordVisibility() {
         passwordInput.type = 'password';
         toggleIcon.classList.remove('fa-eye-slash');
         toggleIcon.classList.add('fa-eye');
+    }
+}
+
+// Toggle approver level dropdown
+function toggleApproverLevel() {
+    const checkbox = document.getElementById('approverCheckbox');
+    const container = document.getElementById('approverLevelContainer');
+    const levelSelect = document.getElementById('approverLevel');
+    
+    if (checkbox.checked) {
+        container.style.display = 'block';
+        levelSelect.required = true;
+    } else {
+        container.style.display = 'none';
+        levelSelect.required = false;
+        levelSelect.value = '';
     }
 }
 </script>

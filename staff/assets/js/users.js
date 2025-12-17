@@ -45,7 +45,25 @@ async function editUser(id) {
             document.getElementById('username').value = user.username;
             document.getElementById('password').value = '';
             document.getElementById('password').required = false;
-            document.getElementById('role').value = user.role;
+            
+            // Handle multiple roles
+            const userRoles = user.role.split(',').map(r => r.trim());
+            document.querySelectorAll('.role-checkbox').forEach(checkbox => {
+                checkbox.checked = userRoles.includes(checkbox.value);
+            });
+            
+            // Handle approver level
+            if (userRoles.includes('approver')) {
+                document.getElementById('approverLevelContainer').style.display = 'block';
+                document.getElementById('approverLevel').required = true;
+                // Set approver level if exists
+                if (user.approver_level) {
+                    document.getElementById('approverLevel').value = user.approver_level;
+                }
+            } else {
+                document.getElementById('approverLevelContainer').style.display = 'none';
+                document.getElementById('approverLevel').required = false;
+            }
             
             // Update avatar preview
             document.getElementById('userAvatarPreview').innerHTML = user.full_name.charAt(0).toUpperCase();
@@ -132,13 +150,39 @@ document.getElementById('userForm')?.addEventListener('submit', async function(e
     const userId = formData.get('user_id');
     const action = userId ? 'update' : 'create';
     
+    // Get selected roles
+    const selectedRoles = [];
+    document.querySelectorAll('.role-checkbox:checked').forEach(checkbox => {
+        selectedRoles.push(checkbox.value);
+    });
+    
+    // Validate at least one role is selected
+    if (selectedRoles.length === 0) {
+        alert('Please select at least one role');
+        return;
+    }
+    
+    // Validate approver level if approver role is selected
+    if (selectedRoles.includes('approver')) {
+        const approverLevel = formData.get('approver_level');
+        if (!approverLevel) {
+            alert('Please select an approval level for the approver role');
+            return;
+        }
+    }
+    
     const data = {
         action: action,
         full_name: formData.get('full_name'),
         email: formData.get('email'),
         username: formData.get('username'),
-        role: formData.get('role')
+        role: selectedRoles.join(',') // Join roles with comma
     };
+    
+    // Add approver level if approver role is selected
+    if (selectedRoles.includes('approver')) {
+        data.approver_level = formData.get('approver_level');
+    }
     
     if (userId) {
         data.id = userId;

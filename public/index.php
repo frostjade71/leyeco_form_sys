@@ -47,6 +47,20 @@ require_once __DIR__ . '/../includes/header.php';
                 // Loop through form types from config
                 $form_configs = [
                     [
+                        'name' => 'Complaints Form',
+                        'icon' => 'fa-exclamation-circle',
+                        'description' => 'Report service issues or file complaints',
+                        'url' => BASE_URL . '/forms/complaints_form.php',
+                        'button_text' => 'File Complaint'
+                    ],
+                    [
+                        'name' => 'Requisition Form',
+                        'icon' => 'fa-file-alt',
+                        'description' => 'Request for requisition of materials and such and such',
+                        'url' => BASE_URL . '/forms/requisition_form.php',
+                        'button_text' => 'Request Requisition'
+                    ],
+                    [
                         'name' => 'Service Request Form',
                         'icon' => 'fa-file-text',
                         'description' => 'Submit new service requests and connection applications',
@@ -61,25 +75,11 @@ require_once __DIR__ . '/../includes/header.php';
                         'button_text' => 'Request Reconnection'
                     ],
                     [
-                        'name' => 'Complaints Form',
-                        'icon' => 'fa-exclamation-circle',
-                        'description' => 'Report service issues or file complaints',
-                        'url' => BASE_URL . '/forms/complaints_form.php',
-                        'button_text' => 'File Complaint'
-                    ],
-                    [
                         'name' => 'Meter Replacement Form',
                         'icon' => 'fa-bolt',
                         'description' => 'Request electric meter replacement or upgrade',
                         'url' => BASE_URL . '/forms/meter_replacement_form.php',
                         'button_text' => 'Request Replacement'
-                    ],
-                    [
-                        'name' => 'Requisition Form',
-                        'icon' => 'fa-file-alt',
-                        'description' => 'Request for requisition of materials and such and such',
-                        'url' => BASE_URL . '/forms/requisition_form.php',
-                        'button_text' => 'Request Requisition'
                     ]
                 ];
                 

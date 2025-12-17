@@ -61,7 +61,19 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <body>
     <div class="dashboard-wrapper">
         <!-- Sidebar -->
-        <?php include __DIR__ . '/sidebar.php'; ?>
+        <?php 
+        // Check if we're in a subdirectory with a custom sidebar
+        $currentDir = dirname($_SERVER['SCRIPT_FILENAME']);
+        $customSidebarPath = $currentDir . '/includes/sidebar.php';
+        
+        // If custom sidebar exists in current directory, use it
+        if (file_exists($customSidebarPath)) {
+            include $customSidebarPath;
+        } else {
+            // Use default staff sidebar
+            include __DIR__ . '/sidebar.php';
+        }
+        ?>
         
         <!-- Main Content -->
         <div class="main-content">

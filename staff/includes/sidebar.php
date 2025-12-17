@@ -6,6 +6,8 @@
 
 $currentPage = basename($_SERVER['PHP_SELF']);
 $currentDir = basename(dirname($_SERVER['PHP_SELF']));
+$currentPath = $_SERVER['PHP_SELF'];
+$isRequisitionSection = strpos($currentPath, '/requisition/') !== false;
 ?>
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
@@ -22,8 +24,8 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
         <div class="nav-section">
             <div class="nav-section-title">Main</div>
             <a href="<?php echo STAFF_URL; ?>/dashboard.php" class="nav-item <?php echo $currentPage === 'dashboard.php' ? 'active' : ''; ?>">
-                <i class="fas fa-home"></i>
-                <span>Dashboard</span>
+                <i class="fas <?php echo $isRequisitionSection ? 'fa-arrow-left' : 'fa-home'; ?>"></i>
+                <span><?php echo $isRequisitionSection ? 'Back to Dashboard' : 'Dashboard'; ?></span>
             </a>
         </div>
         
@@ -33,9 +35,9 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
                 <i class="fas fa-exclamation-triangle"></i>
                 <span>Complaints</span>
             </a>
-            <a href="#" class="nav-item" title="Coming soon">
-                <i class="fas fa-file-alt"></i>
-                <span>Requisition Requests</span>
+            <a href="<?php echo STAFF_URL; ?>/requisition/dashboard.php" class="nav-item <?php echo $currentDir === 'requisition' ? 'active' : ''; ?>">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Requisition</span>
             </a>
             <a href="#" class="nav-item" title="Coming soon">
                 <i class="fas fa-plug"></i>

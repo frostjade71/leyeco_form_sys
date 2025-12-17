@@ -50,4 +50,29 @@ function requireRole($role) {
         die('Access denied. Insufficient privileges.');
     }
 }
+
+/**
+ * Require approver role (for requisition system)
+ */
+function requireApprover() {
+    global $currentUser;
+    $userRoles = explode(',', $currentUser['role']);
+    $userRoles = array_map('trim', $userRoles);
+    
+    if (!in_array('approver', $userRoles) && !in_array('admin', $userRoles)) {
+        http_response_code(403);
+        die('Access denied. Approver privileges required.');
+    }
+}
+
+/**
+ * Check if user has approver role (returns boolean)
+ */
+function isApprover() {
+    global $currentUser;
+    $userRoles = explode(',', $currentUser['role']);
+    $userRoles = array_map('trim', $userRoles);
+    
+    return in_array('approver', $userRoles) || in_array('admin', $userRoles);
+}
 ?>

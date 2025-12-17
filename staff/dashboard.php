@@ -26,8 +26,17 @@ try {
     ");
     $complaintsStats = $complaintsStmt->fetch_assoc();
     
+    // Requisitions statistics
+    $reqStmt = $conn->query("
+        SELECT 
+            COUNT(*) as total,
+            SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending
+        FROM requisition_requests
+    ");
+    $reqStats = $reqStmt->fetch_assoc();
+
     // Total submissions across all forms
-    $totalSubmissions = $complaintsStats['total']; // Will add other forms later
+    $totalSubmissions = $complaintsStats['total'] + ($reqStats['total'] ?? 0); // Added requisitions
     
 } catch (Exception $e) {
     error_log("Dashboard stats error: " . $e->getMessage());
@@ -125,6 +134,34 @@ setInterval(updateDateTime, 1000);
             <div class="stat-item">
                 <span class="stat-value"><?php echo number_format($complaintsStats['investigating'] ?? 0); ?></span>
                 <span class="stat-label">Active</span>
+            </div>
+        </div>
+    </a>
+
+    <!-- Requisitions Card -->
+    <a href="<?php echo STAFF_URL; ?>/requisition/dashboard.php" class="form-card">
+        <div class="form-card-header">
+            <div class="form-card-icon requisitions">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <?php if (($reqStats['pending'] ?? 0) > 0): ?>
+                <span class="form-card-badge badge-warning">
+                    <?php echo $reqStats['pending']; ?> Pending
+                </span>
+            <?php endif; ?>
+        </div>
+        <h3 class="form-card-title">Requisitions</h3>
+        <p class="form-card-description">
+            Manage material and supply requisition requests from staff members.
+        </p>
+        <div class="form-card-stats">
+            <div class="stat-item">
+                <span class="stat-value"><?php echo number_format($reqStats['total'] ?? 0); ?></span>
+                <span class="stat-label">Total</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value"><?php echo number_format($reqStats['pending'] ?? 0); ?></span>
+                <span class="stat-label">Pending</span>
             </div>
         </div>
     </a>
