@@ -7,6 +7,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Include main configuration for BASE_URL and other constants
+require_once __DIR__ . '/../../../config/config.php';
+
 // Include the complaints system configuration first
 $configPath = realpath(__DIR__ . '/../app/config.php');
 if (!file_exists($configPath)) {
@@ -62,7 +65,7 @@ $flashMessage = getFlashMessage();
 
 // Page configuration for main header
 $page_title = 'Complaints System';
-$additional_css = ['../public/homepage.css'];
+$additional_css = [BASE_URL . '/forms/complaints/public/homepage.css'];
 
 // Include main header
 require_once __DIR__ . '/../../../includes/header.php';

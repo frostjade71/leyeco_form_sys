@@ -316,3 +316,14 @@ Data: Array
 [2025-12-15 14:15:46] Reference code length: 16
 [2025-12-15 14:15:46] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
 [2025-12-15 14:15:46] Complaint found with ID: 7
+[2025-12-16 12:36:25] === New Request ===
+[2025-12-16 12:36:25] GET Parameters:
+Data: Array
+(
+    [ref] => CLN20251215-0001
+)
+
+[2025-12-16 12:36:25] Reference code after trim: 'CLN20251215-0001'
+[2025-12-16 12:36:25] Reference code length: 16
+[2025-12-16 12:36:25] Reference code bytes: 67 76 78 50 48 50 53 49 50 49 53 45 48 48 48 49
+[2025-12-16 12:36:25] Complaint found with ID: 7

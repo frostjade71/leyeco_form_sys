@@ -30,6 +30,10 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/images/leyecoicon_fav.svg">
+    
     <title><?php echo $pageTitle ?? 'Dashboard'; ?> - LEYECO III Staff Portal</title>
     
     <!-- Theme Initialization (Prevent Flash) -->
@@ -97,11 +101,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             <div class="user-avatar">
                                 <?php echo strtoupper(substr($currentUser['full_name'], 0, 1)); ?>
                             </div>
-                            <div class="user-info">
-                                <span class="user-name"><?php echo htmlspecialchars($currentUser['full_name']); ?></span>
-                                <span class="user-role"><?php echo htmlspecialchars($currentUser['role']); ?></span>
-                            </div>
-                            <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="user-menu-dropdown">
                             <a href="<?php echo STAFF_URL; ?>/profile.php">

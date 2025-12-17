@@ -34,6 +34,10 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
                 <span>Complaints</span>
             </a>
             <a href="#" class="nav-item" title="Coming soon">
+                <i class="fas fa-file-alt"></i>
+                <span>Requisition Requests</span>
+            </a>
+            <a href="#" class="nav-item" title="Coming soon">
                 <i class="fas fa-plug"></i>
                 <span>Service Requests</span>
             </a>
@@ -50,6 +54,10 @@ $currentDir = basename(dirname($_SERVER['PHP_SELF']));
         <?php if ($currentUser['role'] === 'admin'): ?>
         <div class="nav-section">
             <div class="nav-section-title">Administration</div>
+            <a href="<?php echo STAFF_URL; ?>/analytics.php" class="nav-item <?php echo $currentPage === 'analytics.php' ? 'active' : ''; ?>">
+                <i class="fas fa-chart-line"></i>
+                <span>System Analytics</span>
+            </a>
             <a href="<?php echo STAFF_URL; ?>/users.php" class="nav-item <?php echo $currentPage === 'users.php' ? 'active' : ''; ?>">
                 <i class="fas fa-users"></i>
                 <span>User Management</span>

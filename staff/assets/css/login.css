@@ -135,7 +135,7 @@ body {
 .form-control {
     width: 100%;
     padding: 14px 16px 14px 46px;
-    font-size: 15px;
+    font-size: 10px;
     border: 2px solid var(--border-color);
     border-radius: 10px;
     transition: all 0.3s ease;
@@ -294,25 +294,132 @@ body {
 
 /* Responsive */
 @media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .login-container {
+        max-width: 100%;
+    }
+
+    .login-card {
+        border-radius: 12px;
+    }
+
     .login-header {
-        padding: 30px 20px;
+        padding: 20px 15px;
+    }
+
+    .login-logo {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 12px;
+    }
+
+    .login-logo img {
+        width: 40px;
+        height: 40px;
     }
 
     .login-header h1 {
-        font-size: 20px;
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+
+    .login-header p {
+        font-size: 11px;
     }
 
     .login-body {
-        padding: 30px 20px;
+        padding: 20px 15px;
     }
 
-    .login-footer {
-        padding: 20px;
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    .form-group label {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+
+    .form-group label i {
+        margin-right: 4px;
+        font-size: 10px;
+    }
+
+    .input-wrapper i {
+        left: 12px;
+        font-size: 12px;
+    }
+
+    .form-control {
+        padding: 10px 12px 10px 36px;
+        font-size: 12px;
+        border-radius: 8px;
     }
 
     .form-options {
         flex-direction: column;
         align-items: flex-start;
-        gap: 12px;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .checkbox-wrapper input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+        margin-right: 6px;
+    }
+
+    .checkbox-wrapper label {
+        font-size: 11px;
+    }
+
+    .forgot-password {
+        font-size: 11px;
+    }
+
+    .btn-login {
+        padding: 10px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+
+    .btn-login i {
+        margin-right: 6px;
+        font-size: 12px;
+    }
+
+    .alert {
+        padding: 10px 12px;
+        margin-bottom: 16px;
+        font-size: 11px;
+        border-radius: 8px;
+    }
+
+    .alert i {
+        margin-right: 8px;
+        font-size: 14px;
+    }
+
+    .login-footer {
+        padding: 15px;
+    }
+
+    .login-footer p {
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+
+    .btn-back {
+        padding: 8px 16px;
+        font-size: 11px;
+        border-radius: 6px;
+    }
+
+    .btn-back i {
+        margin-right: 4px;
+        font-size: 10px;
     }
 }

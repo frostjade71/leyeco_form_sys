@@ -17,6 +17,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <meta name="keywords" content="LEYECO III, electric cooperative, forms, service request, reconnection, complaints, meter replacement">
     <meta name="author" content="LEYECO III">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/assets/images/leyecoicon_fav.svg">
+    
     <title><?php echo isset($page_title) ? clean_output($page_title) . ' - ' . SITE_NAME : SITE_NAME; ?></title>
     
     <!-- Font Awesome Icons -->

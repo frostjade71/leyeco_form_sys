@@ -25,8 +25,7 @@ require_once __DIR__ . '/../includes/header.php';
                     This form is currently under development.
                 </p>
                 <p style="font-size: 0.95rem; color: var(--text-gray);">
-                    The Reconnection Form will allow you to request reconnection of your electric service. 
-                    Please check back soon or contact our office for assistance.
+                    SOON
                 </p>
             </div>
             

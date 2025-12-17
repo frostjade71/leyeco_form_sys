@@ -139,6 +139,11 @@ body {
 
 /* Adjust for mobile */
 @media (max-width: 768px) {
+    .navbar::before {
+        width: 100%;
+        background-position: center;
+    }
+
     .navbar-brand {
         height: 40px;
     }
@@ -280,27 +285,30 @@ body {
 @media (max-width: 992px) {
     .navbar-menu {
         position: fixed;
-        top: 0;
-        right: -300px;
-        width: 300px;
-        height: 100vh;
+        top: -100vh;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: auto;
+        max-height: calc(100vh - 70px);
         background: linear-gradient(180deg, var(--primary-red) 0%, var(--primary-red-dark) 100%);
         flex-direction: column;
         justify-content: flex-start;
-        padding-top: 80px;
-        padding-left: 2rem;
-        transition: right 0.3s ease;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        padding: 20px 2rem 30px;
+        transition: top 0.4s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        z-index: 999;
     }
 
     .navbar-menu.active {
-        right: 0;
+        top: 70px;
     }
 
     .navbar-nav {
         flex-direction: column;
         width: 100%;
-        align-items: flex-start;
+        align-items: flex-end;
     }
 
     .navbar-nav li {
@@ -309,8 +317,9 @@ body {
     }
 
     .navbar-nav a {
-        padding: 0.75rem 0;
-        width: 100%;
+        padding: 0.75rem 1rem;
+        width: auto;
+        display: inline-block;
     }
 
     .user-menu {
@@ -426,9 +435,45 @@ body {
 }
 
 @media (max-width: 768px) {
+    .footer {
+        padding: var(--spacing-md) 0 var(--spacing-sm);
+        font-size: 0.75rem;
+    }
+
     .footer-content {
         grid-template-columns: 1fr;
-        gap: var(--spacing-lg);
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .footer-section {
+        padding: 0;
+    }
+
+    .footer-section h4 {
+        font-size: 0.85rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .footer-section p {
+        font-size: 0.75rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .footer-section ul li {
+        margin-bottom: 0.3rem;
+    }
+
+    .footer-section ul li a {
+        font-size: 0.75rem;
+    }
+
+    .footer-logo img {
+        height: 20px !important;
+    }
+
+    .footer-logo h4 {
+        font-size: 0.85rem !important;
     }
 }
 
