@@ -6,7 +6,7 @@
 
 // Page configuration
 $page_title = 'About Us';
-$additional_css = ['/assets/css/about.css'];
+$additional_css = [BASE_URL . '/assets/css/about.css'];
 
 // Include header
 require_once __DIR__ . '/../includes/header.php';

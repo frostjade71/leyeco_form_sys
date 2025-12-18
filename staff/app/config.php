@@ -7,6 +7,9 @@
 // Set timezone to Philippine Time
 date_default_timezone_set('Asia/Manila');
 
+// Include main configuration for BASE_URL
+require_once __DIR__ . '/../../config/config.php';
+
 // Include main database configuration
 require_once __DIR__ . '/../../config/database.php';
 
@@ -23,7 +26,7 @@ if (!defined('STAFF_ROOT')) {
     define('STAFF_ROOT', __DIR__ . '/..');
 }
 if (!defined('STAFF_URL')) {
-    define('STAFF_URL', '/staff');
+    define('STAFF_URL', BASE_URL . '/staff');
 }
 
 // Pagination

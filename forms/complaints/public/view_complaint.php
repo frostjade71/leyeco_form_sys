@@ -83,7 +83,7 @@ if (isset($_GET['ref'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Complaint - <?php echo APP_NAME; ?></title>
-    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/forms/complaints/public/homepage.css">
     <?php if ($complaint && ($complaint['lat'] && $complaint['lon'])): ?>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"

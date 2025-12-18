@@ -39,7 +39,7 @@
     <script src="<?php echo BASE_URL; ?>/assets/js/main.js"></script>
     <?php if (isset($additional_js)): ?>
         <?php foreach ($additional_js as $js): ?>
-            <script src="<?php echo $js; ?>"></script>
+            <script src="<?php echo BASE_URL . $js; ?>"></script>
         <?php endforeach; ?>
     <?php endif; ?>
 </body>
