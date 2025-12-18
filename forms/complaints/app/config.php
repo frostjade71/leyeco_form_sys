@@ -4,7 +4,10 @@
  * Configuration File
  */
 
-// Include main database configuration first
+// Include main configuration first for BASE_URL
+require_once __DIR__ . '/../../../config/config.php';
+
+// Include main database configuration
 require_once __DIR__ . '/../../../config/database.php';
 
 // Application Settings

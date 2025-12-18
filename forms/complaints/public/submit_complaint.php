@@ -5,7 +5,6 @@
  */
 
 require_once __DIR__ . '/../app/config.php';
-require_once __DIR__ . '/../app/db.php';
 require_once __DIR__ . '/../app/functions.php';
 require_once __DIR__ . '/../app/ComplaintController.php';
 
@@ -103,7 +102,11 @@ $csrfToken = generateCSRFToken();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Complaint - <?php echo APP_NAME; ?></title>
-    <link rel="stylesheet" href="homepage.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?php echo BASE_URL; ?>/assets/images/leyecoicon_fav.svg">
+    
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/forms/complaints/public/homepage.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="

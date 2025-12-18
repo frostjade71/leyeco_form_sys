@@ -34,6 +34,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <link rel="stylesheet" href="<?php echo BASE_URL . $css; ?>">
         <?php endforeach; ?>
     <?php endif; ?>
+    
+    <!-- Page-specific JavaScript -->
+    <?php if (isset($additional_js)): ?>
+        <?php foreach ($additional_js as $js): ?>
+            <?php if (strpos($js, 'http') === 0): ?>
+                <script src="<?php echo $js; ?>"></script>
+            <?php else: ?>
+                <script src="<?php echo BASE_URL . $js; ?>"></script>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </head>
 <body>
     <!-- Mobile Menu Overlay -->

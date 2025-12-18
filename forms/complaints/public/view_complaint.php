@@ -9,7 +9,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 require_once __DIR__ . '/../app/config.php';
-require_once __DIR__ . '/../app/db.php';
 require_once __DIR__ . '/../app/functions.php';
 require_once __DIR__ . '/../app/ComplaintController.php';
 
@@ -83,6 +82,10 @@ if (isset($_GET['ref'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Complaint - <?php echo APP_NAME; ?></title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?php echo BASE_URL; ?>/assets/images/leyecoicon_fav.svg">
+    
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/forms/complaints/public/homepage.css">
     <?php if ($complaint && ($complaint['lat'] && $complaint['lon'])): ?>
     <!-- Leaflet CSS -->
