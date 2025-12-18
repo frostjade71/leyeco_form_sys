@@ -194,7 +194,7 @@ include __DIR__ . '/../includes/header.php';
                             data-value="<?php echo $item['balance_for_purchase'] ?: ''; ?>">
                             <?php 
                             $bal = $item['balance_for_purchase'];
-                            if ($bal && !str_contains($bal, '₱') && preg_match('/[\d]/', $bal)) {
+                            if ($bal && strpos($bal, '₱') === false && preg_match('/[\d]/', $bal)) {
                                 echo '₱' . $bal;
                             } else {
                                 echo $bal ?: 'N/A';

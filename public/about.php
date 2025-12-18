@@ -4,6 +4,9 @@
  * Information about LEYECO III
  */
 
+// Include config for BASE_URL
+require_once __DIR__ . '/../config/config.php';
+
 // Page configuration
 $page_title = 'About Us';
 $additional_css = [BASE_URL . '/assets/css/about.css'];

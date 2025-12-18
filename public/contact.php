@@ -4,6 +4,9 @@
  * Contact information and inquiry form
  */
 
+// Include config for BASE_URL
+require_once __DIR__ . '/../config/config.php';
+
 // Page configuration
 $page_title = 'Contact Us';
 $additional_css = [
