@@ -23,12 +23,15 @@ if (!defined('BASE_URL')) {
         // Internal directories that should NOT be treated as base URL
         $internal_dirs = ['public', 'staff', 'forms', 'includes', 'assets', 'api', 'config'];
         
+        // Project folder names that SHOULD be treated as base URL
+        $project_folders = ['Leyeco3_form', 'leyeco_form_sys', 'leyeco'];
+        
         // Extract first directory from script path
         if (preg_match('#^/([^/]+)/#', $script_name, $matches)) {
             $first_dir = $matches[1];
             
-            // Only use as base URL if it's NOT an internal directory
-            if (!in_array($first_dir, $internal_dirs)) {
+            // Use as base URL if it's a known project folder OR not an internal directory
+            if (in_array($first_dir, $project_folders) || !in_array($first_dir, $internal_dirs)) {
                 $base_url = '/' . $first_dir;
             } else {
                 $base_url = '';

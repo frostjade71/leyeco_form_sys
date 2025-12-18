@@ -63,6 +63,9 @@ async function handleApproval(action) {
     showConfirmModal(title, message, icon, async () => {
         try {
             const baseUrl = window.APP_CONFIG?.BASE_URL || '';
+            console.log('BASE_URL:', baseUrl);
+            console.log('Full API URL:', `${baseUrl}/staff/requisition/api/process_approval.php`);
+            
             const response = await fetch(`${baseUrl}/staff/requisition/api/process_approval.php`, {
                 method: 'POST',
                 headers: {
@@ -71,6 +74,7 @@ async function handleApproval(action) {
                 body: JSON.stringify(data)
             });
             
+            console.log('Response status:', response.status);
             const result = await response.json();
             
             if (result.success) {
@@ -244,6 +248,9 @@ async function saveInventoryValue(cell, itemId, field, newValue, originalContent
     
     try {
         const baseUrl = window.APP_CONFIG?.BASE_URL || '';
+        console.log('Update inventory - BASE_URL:', baseUrl);
+        console.log('Update inventory - Full API URL:', `${baseUrl}/staff/requisition/api/update_inventory.php`);
+        
         const response = await fetch(`${baseUrl}/staff/requisition/api/update_inventory.php`, {
             method: 'POST',
             headers: {
@@ -256,6 +263,7 @@ async function saveInventoryValue(cell, itemId, field, newValue, originalContent
             })
         });
         
+        console.log('Update inventory - Response status:', response.status);
         const result = await response.json();
         
         if (result.success) {
