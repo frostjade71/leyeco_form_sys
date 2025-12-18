@@ -12,10 +12,34 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Base URL Configuration
-// Adjust this based on your server setup
-// For Docker: Empty string (assets are relative)
-// For XAMPP: /leyeco_form_sys
-define('BASE_URL', getenv('BASE_URL') ?: '');
+// Auto-detect base URL from request URI
+if (!defined('BASE_URL')) {
+    $base_url = getenv('BASE_URL');
+    
+    if ($base_url === false || $base_url === null) {
+        // Auto-detect from request URI
+        $script_name = $_SERVER['SCRIPT_NAME'] ?? '';
+        
+        // Internal directories that should NOT be treated as base URL
+        $internal_dirs = ['public', 'staff', 'forms', 'includes', 'assets', 'api', 'config'];
+        
+        // Extract first directory from script path
+        if (preg_match('#^/([^/]+)/#', $script_name, $matches)) {
+            $first_dir = $matches[1];
+            
+            // Only use as base URL if it's NOT an internal directory
+            if (!in_array($first_dir, $internal_dirs)) {
+                $base_url = '/' . $first_dir;
+            } else {
+                $base_url = '';
+            }
+        } else {
+            $base_url = '';
+        }
+    }
+    
+    define('BASE_URL', $base_url);
+}
 
 // Site Information
 define('SITE_NAME', 'LEYECO III Forms Management System');

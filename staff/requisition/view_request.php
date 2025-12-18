@@ -316,4 +316,12 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
+<script>
+// Configuration for JavaScript
+window.APP_CONFIG = {
+    BASE_URL: '<?php echo BASE_URL; ?>',
+    STAFF_URL: '<?php echo STAFF_URL; ?>'
+};
+</script>
+
 <?php include __DIR__ . '/../includes/footer.php'; ?>

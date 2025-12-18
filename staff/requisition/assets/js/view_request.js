@@ -62,7 +62,8 @@ async function handleApproval(action) {
     
     showConfirmModal(title, message, icon, async () => {
         try {
-            const response = await fetch(`${window.location.origin}/staff/requisition/api/process_approval.php`, {
+            const baseUrl = window.APP_CONFIG?.BASE_URL || '';
+            const response = await fetch(`${baseUrl}/staff/requisition/api/process_approval.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -242,7 +243,8 @@ async function saveInventoryValue(cell, itemId, field, newValue, originalContent
     }
     
     try {
-        const response = await fetch(`${window.location.origin}/staff/requisition/api/update_inventory.php`, {
+        const baseUrl = window.APP_CONFIG?.BASE_URL || '';
+        const response = await fetch(`${baseUrl}/staff/requisition/api/update_inventory.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

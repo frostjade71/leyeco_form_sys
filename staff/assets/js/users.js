@@ -27,7 +27,8 @@ function closeUserModal() {
 // Edit user
 async function editUser(id) {
     try {
-        const response = await fetch(`${window.location.origin}/staff/api/users.php?id=${id}`);
+        const baseUrl = window.APP_CONFIG?.BASE_URL || '';
+        const response = await fetch(`${baseUrl}/staff/api/users.php?id=${id}`);
         const data = await response.json();
         
         if (data.success) {
@@ -84,7 +85,8 @@ async function toggleUserStatus(id, activate) {
     }
     
     try {
-        const response = await fetch(`${window.location.origin}/staff/api/users.php`, {
+        const baseUrl = window.APP_CONFIG?.BASE_URL || '';
+        const response = await fetch(`${baseUrl}/staff/api/users.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -117,7 +119,8 @@ async function deleteUser(id) {
     }
     
     try {
-        const response = await fetch(`${window.location.origin}/staff/api/users.php`, {
+        const baseUrl = window.APP_CONFIG?.BASE_URL || '';
+        const response = await fetch(`${baseUrl}/staff/api/users.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -194,7 +197,8 @@ document.getElementById('userForm')?.addEventListener('submit', async function(e
     }
     
     try {
-        const response = await fetch(`${window.location.origin}/staff/api/users.php`, {
+        const baseUrl = window.APP_CONFIG?.BASE_URL || '';
+        const response = await fetch(`${baseUrl}/staff/api/users.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
