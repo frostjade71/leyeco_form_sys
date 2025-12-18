@@ -24,3 +24,6 @@ error_log
 tmp/
 temp/
 cache/
+
+# Debug logs
+forms/complaints/public/debug.log
