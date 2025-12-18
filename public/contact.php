@@ -10,12 +10,12 @@ require_once __DIR__ . '/../config/config.php';
 // Page configuration
 $page_title = 'Contact Us';
 $additional_css = [
-    BASE_URL . '/assets/css/contact.css',
+    '/assets/css/contact.css',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
 ];
 $additional_js = [
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-    BASE_URL . '/assets/js/contact-map.js'
+    '/assets/js/contact-map.js'
 ];
 
 // Include header

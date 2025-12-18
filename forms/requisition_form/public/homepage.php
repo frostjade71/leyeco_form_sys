@@ -66,7 +66,7 @@ $flashMessage = getFlashMessage();
 
 // Page configuration for main header
 $page_title = 'Requisition System';
-$additional_css = [BASE_URL . '/forms/requisition_form/public/homepage.css'];
+$additional_css = ['/forms/requisition_form/public/homepage.css'];
 
 // Include main header
 require_once __DIR__ . '/../../../includes/header.php';

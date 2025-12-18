@@ -61,7 +61,7 @@ async function viewComplaint(id) {
 
   try {
     const response = await fetch(
-      `${window.location.origin}/staff/complaints/api.php?action=get&id=${id}`
+      `${STAFF_URL}/complaints/api.php?action=get&id=${id}`
     );
     const data = await response.json();
 
@@ -373,7 +373,7 @@ async function updateStatus(id) {
 
   try {
     const response = await fetch(
-      `${window.location.origin}/staff/complaints/api.php`,
+      `${STAFF_URL}/complaints/api.php`,
       {
         method: "POST",
         headers: {
@@ -412,7 +412,7 @@ async function addComment(id) {
 
   try {
     const response = await fetch(
-      `${window.location.origin}/staff/complaints/api.php`,
+      `${STAFF_URL}/complaints/api.php`,
       {
         method: "POST",
         headers: {
@@ -450,7 +450,7 @@ async function updateDispatch(id) {
 
   try {
     const response = await fetch(
-      `${window.location.origin}/staff/complaints/api.php`,
+      `${STAFF_URL}/complaints/api.php`,
       {
         method: "POST",
         headers: {

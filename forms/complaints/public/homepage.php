@@ -65,7 +65,7 @@ $flashMessage = getFlashMessage();
 
 // Page configuration for main header
 $page_title = 'Complaints System';
-$additional_css = [BASE_URL . '/forms/complaints/public/homepage.css'];
+$additional_css = ['/forms/complaints/public/homepage.css'];
 
 // Include main header
 require_once __DIR__ . '/../../../includes/header.php';

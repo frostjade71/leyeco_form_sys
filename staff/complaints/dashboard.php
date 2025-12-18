@@ -43,6 +43,13 @@ $result = $controller->getAll($filters, $page, 20);
 include __DIR__ . '/../includes/header.php';
 ?>
 
+<script>
+// Make BASE_URL and STAFF_URL available to JavaScript
+const BASE_URL = '<?php echo BASE_URL; ?>';
+const STAFF_URL = '<?php echo STAFF_URL; ?>';
+</script>
+
+
 <!-- Statistics Cards -->
 <div class="stats-grid">
     <div class="stat-card">
