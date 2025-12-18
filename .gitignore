@@ -1,6 +1,8 @@
 # Database configuration (contains sensitive credentials)
 config/database.php
 
+config/config.php
+
 # Environment files
 .env
 .env.local
