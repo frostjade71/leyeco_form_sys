@@ -9,7 +9,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <a href="<?php echo STAFF_URL; ?>/dashboard.php" class="sidebar-logo">
-            <img src="/assets/images/logoL3iii.webp" alt="LEYECO III Logo">
+            <img src="<?php echo BASE_URL; ?>/assets/images/logoL3iii.webp" alt="LEYECO III Logo">
             <div class="sidebar-logo-text">
                 <h2>LEYECO III</h2>
                 <p>Requisition System</p>

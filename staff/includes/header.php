@@ -32,7 +32,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/assets/images/leyecoicon_fav.svg">
+    <link rel="icon" type="image/svg+xml" href="<?php echo BASE_URL; ?>/assets/images/leyecoicon_fav.svg">
     
     <title><?php echo $pageTitle ?? 'Dashboard'; ?> - LEYECO III Staff Portal</title>
     

@@ -67,7 +67,7 @@ $csrfToken = $auth->generateCsrfToken();
             <!-- Header -->
             <div class="login-header">
                 <div class="login-logo">
-                    <img src="/assets/images/logoL3iii.webp" alt="LEYECO III Logo">
+                    <img src="<?php echo BASE_URL; ?>/assets/images/logoL3iii.webp" alt="LEYECO III Logo">
                 </div>
                 <h1>Staff Portal</h1>
                 <p>LEYECO III Forms Management System</p>
@@ -153,7 +153,7 @@ $csrfToken = $auth->generateCsrfToken();
             <!-- Footer -->
             <div class="login-footer">
                 <p>Need help? Contact your system administrator</p>
-                <a href="/public/index.php" class="btn-back">
+                <a href="<?php echo BASE_URL; ?>/public/index.php" class="btn-back">
                     <i class="fas fa-arrow-left"></i>
                     Back to Public Site
                 </a>

@@ -6,7 +6,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo" style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
-                        <img src="/assets/images/logoL3iii.webp" alt="LEYECO III Logo" style="height: 30px; width: auto;">
+                        <img src="<?php echo BASE_URL; ?>/assets/images/logoL3iii.webp" alt="LEYECO III Logo" style="height: 30px; width: auto;">
                         <h4 style="margin: 0;">LEYECO III</h4>
                     </div>
                     <p>Leyte III Electric Cooperative, Inc.</p>
@@ -16,10 +16,10 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="/public/index.php">Home</a></li>
-                        <li><a href="/forms/request_form.php">Service Request</a></li>
-                        <li><a href="/forms/reconnection_form.php">Reconnection</a></li>
-                        <li><a href="/public/contact.php">Contact Us</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/public/index.php">Home</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/forms/request_form.php">Service Request</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/forms/reconnection_form.php">Reconnection</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/public/contact.php">Contact Us</a></li>
                     </ul>
                 </div>
                 
@@ -36,7 +36,7 @@
     </footer>
     
     <!-- JavaScript -->
-    <script src="/assets/js/main.js"></script>
+    <script src="<?php echo BASE_URL; ?>/assets/js/main.js"></script>
     <?php if (isset($additional_js)): ?>
         <?php foreach ($additional_js as $js): ?>
             <script src="<?php echo $js; ?>"></script>

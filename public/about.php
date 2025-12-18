@@ -31,7 +31,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="iso-content">
             <!-- Certificate Image -->
             <div class="iso-certificate">
-                <img src="/assets/images/NQA.avif" alt="ISO 9001:2015 Certificate" class="certificate-image">
+                <img src="<?php echo BASE_URL; ?>/assets/images/NQA.avif" alt="ISO 9001:2015 Certificate" class="certificate-image">
             </div>
             
             <!-- Description Text -->

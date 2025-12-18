@@ -123,7 +123,7 @@ require_once __DIR__ . '/../includes/header.php';
         <p class="section-subtitle">Need to submit a form or request?</p>
         
         <div class="quick-links-grid">
-            <a href="/forms/request_form.php" class="quick-link-card">
+            <a href="<?php echo BASE_URL; ?>/forms/request_form.php" class="quick-link-card">
                 <div class="quick-link-icon">
                     <i class="fas fa-file-text"></i>
                 </div>
@@ -131,7 +131,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <p>Submit a new service request</p>
             </a>
 
-            <a href="/forms/reconnection_form.php" class="quick-link-card">
+            <a href="<?php echo BASE_URL; ?>/forms/reconnection_form.php" class="quick-link-card">
                 <div class="quick-link-icon">
                     <i class="fas fa-plug"></i>
                 </div>
@@ -139,7 +139,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <p>Request reconnection service</p>
             </a>
 
-            <a href="/forms/complaints_form.php" class="quick-link-card">
+            <a href="<?php echo BASE_URL; ?>/forms/complaints_form.php" class="quick-link-card">
                 <div class="quick-link-icon">
                     <i class="fas fa-exclamation-circle"></i>
                 </div>
@@ -147,7 +147,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <p>Report service issues</p>
             </a>
 
-            <a href="/forms/meter_replacement_form.php" class="quick-link-card">
+            <a href="<?php echo BASE_URL; ?>/forms/meter_replacement_form.php" class="quick-link-card">
                 <div class="quick-link-icon">
                     <i class="fas fa-bolt"></i>
                 </div>

@@ -18,7 +18,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <meta name="author" content="LEYECO III">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/assets/images/leyecoicon_fav.svg">
+    <link rel="icon" type="image/svg+xml" href="<?php echo BASE_URL; ?>/assets/images/leyecoicon_fav.svg">
     
     <title><?php echo isset($page_title) ? clean_output($page_title) . ' - ' . SITE_NAME : SITE_NAME; ?></title>
     
@@ -26,12 +26,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
     
     <!-- Page-specific CSS -->
     <?php if (isset($additional_css)): ?>
         <?php foreach ($additional_css as $css): ?>
-            <link rel="stylesheet" href="<?php echo $css; ?>">
+            <link rel="stylesheet" href="<?php echo BASE_URL . $css; ?>">
         <?php endforeach; ?>
     <?php endif; ?>
 </head>
@@ -43,9 +43,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <nav class="navbar">
         <div class="container">
             <!-- Logo/Brand -->
-            <a href="/public/index.php" class="navbar-brand">
-                <img src="/assets/images/logoL3iii.webp" alt="LEYECO III Logo" class="logo-icon">
-                <img src="/assets/images/logo_leyeco3.webp" alt="LEYECO III" class="logo-text">
+            <a href="<?php echo BASE_URL; ?>/public/index.php" class="navbar-brand">
+                <img src="<?php echo BASE_URL; ?>/assets/images/logoL3iii.webp" alt="LEYECO III Logo" class="logo-icon">
+                <img src="<?php echo BASE_URL; ?>/assets/images/logo_leyeco3.webp" alt="LEYECO III" class="logo-text">
             </a>
             
             <!-- Mobile Toggle -->
@@ -59,22 +59,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="navbar-menu">
                 <ul class="navbar-nav">
                     <li>
-                        <a href="/public/index.php" class="<?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
+                        <a href="<?php echo BASE_URL; ?>/public/index.php" class="<?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">
                             <i class="fas fa-home"></i> Home
                         </a>
                     </li>
                     <li>
-                        <a href="/public/about.php" class="<?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">
+                        <a href="<?php echo BASE_URL; ?>/public/about.php" class="<?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">
                             <i class="fas fa-info-circle"></i> About
                         </a>
                     </li>
                     <li>
-                        <a href="/public/contact.php" class="<?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>">
+                        <a href="<?php echo BASE_URL; ?>/public/contact.php" class="<?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>">
                             <i class="fas fa-envelope"></i> Contact
                         </a>
                     </li>
                     <li>
-                        <a href="/staff/login.php" class="btn btn-primary">
+                        <a href="<?php echo BASE_URL; ?>/staff/login.php" class="btn btn-primary">
                             <i class="fas fa-user-lock"></i> Staff Login
                         </a>
                     </li>
