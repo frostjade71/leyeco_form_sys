@@ -35,7 +35,7 @@ if (isset($_GET['rf']) && !empty($_GET['rf'])) {
 
 // Page configuration
 $page_title = 'Track Request - Requisition System';
-$additional_css = [BASE_URL . '/forms/requisition_form/public/track_request.css'];
+$additional_css = ['/forms/requisition_form/public/track_request.css'];
 
 require_once __DIR__ . '/../../../includes/header.php';
 ?>

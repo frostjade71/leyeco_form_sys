@@ -4,14 +4,17 @@
  * Configuration File
  */
 
+// Include main database configuration first
+require_once __DIR__ . '/../../../config/database.php';
+
 // Application Settings
 define('APP_NAME', 'LEYECO III Complaints System');
 define('APP_VERSION', '1.0.0');
 
-// Database Configuration (using existing LEYECO database)
+// Database Configuration - Use main config values
 // Only define if not already defined by main config
 if (!defined('DB_HOST')) {
-    define('DB_HOST', 'db'); // Docker service name
+    define('DB_HOST', 'localhost');
 }
 if (!defined('DB_NAME')) {
     define('DB_NAME', 'leyeco_forms_db');
@@ -20,7 +23,7 @@ if (!defined('DB_USER')) {
     define('DB_USER', 'root');
 }
 if (!defined('DB_PASS')) {
-    define('DB_PASS', 'root'); // From docker-compose.yml
+    define('DB_PASS', '');
 }
 if (!defined('DB_CHARSET')) {
     define('DB_CHARSET', 'utf8mb4');

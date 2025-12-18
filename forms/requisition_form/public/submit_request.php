@@ -74,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Page configuration
 $page_title = 'Submit Request - Requisition System';
-$additional_css = [BASE_URL . '/forms/requisition_form/public/request_form.css'];
-$additional_js = [BASE_URL . '/forms/requisition_form/assets/js/request_form.js'];
+$additional_css = ['/forms/requisition_form/public/request_form.css'];
+$additional_js = ['/forms/requisition_form/assets/js/request_form.js'];
 
 require_once __DIR__ . '/../../../includes/header.php';
 ?>
