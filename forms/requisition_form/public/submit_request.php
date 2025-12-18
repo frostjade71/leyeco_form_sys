@@ -80,6 +80,11 @@ $additional_js = ['/forms/requisition_form/assets/js/request_form.js'];
 require_once __DIR__ . '/../../../includes/header.php';
 ?>
 
+<script>
+// Make BASE_URL available to JavaScript
+const BASE_URL = '<?php echo BASE_URL; ?>';
+</script>
+
 <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
     <div class="form-container">
         <div class="card">

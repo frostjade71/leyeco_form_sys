@@ -90,7 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(form);
             
             // Submit form
-            const response = await fetch(window.location.href, {
+            const submitUrl = (typeof BASE_URL !== 'undefined' ? BASE_URL : '') + '/forms/requisition_form/public/submit_request.php';
+            const response = await fetch(submitUrl, {
                 method: 'POST',
                 body: formData
             });
