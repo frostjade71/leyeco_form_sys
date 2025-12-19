@@ -95,7 +95,7 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
                 <h3>Follow Us</h3>
                 <div class="social-links">
-                    <a href="https://www.facebook.com/leyeco3" target="_blank" title="Facebook">
+                    <a href="https://www.facebook.com/LEYECOIII/" target="_blank" title="Facebook">
                         <i class="fab fa-facebook"></i>
                     </a>
                     <a href="https://www.leyeco3.com/" target="_blank" title="Website">
@@ -108,7 +108,7 @@ require_once __DIR__ . '/../includes/header.php';
 </section>
 
 <!-- Map Section -->
-<section class="map-section">
+<section class="map-section" id="map-section">
     <div class="container">
         <h2 class="section-title">Find Us</h2>
         <p class="section-subtitle">Visit our office at Brgy. San Roque, Tunga, Leyte</p>
@@ -162,7 +162,7 @@ require_once __DIR__ . '/../includes/header.php';
 </section>
 
 <!-- FAQ Section -->
-<section class="faq-section">
+<section class="faq-section" id="faq-section">
     <div class="container">
         <h2 class="section-title">Frequently Asked Questions</h2>
         

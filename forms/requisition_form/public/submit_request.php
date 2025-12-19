@@ -10,6 +10,7 @@ ini_set('display_errors', 1);
 // Include main configuration
 require_once __DIR__ . '/../../../config/config.php';
 require_once __DIR__ . '/../app/config.php';
+require_once __DIR__ . '/../app/functions.php';
 require_once __DIR__ . '/../../../config/database.php';
 require_once __DIR__ . '/../app/RequisitionController.php';
 
@@ -75,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Page configuration
 $page_title = 'Submit Request - Requisition System';
 $additional_css = ['/forms/requisition_form/public/request_form.css'];
-$additional_js = ['/forms/requisition_form/assets/js/request_form.js'];
 
 require_once __DIR__ . '/../../../includes/header.php';
 ?>
@@ -93,7 +93,7 @@ const BASE_URL = '<?php echo BASE_URL; ?>';
                 <p>Fill out the form below to submit a new material requisition request. All fields marked with <span class="required">*</span> are required.</p>
             </div>
             
-            <form id="requisitionForm">
+            <form id="requisitionForm" data-no-loader>
                 <!-- Requester Information -->
                 <div class="form-section">
                     <h3>Requester Information</h3>
@@ -173,7 +173,7 @@ const BASE_URL = '<?php echo BASE_URL; ?>';
 
 <!-- Success Modal -->
 <div id="successModal" class="modal" style="display: none;">
-    <div class="modal-content">
+    <div class="modal-content" id="modalContentToExport">
         <div class="success-icon">✅</div>
         <h2>Request Submitted Successfully!</h2>
         <p>Your requisition request has been submitted and is now pending approval.</p>
@@ -188,8 +188,11 @@ const BASE_URL = '<?php echo BASE_URL; ?>';
         </p>
         
         <div class="modal-actions">
-            <button class="btn btn-outline" onclick="window.location.href='<?php echo BASE_URL; ?>/forms/requisition_form/public/track_request.php'">
-                Track Request
+            <button class="btn btn-secondary" onclick="exportModalAsImage()">
+                📥 Export
+            </button>
+            <button class="btn btn-outline" onclick="copyAndTrack()">
+                📋 Copy & Track
             </button>
             <button class="btn btn-primary" onclick="window.location.href='<?php echo BASE_URL; ?>/forms/requisition_form/public/submit_request.php'">
                 Submit Another Request
@@ -198,4 +201,63 @@ const BASE_URL = '<?php echo BASE_URL; ?>';
     </div>
 </div>
 
-<?php require_once __DIR__ . '/../../../includes/footer.php'; ?>
+<!-- Include html2canvas for screenshot functionality -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+// Copy RF number and redirect to track page
+function copyAndTrack() {
+    const rfNumber = document.getElementById('rfNumber').textContent;
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(rfNumber).then(() => {
+        // Show brief feedback
+        const btn = event.target;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✅ Copied!';
+        
+        setTimeout(() => {
+            // Redirect to track page
+            window.location.href = '<?php echo BASE_URL; ?>/forms/requisition_form/public/track_request.php';
+        }, 500);
+    }).catch(err => {
+        console.error('Failed to copy:', err);
+        // Still redirect even if copy fails
+        window.location.href = '<?php echo BASE_URL; ?>/forms/requisition_form/public/track_request.php';
+    });
+}
+
+// Export modal as image
+function exportModalAsImage() {
+    const modalContent = document.getElementById('modalContentToExport');
+    const rfNumber = document.getElementById('rfNumber').textContent;
+    
+    // Temporarily hide buttons for screenshot
+    const buttons = modalContent.querySelector('.modal-actions');
+    buttons.style.display = 'none';
+    
+    html2canvas(modalContent, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        logging: false
+    }).then(canvas => {
+        // Show buttons again
+        buttons.style.display = 'flex';
+        
+        // Convert canvas to blob and download
+        canvas.toBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = `Requisition_${rfNumber}.png`;
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+        });
+    });
+}
+</script>
+
+<script src="<?php echo BASE_URL; ?>/forms/requisition_form/assets/js/request_form.js"></script>
+
+</body>
+</html>

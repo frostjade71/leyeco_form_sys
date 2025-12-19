@@ -413,35 +413,211 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .hero-section h1 {
-        font-size: 2rem;
+    /* Hero Section - Compact */
+    .hero-section {
+        padding: 2rem 1rem;
     }
-
+    
     .hero-icon {
-        font-size: 3rem;
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
     }
-
-    .iso-section h2 {
+    
+    .hero-section h1 {
         font-size: 1.5rem;
+        margin-bottom: 0.5rem;
     }
 
+    .subtitle {
+        font-size: 0.95rem;
+    }
+    
+    /* ISO Section - Compact */
+    .iso-section {
+        padding: 2rem 1rem;
+    }
+    
+    .iso-title {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .iso-content {
+        gap: 1rem;
+    }
+    
+    .certificate-image {
+        max-width: 100%;
+    }
+    
+    .iso-badge {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .lead-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    /* VMQ Section - Compact */
+    .vmq-section {
+        padding: 2rem 1rem;
+    }
+    
     .vmq-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
-
+    
+    .vmq-card {
+        padding: 1.25rem;
+    }
+    
+    .vmq-icon {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .vmq-card h3 {
+        font-size: 1.15rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .vmq-card p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    /* Quality Policy - Compact */
+    .quality-policy {
+        padding: 1.25rem;
+    }
+    
+    .quality-policy h3 {
+        font-size: 1.15rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .quality-policy h3 i {
+        font-size: 1rem;
+    }
+    
+    .quality-policy p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+    }
+    
+    .leyeco-acronym {
+        padding: 1rem;
+        margin-top: 0.75rem;
+    }
+    
+    .leyeco-acronym p {
+        font-size: 0.85rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .leyeco-acronym p strong {
+        font-size: 1rem;
+    }
+    
+    /* History Section - Compact */
+    .history-section {
+        padding: 2rem 1rem;
+    }
+    
+    .history-section h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .history-section h2 i {
+        font-size: 1.1rem;
+    }
+    
+    .history-content p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+    }
+    
+    .history-content h3 {
+        font-size: 1.1rem;
+        margin: 1.5rem 0 1rem;
+    }
+    
+    /* Timeline - Compact */
+    .timeline {
+        padding: 1rem 0;
+    }
+    
     .timeline::before {
-        left: 15px;
+        left: 12px;
+        width: 1.5px;
     }
-
+    
     .timeline-item {
-        padding-left: 50px;
+        padding-left: 40px;
+        margin-bottom: 1rem;
     }
-
+    
     .timeline-item::before {
-        left: 7px;
+        left: 5px;
+        top: 3px;
+        width: 14px;
+        height: 14px;
+        border-width: 2px;
     }
-
+    
+    .timeline-date {
+        font-size: 0.8rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .timeline-content {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+    
+    .history-conclusion {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    /* Coverage Section - Compact */
+    .coverage-section {
+        padding: 2rem 1rem;
+    }
+    
+    .coverage-section h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .coverage-section h2 i {
+        font-size: 1.1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1.25rem;
+    }
+    
     .stat-number {
-        font-size: 2.5rem;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.95rem;
     }
 }

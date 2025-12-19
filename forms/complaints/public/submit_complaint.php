@@ -420,26 +420,119 @@ $csrfToken = generateCSRFToken();
         /* Mobile Styles */
         @media (max-width: 767px) {
             .form-container {
-                padding: 25px 20px;
-                margin: 20px 15px;
+                padding: 15px 12px;
+                margin: 15px 10px;
+                border-width: 2px;
             }
-            h1 {
-                font-size: 24px;
-                margin-bottom: 8px !important;
+            .form-container h1 {
+                font-size: 20px !important;
+                margin-bottom: 6px !important;
+            }
+            .form-container p {
+                font-size: 13px;
+                margin-bottom: 20px !important;
+            }
+            .form-group {
+                margin-bottom: 18px;
+            }
+            .form-group label {
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px 12px;
+                font-size: 14px;
+                border-radius: 8px;
+            }
+            .form-group textarea {
+                min-height: 90px;
+            }
+            .form-group small {
+                font-size: 12px;
+                margin-top: 4px;
             }
             .form-actions {
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
+                margin-top: 25px;
             }
             .btn {
                 width: 100%;
+                padding: 10px 16px;
+                font-size: 14px;
             }
             #map {
-                height: 300px;
+                height: 250px;
+                border-radius: 8px;
+            }
+            .map-info {
+                padding: 6px 10px;
+                font-size: 11px;
+                margin-top: 6px;
             }
             .location-btn {
                 width: 100%;
                 justify-content: center;
+                padding: 7px 12px;
+                font-size: 11px;
+                margin-top: 6px;
+            }
+            .coordinates-display {
+                padding: 8px 12px;
+                font-size: 11px;
+                margin-top: 8px;
+            }
+            .back-link {
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+            .error-list {
+                padding: 15px 18px;
+                margin-bottom: 20px;
+            }
+            .error-list li {
+                font-size: 13px;
+            }
+            .success-message {
+                padding: 25px 20px;
+                margin-bottom: 15px;
+            }
+            .success-icon {
+                width: 55px;
+                height: 55px;
+                margin-bottom: 14px;
+            }
+            .success-icon::after {
+                font-size: 32px;
+            }
+            .success-message h2 {
+                font-size: 20px;
+                margin-bottom: 6px;
+            }
+            .success-message p {
+                font-size: 13px;
+            }
+            .reference-code-container {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            .reference-code-label {
+                font-size: 11px;
+                margin-bottom: 6px;
+            }
+            .reference-code {
+                font-size: 22px;
+                letter-spacing: 1.5px;
+            }
+            .success-actions {
+                gap: 10px;
+                margin-top: 20px;
+            }
+            .success-actions .btn {
+                padding: 9px 18px;
+                font-size: 13px;
             }
         }
     </style>

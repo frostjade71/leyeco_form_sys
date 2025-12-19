@@ -321,32 +321,239 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    .request-details {
-        grid-template-columns: 1fr;
+    /* Cards - Compact */
+    .card {
+        margin-top: 16px;
     }
     
+    .card-header {
+        padding: 12px 16px;
+    }
+    
+    .card-title {
+        font-size: 16px;
+    }
+    
+    /* Status Badge - Smaller */
+    .status-badge {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+    
+    /* Request Details - Compact */
+    .request-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .detail-item {
+        padding: 8px 10px;
+    }
+    
+    .detail-label {
+        font-size: 10px;
+        margin-bottom: 3px;
+    }
+    
+    .detail-value {
+        font-size: 13px;
+    }
+    
+    .detail-value.rf-number {
+        font-size: 14px;
+    }
+    
+    /* Edit Hint - Smaller */
+    .edit-hint {
+        font-size: 11px;
+    }
+    
+    /* Table - Scrollable */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .data-table {
+        min-width: 700px;
+        font-size: 12px;
+    }
+    
+    .data-table th {
+        padding: 10px 8px;
+        font-size: 10px;
+    }
+    
+    .data-table td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+    
+    .editable-cell input,
+    .editable-cell select {
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .edit-icon {
+        font-size: 12px;
+    }
+    
+    /* Approval Form - Compact */
+    #approvalForm {
+        padding: 12px;
+    }
+    
+    #approvalForm .form-group {
+        margin-bottom: 10px;
+    }
+    
+    #approvalForm .form-group label {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+    
+    #approvalForm textarea {
+        padding: 8px;
+        font-size: 13px;
+        min-height: 80px;
+    }
+    
+    /* Approval Actions - Stack */
     .approval-actions {
         flex-direction: column-reverse;
+        gap: 8px;
+        margin-top: 12px;
     }
     
     .approval-actions button {
         width: 100%;
+        padding: 10px 14px;
+        font-size: 13px;
     }
     
+    /* Timeline - Compact */
     .timeline {
-        padding-left: 30px;
+        padding-left: 24px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+    
+    .timeline::before {
+        left: 8px;
+        width: 1.5px;
+    }
+    
+    .timeline-item {
+        margin-bottom: 12px;
     }
     
     .timeline-marker {
-        left: -30px;
-        width: 24px;
-        height: 24px;
-        font-size: 0.75rem;
+        left: -24px;
+        width: 16px;
+        height: 16px;
+        font-size: 8px;
+        border-width: 1.5px;
+    }
+    
+    .timeline-content {
+        padding: 8px 10px;
+        border-left-width: 2px;
     }
     
     .timeline-header {
         flex-direction: column;
-        gap: 8px;
+        gap: 4px;
+        margin-bottom: 4px;
+    }
+    
+    .timeline-level {
+        font-size: 8px;
+    }
+    
+    .timeline-title {
+        font-size: 12px;
+        margin-top: 1px;
+    }
+    
+    .timeline-meta {
+        margin-top: 4px;
+        padding-top: 4px;
+        font-size: 10px;
+    }
+    
+    .timeline-meta div {
+        margin: 2px 0;
+    }
+    
+    .timeline-remarks {
+        margin-top: 4px;
+        padding: 5px 6px;
+        font-size: 10px;
+    }
+    
+    /* Access Denied Card - Compact */
+    .card [style*="padding: 60px 40px"] {
+        padding: 30px 20px !important;
+    }
+    
+    .card [style*="width: 80px; height: 80px"] {
+        width: 60px !important;
+        height: 60px !important;
+        margin-bottom: 16px !important;
+    }
+    
+    .card [style*="width: 80px; height: 80px"] i {
+        font-size: 28px !important;
+    }
+    
+    .card h2[style*="font-size: 24px"] {
+        font-size: 18px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .card p[style*="font-size: 16px"] {
+        font-size: 13px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    /* Modal - Compact */
+    .confirm-modal-content {
+        max-width: 90% !important;
+        margin: 10px;
+    }
+    
+    .confirm-modal-header {
+        padding: 12px 16px !important;
+    }
+    
+    .confirm-modal-header h3 {
+        font-size: 16px !important;
+    }
+    
+    .confirm-modal-body {
+        padding: 20px 16px !important;
+    }
+    
+    .confirm-modal-body #confirmIcon {
+        font-size: 2rem !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .confirm-modal-body #confirmMessage {
+        font-size: 14px !important;
+    }
+    
+    .confirm-modal-footer {
+        padding: 12px 16px !important;
+        gap: 8px !important;
+    }
+    
+    .confirm-modal-footer button {
+        min-width: 80px !important;
+        padding: 8px 16px !important;
+        font-size: 13px !important;
     }
 }
 

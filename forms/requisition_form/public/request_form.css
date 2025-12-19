@@ -302,25 +302,194 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .container {
+        padding: 10px !important;
+    }
+    
+    .form-container {
+        margin: 0;
+    }
+    
+    .card {
+        border-radius: 8px;
+    }
+    
+    .card-header {
+        padding: 15px 15px;
+    }
+    
+    .card-title {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+    }
+    
+    .card-header p {
+        font-size: 12px;
+    }
+    
+    .form-section {
+        padding: 20px 15px;
+    }
+    
+    .form-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    .section-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .section-header h3 {
+        font-size: 1.1rem;
+    }
+    
     .row {
         grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 15px;
     }
     
-    .form-actions {
-        flex-direction: column;
+    .form-group {
+        margin-bottom: 15px;
     }
     
-    .modal-content {
-        margin: 20px;
-        padding: 32px 24px;
+    .form-group label {
+        font-size: 13px;
+        margin-bottom: 6px;
     }
     
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px 12px;
+        font-size: 14px;
+        border-radius: 6px;
+    }
+    
+    .form-group textarea {
+        font-size: 13px;
+    }
+    
+    /* Table Styles */
     .table-responsive {
-        font-size: 0.875rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 15px;
+    }
+    
+    #itemsTable {
+        min-width: 600px;
     }
     
     #itemsTable th,
     #itemsTable td {
-        padding: 8px;
+        padding: 10px 8px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+    
+    #itemsTable th {
+        font-size: 13px;
+    }
+    
+    #itemsTable .form-control {
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 6px;
+        min-width: 80px;
+    }
+    
+    #itemsTable select.form-control {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 8px 14px;
+        font-size: 13px;
+        border-radius: 6px;
+    }
+    
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+    
+    .btn-lg {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    /* Form Actions */
+    .form-actions {
+        padding: 20px 15px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+    }
+    
+    /* Help Text */
+    .help-text {
+        font-size: 11px;
+        margin-top: 10px;
+    }
+    
+    /* Modal */
+    .modal-content {
+        margin: 15px;
+        padding: 25px 20px;
+        border-radius: 10px;
+    }
+    
+    .success-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+    
+    .modal-content h2 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    
+    .modal-content p {
+        font-size: 13px;
+    }
+    
+    .rf-number-display {
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 6px;
+    }
+    
+    .rf-number-display label {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+    
+    .rf-number {
+        font-size: 1.1rem;
+    }
+    
+    .modal-actions {
+        gap: 10px;
+        margin-top: 20px;
+        flex-direction: column;
+    }
+    
+    .modal-actions .btn {
+        width: 100%;
+    }
+    
+    .required::after {
+        font-size: 13px;
     }
 }

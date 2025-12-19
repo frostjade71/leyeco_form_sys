@@ -1,0 +1,30 @@
+<!-- 
+    LEYECO III Forms Management System
+    Page Loader Component
+    
+    USAGE INSTRUCTIONS:
+    ===================
+    
+    1. Add this to the <head> section of your HTML pages:
+       <link rel="stylesheet" href="/assets/css/loader.css">
+    
+    2. Include this file right after the opening <body> tag:
+       <?php include __DIR__ . '/../../assets/includes/page-loader.html'; ?>
+       
+       OR copy the HTML below directly into your page
+    
+    3. Add the JavaScript before the closing </body> tag:
+       <script src="/assets/js/page-loader.js"></script>
+    
+    4. To skip loader on specific links, add data-no-loader attribute:
+       <a href="page.php" data-no-loader>Link without loader</a>
+    
+    5. To skip loader on specific forms, add data-no-loader attribute:
+       <form action="submit.php" data-no-loader>...</form>
+-->
+
+<!-- Page Loader Overlay -->
+<div id="page-loader">
+  <div class="loader"></div>
+  <div class="loader-text">Loading...</div>
+</div>

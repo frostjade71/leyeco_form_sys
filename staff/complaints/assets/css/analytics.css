@@ -1,0 +1,180 @@
+/* Analytics Dashboard Styles */
+
+/* Red Card Headers */
+.card-header {
+    background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+    color: white;
+    padding: 20px 24px;
+    border-bottom: none;
+}
+
+.card-header .card-title {
+    color: white;
+    margin: 0;
+}
+
+.charts-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.chart-container {
+    padding: 24px;
+    min-height: 300px;
+    position: relative;
+}
+
+.chart-container canvas {
+    max-height: 400px;
+}
+
+/* Badge Styles */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+}
+
+.badge-info {
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+}
+
+.badge-warning {
+    background: rgba(251, 146, 60, 0.1);
+    color: #ea580c;
+}
+
+.badge-danger {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #dc2626, #ef4444);
+    transition: width 0.3s ease;
+}
+
+/* Stat Card Footer */
+.stat-card-footer {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .charts-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        max-width: 100%;
+    }
+    
+    .chart-container {
+        padding: 16px;
+        min-height: 200px;
+    }
+
+    .chart-container canvas {
+        max-height: 250px;
+    }
+
+    /* Badge Styles - Smaller on mobile */
+    .badge {
+        padding: 3px 8px;
+        font-size: 11px;
+        border-radius: 10px;
+    }
+
+    /* Stat Card Footer - Smaller on mobile */
+    .stat-card-footer {
+        font-size: 11px;
+    }
+
+    /* Progress Bar - Smaller on mobile */
+    .progress-bar {
+        height: 6px;
+        margin-bottom: 3px;
+    }
+
+    /* Table Wrapper - Horizontal scroll for table only */
+    .card .chart-container > table,
+    .card .chart-container .data-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        min-width: 600px;
+    }
+
+    /* Card padding reduction */
+    .card {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .card-header {
+        padding: 16px;
+    }
+
+    .card-header h3 {
+        font-size: 14px;
+    }
+
+    .card-header p {
+        font-size: 12px;
+    }
+
+    /* Table Wrapper - Horizontal scroll for table only */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 15px;
+    }
+
+    .card .chart-container > .data-table,
+    .data-table {
+        min-width: 600px;
+    }
+
+    .card-description {
+        display: none;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .sidebar,
+    .breadcrumbs,
+    .btn {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        padding: 20px !important;
+    }
+    
+    .chart-container {
+        page-break-inside: avoid;
+    }
+}

@@ -28,6 +28,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/style.css">
     
+    <!-- Page Loader Stylesheet -->
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/loader.css">
+    
     <!-- Page-specific CSS -->
     <?php if (isset($additional_css)): ?>
         <?php foreach ($additional_css as $css): ?>
@@ -45,8 +48,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <?php endif; ?>
         <?php endforeach; ?>
     <?php endif; ?>
+    
+    <!-- Global Page Loader Script -->
+    <script src="<?php echo BASE_URL; ?>/assets/js/page-loader.js"></script>
 </head>
 <body>
+    <!-- Page Loader Overlay -->
+    <div id="page-loader">
+        <div class="loader"></div>
+    </div>
+    
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay"></div>
     

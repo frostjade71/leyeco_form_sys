@@ -247,57 +247,59 @@ setInterval(updateDateTime, 1000);
         </div>
     </div>
 
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>RF Number</th>
-                <th>Requester</th>
-                <th>Department</th>
-                <th>Items</th>
-                <th>Status</th>
-                <th>Level</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (empty($requests)): ?>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
                 <tr>
-                    <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-secondary);">
-                        <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
-                        No requests found
-                    </td>
+                    <th>RF Number</th>
+                    <th>Requester</th>
+                    <th>Department</th>
+                    <th>Items</th>
+                    <th>Status</th>
+                    <th>Level</th>
+                    <th>Date</th>
+                    <th>Actions</th>
                 </tr>
-            <?php else: ?>
-                <?php foreach ($requests as $request): ?>
+            </thead>
+            <tbody>
+                <?php if (empty($requests)): ?>
                     <tr>
-                        <td>
-                            <strong class="rf-number"><?php echo htmlspecialchars($request['rf_control_number']); ?></strong>
-                        </td>
-                        <td><?php echo htmlspecialchars($request['requester_name']); ?></td>
-                        <td><span class="dept-badge"><?php echo htmlspecialchars($request['department']); ?></span></td>
-                        <td><?php echo $request['item_count']; ?></td>
-                        <td>
-                            <span class="status-badge <?php echo strtolower($request['status']); ?>">
-                                <?php echo strtoupper(htmlspecialchars($request['status'])); ?>
-                            </span>
-                        </td>
-                        <td>
-                            <div class="level-indicator">
-                                Level <?php echo $request['current_approval_level']; ?>
-                            </div>
-                        </td>
-                        <td><?php echo date('M d, Y', strtotime($request['created_at'])); ?></td>
-                        <td>
-                            <a href="view_request.php?id=<?php echo $request['id']; ?>" class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye"></i> View
-                            </a>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
+                            No requests found
                         </td>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                <?php else: ?>
+                    <?php foreach ($requests as $request): ?>
+                        <tr>
+                            <td>
+                                <strong class="rf-number"><?php echo htmlspecialchars($request['rf_control_number']); ?></strong>
+                            </td>
+                            <td><?php echo htmlspecialchars($request['requester_name']); ?></td>
+                            <td><span class="dept-badge"><?php echo htmlspecialchars($request['department']); ?></span></td>
+                            <td><?php echo $request['item_count']; ?></td>
+                            <td>
+                                <span class="status-badge <?php echo strtolower($request['status']); ?>">
+                                    <?php echo strtoupper(htmlspecialchars($request['status'])); ?>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="level-indicator">
+                                    Level <?php echo $request['current_approval_level']; ?>
+                                </div>
+                            </td>
+                            <td><?php echo date('M d, Y', strtotime($request['created_at'])); ?></td>
+                            <td>
+                                <a href="view_request.php?id=<?php echo $request['id']; ?>" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Request Detail Modal -->

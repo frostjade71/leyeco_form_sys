@@ -187,12 +187,26 @@ function renderComplaintDetails(complaint) {
     `;
 
   if (complaint.photo_path) {
+    // Construct full URL for the photo
+    let photoUrl;
+    if (complaint.photo_path.startsWith('http')) {
+      // Already a full URL
+      photoUrl = complaint.photo_path;
+    } else if (complaint.photo_path.startsWith('assets/uploads/')) {
+      // Complaint photos are stored in forms/complaints/public/assets/uploads/
+      photoUrl = `${BASE_URL}/forms/complaints/public/${complaint.photo_path}`;
+    } else if (complaint.photo_path.startsWith('uploads/')) {
+      // General uploads folder
+      photoUrl = `${BASE_URL}/${complaint.photo_path}`;
+    } else {
+      // Assume it's a relative path from root
+      photoUrl = `${BASE_URL}/${complaint.photo_path}`;
+    }
+    
     html += `
             <div class="detail-section">
                 <h3>Photo Evidence</h3>
-                <img src="${escapeHtml(
-                  complaint.photo_path
-                )}" alt="Complaint photo" style="max-width: 100%; border-radius: 8px;">
+                <img src="${escapeHtml(photoUrl)}" alt="Complaint photo" style="max-width: 100%; border-radius: 8px;" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23f3f4f6%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22%239ca3af%22 font-family=%22sans-serif%22 font-size=%2218%22 dy=%2210.5%22 font-weight=%22bold%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22%3EImage not found%3C/text%3E%3C/svg%3E';">
             </div>
         `;
   }

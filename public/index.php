@@ -9,6 +9,23 @@ $page_title = 'Home';
 $additional_css = ['/assets/css/homepage.css'];
 $additional_js = ['/assets/js/homepage.js'];
 
+// Track page visit for analytics
+try {
+    require_once __DIR__ . '/../config/config.php';
+    
+    $ip_address = $_SERVER['REMOTE_ADDR'] ?? null;
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+    
+    $stmt = $conn->prepare("INSERT INTO page_visits (page, ip_address, user_agent) VALUES (?, ?, ?)");
+    $page_name = 'public/index.php';
+    $stmt->bind_param('sss', $page_name, $ip_address, $user_agent);
+    $stmt->execute();
+    $stmt->close();
+} catch (Exception $e) {
+    // Silently fail - don't break the page if tracking fails
+    error_log("Page visit tracking error: " . $e->getMessage());
+}
+
 // Include header
 require_once __DIR__ . '/../includes/header.php';
 ?>
@@ -28,7 +45,7 @@ require_once __DIR__ . '/../includes/header.php';
             <p class="hero-description">Welcome to the LEYECO III online forms portal. Select the appropriate form below to submit your request. All submissions are processed securely and you will receive a confirmation upon successful submission.</p>
             
             <div class="hero-actions">
-                <a href="#forms-section" class="btn btn-primary btn-large">
+                <a href="#select-forms" class="btn btn-primary btn-large">
                     📋 Select Forms
                 </a>
                 <a href="#instructions-section" class="btn btn-secondary btn-large">
@@ -38,7 +55,7 @@ require_once __DIR__ . '/../includes/header.php';
         </section>
 
         <!-- Forms Selection Section -->
-        <section id="forms-section" class="forms-selection">
+        <section id="select-forms" class="forms-selection">
             <h3>Select a Form</h3>
             <p class="section-description">Choose the form that matches your service request</p>
             

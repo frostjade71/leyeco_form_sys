@@ -479,4 +479,234 @@ class ComplaintController {
             return [];
         }
     }
+
+    /**
+     * Get historical complaints (RESOLVED and CLOSED)
+     */
+    public function getHistoricalComplaints($filters = [], $page = 1, $perPage = 20) {
+        try {
+            $where = ["(status = 'RESOLVED' OR status = 'CLOSED')"];
+            $filterParams = [];
+            $filterTypes = '';
+
+            if (!empty($filters['status']) && in_array($filters['status'], ['RESOLVED', 'CLOSED'])) {
+                $where = ["status = ?"];
+                $filterParams[] = $filters['status'];
+                $filterTypes .= 's';
+            }
+
+            if (!empty($filters['municipality'])) {
+                $where[] = "municipality = ?";
+                $filterParams[] = $filters['municipality'];
+                $filterTypes .= 's';
+            }
+
+            if (!empty($filters['type'])) {
+                $where[] = "type = ?";
+                $filterParams[] = $filters['type'];
+                $filterTypes .= 's';
+            }
+
+            if (!empty($filters['date_from'])) {
+                $where[] = "DATE(updated_at) >= ?";
+                $filterParams[] = $filters['date_from'];
+                $filterTypes .= 's';
+            }
+
+            if (!empty($filters['date_to'])) {
+                $where[] = "DATE(updated_at) <= ?";
+                $filterParams[] = $filters['date_to'];
+                $filterTypes .= 's';
+            }
+
+            if (!empty($filters['search'])) {
+                $where[] = "(reference_code LIKE ? OR description LIKE ?)";
+                $searchTerm = "%{$filters['search']}%";
+                $filterParams[] = $searchTerm;
+                $filterParams[] = $searchTerm;
+                $filterTypes .= 'ss';
+            }
+
+            $whereClause = "WHERE " . implode(" AND ", $where);
+
+            // Get total count
+            $countSql = "SELECT COUNT(*) as total FROM complaints $whereClause";
+            $countStmt = $this->db->prepare($countSql);
+            
+            if (!empty($filterParams)) {
+                $bindParams = [];
+                $bindParams[] = & $filterTypes;
+                foreach ($filterParams as $key => $value) {
+                    $bindParams[] = & $filterParams[$key];
+                }
+                call_user_func_array([$countStmt, 'bind_param'], $bindParams);
+            }
+            
+            $countStmt->execute();
+            $total = $countStmt->get_result()->fetch_assoc()['total'];
+            $countStmt->close();
+
+            // Get paginated results
+            $offset = ($page - 1) * $perPage;
+            $sql = "
+                SELECT c.*, u.full_name as assigned_to_name
+                FROM complaints c
+                LEFT JOIN users u ON c.assigned_to = u.id
+                $whereClause
+                ORDER BY c.updated_at DESC
+                LIMIT ? OFFSET ?
+            ";
+            
+            $stmt = $this->db->prepare($sql);
+            
+            // Combine filter parameters with pagination parameters
+            $allParams = $filterParams;
+            $allParams[] = $perPage;
+            $allParams[] = $offset;
+            $allTypes = $filterTypes . 'ii';
+            
+            // Bind all parameters
+            $bindParams = [];
+            $bindParams[] = & $allTypes;
+            foreach ($allParams as $key => $value) {
+                $bindParams[] = & $allParams[$key];
+            }
+            call_user_func_array([$stmt, 'bind_param'], $bindParams);
+            
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $complaints = $result->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+
+            return [
+                'complaints' => $complaints,
+                'total' => $total,
+                'page' => $page,
+                'per_page' => $perPage,
+                'total_pages' => ceil($total / $perPage)
+            ];
+        } catch (Exception $e) {
+            error_log("Get historical complaints error: " . $e->getMessage());
+            return ['complaints' => [], 'total' => 0, 'page' => 1, 'per_page' => $perPage, 'total_pages' => 0];
+        }
+    }
+
+    /**
+     * Get staff performance metrics
+     */
+    public function getStaffPerformance($dateFrom = null, $dateTo = null) {
+        try {
+            $dateCondition = "";
+            $params = [];
+            $types = "";
+
+            if ($dateFrom && $dateTo) {
+                $dateCondition = "AND cc.created_at BETWEEN ? AND ?";
+                $params[] = $dateFrom;
+                $params[] = $dateTo;
+                $types = "ss";
+            }
+
+            // Get comment counts per user
+            $sql = "
+                SELECT 
+                    u.id,
+                    u.full_name,
+                    COUNT(DISTINCT cc.id) as comment_count,
+                    COUNT(DISTINCT CASE WHEN cc.message LIKE 'Status changed to:%' THEN cc.id END) as status_updates,
+                    COUNT(DISTINCT CASE WHEN cc.message LIKE 'Dispatch details updated%' THEN cc.id END) as dispatch_updates
+                FROM users u
+                LEFT JOIN complaint_comments cc ON u.id = cc.user_id
+                WHERE u.role IN ('admin', 'staff')
+                $dateCondition
+                GROUP BY u.id, u.full_name
+                HAVING comment_count > 0
+                ORDER BY (comment_count + status_updates + dispatch_updates) DESC
+                LIMIT 10
+            ";
+
+            $stmt = $this->db->prepare($sql);
+            
+            if (!empty($params)) {
+                $bindParams = [];
+                $bindParams[] = & $types;
+                foreach ($params as $key => $value) {
+                    $bindParams[] = & $params[$key];
+                }
+                call_user_func_array([$stmt, 'bind_param'], $bindParams);
+            }
+            
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $performance = $result->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+
+            // Calculate total actions
+            foreach ($performance as &$staff) {
+                $staff['total_actions'] = $staff['comment_count'] + $staff['status_updates'] + $staff['dispatch_updates'];
+            }
+
+            return $performance;
+        } catch (Exception $e) {
+            error_log("Get staff performance error: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Get analytics data
+     */
+    public function getAnalyticsData() {
+        try {
+            $analytics = [];
+
+            // Top municipalities
+            $result = $this->db->query("
+                SELECT municipality, COUNT(*) as count 
+                FROM complaints 
+                GROUP BY municipality 
+                ORDER BY count DESC 
+                LIMIT 10
+            ");
+            $analytics['top_municipalities'] = $result->fetch_all(MYSQLI_ASSOC);
+
+            // Top complaint types
+            $result = $this->db->query("
+                SELECT type, COUNT(*) as count 
+                FROM complaints 
+                GROUP BY type 
+                ORDER BY count DESC 
+                LIMIT 10
+            ");
+            $analytics['top_types'] = $result->fetch_all(MYSQLI_ASSOC);
+
+            // Monthly trends (last 6 months)
+            $result = $this->db->query("
+                SELECT 
+                    DATE_FORMAT(created_at, '%Y-%m') as month,
+                    COUNT(*) as total,
+                    SUM(CASE WHEN status = 'RESOLVED' THEN 1 ELSE 0 END) as resolved,
+                    SUM(CASE WHEN status = 'CLOSED' THEN 1 ELSE 0 END) as closed
+                FROM complaints
+                WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+                GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+                ORDER BY month DESC
+            ");
+            $analytics['monthly_trends'] = $result->fetch_all(MYSQLI_ASSOC);
+
+            // Average resolution time (in days)
+            $result = $this->db->query("
+                SELECT AVG(DATEDIFF(updated_at, created_at)) as avg_days
+                FROM complaints
+                WHERE status IN ('RESOLVED', 'CLOSED')
+            ");
+            $row = $result->fetch_assoc();
+            $analytics['avg_resolution_days'] = round($row['avg_days'] ?? 0, 1);
+
+            return $analytics;
+        } catch (Exception $e) {
+            error_log("Get analytics data error: " . $e->getMessage());
+            return [];
+        }
+    }
 }

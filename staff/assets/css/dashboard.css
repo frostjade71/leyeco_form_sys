@@ -188,6 +188,7 @@
 .welcome-section p {
     font-size: 16px;
     opacity: 0.9;
+    display: none;
 }
 
 /* Statistics Section - Premium Styling */
@@ -214,12 +215,13 @@
     background: var(--bg-primary);
     padding: 20px;
     border-radius: 12px;
-    text-align: center;
     border: 2px solid var(--border-color);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    animation: fadeInUp 0.6s ease-out backwards;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .quick-stat-card::before {
@@ -244,6 +246,24 @@
     border-color: var(--primary-color);
 }
 
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 22px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-content {
+    flex: 1;
+    text-align: left;
+}
+
 /* Staggered animation delays */
 .quick-stat-card:nth-child(1) {
     animation-delay: 0.1s;
@@ -259,6 +279,10 @@
 
 .quick-stat-card:nth-child(4) {
     animation-delay: 0.4s;
+}
+
+.quick-stat-card:nth-child(5) {
+    animation-delay: 0.5s;
 }
 
 .quick-stat-card h3 {
@@ -278,34 +302,90 @@
 }
 
 @media (max-width: 768px) {
+    /* Forms Grid - 2 per row on mobile */
     .dashboard-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
 
     .form-card-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
+    /* Welcome Section - Compact horizontal layout on mobile */
     .welcome-section {
-        padding: 24px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
+        padding: 16px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .welcome-content {
+        flex: 0 1 auto;
     }
 
     .welcome-section h2 {
-        font-size: 24px;
+        font-size: 14px;
+        margin-bottom: 0;
+        line-height: 1.3;
+    }
+    
+    /* Hide description on mobile */
+    .welcome-section p {
+        display: none;
     }
     
     .welcome-datetime {
-        width: 100%;
+        flex: 0 0 auto;
     }
     
     .datetime-display {
-        text-align: left;
+        text-align: right;
+        padding: 8px 12px;
+    }
+    
+    .date-text {
+        font-size: 9px;
+        margin-bottom: 2px;
     }
     
     .time-text {
-        font-size: 24px;
+        font-size: 14px;
+    }
+    
+    /* Quick Stats - 2 per row on mobile */
+    .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+    
+    .quick-stat-card {
+        padding: 12px;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        border-radius: 10px;
+    }
+    
+    .stat-content {
+        text-align: center;
+    }
+    
+    .quick-stat-card h3 {
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+    
+    .quick-stat-card .value {
+        font-size: 20px;
     }
 }

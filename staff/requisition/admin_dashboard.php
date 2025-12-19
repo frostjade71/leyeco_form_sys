@@ -148,58 +148,71 @@ include __DIR__ . '/../includes/header.php';
             <h3 class="card-title">Requests by Department</h3>
         </div>
         <div class="chart-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Department</th>
-                        <th>Requests</th>
-                        <th>Percentage</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($deptStats as $dept): ?>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
                         <tr>
-                            <td><?php echo htmlspecialchars($dept['department']); ?></td>
-                            <td><strong><?php echo $dept['count']; ?></strong></td>
-                            <td>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: <?php echo ($dept['count'] / $stats['total']) * 100; ?>%"></div>
-                                </div>
-                                <?php echo round(($dept['count'] / $stats['total']) * 100, 1); ?>%
-                            </td>
+                            <th>Department</th>
+                            <th>Requests</th>
+                            <th>Percentage</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($deptStats as $dept): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($dept['department']); ?></td>
+                                <td><strong><?php echo $dept['count']; ?></strong></td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: <?php echo ($dept['count'] / $stats['total']) * 100; ?>%"></div>
+                                    </div>
+                                    <?php echo round(($dept['count'] / $stats['total']) * 100, 1); ?>%
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Approval Level Performance -->
+    <!-- Approval Performance -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Approval Level Performance</h3>
+            <h3 class="card-title">Approval Performance</h3>
         </div>
         <div class="chart-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Level</th>
-                        <th>Approved</th>
-                        <th>Rejected</th>
-                        <th>Pending</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($levelStats as $level): ?>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
                         <tr>
-                            <td><strong>Level <?php echo $level['approval_level']; ?></strong></td>
-                            <td><span class="badge badge-success"><?php echo $level['approved']; ?></span></td>
-                            <td><span class="badge badge-danger"><?php echo $level['rejected']; ?></span></td>
-                            <td><span class="badge badge-warning"><?php echo $level['pending']; ?></span></td>
+                            <th>Roles</th>
+                            <th>Approved</th>
+                            <th>Rejected</th>
+                            <th>Pending</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        $roleNames = [
+                            1 => 'Section Head/Div. Head/Department Head',
+                            2 => 'Warehouse Section Head',
+                            3 => 'Budget Officer',
+                            4 => 'Internal Auditor',
+                            5 => 'General Manager'
+                        ];
+                        foreach ($levelStats as $level): 
+                        ?>
+                            <tr>
+                                <td><strong><?php echo $roleNames[$level['approval_level']] ?? 'Level ' . $level['approval_level']; ?></strong></td>
+                                <td><span class="badge badge-success"><?php echo $level['approved']; ?></span></td>
+                                <td><span class="badge badge-danger"><?php echo $level['rejected']; ?></span></td>
+                                <td><span class="badge badge-warning"><?php echo $level['pending']; ?></span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -210,33 +223,35 @@ include __DIR__ . '/../includes/header.php';
         <h3 class="card-title">Monthly Trends (Last 6 Months)</h3>
     </div>
     <div class="chart-container">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Month</th>
-                    <th>Total Requests</th>
-                    <th>Approved</th>
-                    <th>Rejected</th>
-                    <th>Approval Rate</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($monthlyTrends as $trend): ?>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
                     <tr>
-                        <td><?php echo date('F Y', strtotime($trend['month'] . '-01')); ?></td>
-                        <td><strong><?php echo $trend['count']; ?></strong></td>
-                        <td><span class="badge badge-success"><?php echo $trend['approved']; ?></span></td>
-                        <td><span class="badge badge-danger"><?php echo $trend['rejected']; ?></span></td>
-                        <td>
-                            <?php 
-                            $rate = $trend['count'] > 0 ? round(($trend['approved'] / $trend['count']) * 100, 1) : 0;
-                            echo $rate . '%';
-                            ?>
-                        </td>
+                        <th>Month</th>
+                        <th>Total Requests</th>
+                        <th>Approved</th>
+                        <th>Rejected</th>
+                        <th>Approval Rate</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($monthlyTrends as $trend): ?>
+                        <tr>
+                            <td><?php echo date('F Y', strtotime($trend['month'] . '-01')); ?></td>
+                            <td><strong><?php echo $trend['count']; ?></strong></td>
+                            <td><span class="badge badge-success"><?php echo $trend['approved']; ?></span></td>
+                            <td><span class="badge badge-danger"><?php echo $trend['rejected']; ?></span></td>
+                            <td>
+                                <?php 
+                                $rate = $trend['count'] > 0 ? round(($trend['approved'] / $trend['count']) * 100, 1) : 0;
+                                echo $rate . '%';
+                                ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -246,38 +261,40 @@ include __DIR__ . '/../includes/header.php';
         <h3 class="card-title">Recent Approval Activity</h3>
     </div>
     <div class="chart-container">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>RF Number</th>
-                    <th>Requester</th>
-                    <th>Level</th>
-                    <th>Approver</th>
-                    <th>Decision</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($recentActivity as $activity): ?>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
                     <tr>
-                        <td>
-                            <a href="view_request.php?id=<?php echo $activity['requisition_id']; ?>" class="rf-number">
-                                <?php echo htmlspecialchars($activity['rf_control_number']); ?>
-                            </a>
-                        </td>
-                        <td><?php echo htmlspecialchars($activity['requester_name']); ?></td>
-                        <td>Level <?php echo $activity['approval_level']; ?></td>
-                        <td><?php echo htmlspecialchars($activity['approver_name']); ?></td>
-                        <td>
-                            <span class="status-badge <?php echo $activity['status']; ?>">
-                                <?php echo strtoupper($activity['status']); ?>
-                            </span>
-                        </td>
-                        <td><?php echo date('M d, Y h:i A', strtotime($activity['approved_at'])); ?></td>
+                        <th>RF Number</th>
+                        <th>Requester</th>
+                        <th>Level</th>
+                        <th>Approver</th>
+                        <th>Decision</th>
+                        <th>Date</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($recentActivity as $activity): ?>
+                        <tr>
+                            <td>
+                                <a href="view_request.php?id=<?php echo $activity['requisition_id']; ?>" class="rf-number">
+                                    <?php echo htmlspecialchars($activity['rf_control_number']); ?>
+                                </a>
+                            </td>
+                            <td><?php echo htmlspecialchars($activity['requester_name']); ?></td>
+                            <td>Level <?php echo $activity['approval_level']; ?></td>
+                            <td><?php echo htmlspecialchars($activity['approver_name']); ?></td>
+                            <td>
+                                <span class="status-badge <?php echo $activity['status']; ?>">
+                                    <?php echo strtoupper($activity['status']); ?>
+                                </span>
+                            </td>
+                            <td><?php echo date('M d, Y h:i A', strtotime($activity['approved_at'])); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

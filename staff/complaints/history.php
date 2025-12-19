@@ -1,17 +1,18 @@
 <?php
 /**
  * LEYECO III Forms Management System
- * Complaints Dashboard
+ * Complaints History - Resolved and Closed Complaints
  */
 
 require_once __DIR__ . '/../app/auth_middleware.php';
 require_once __DIR__ . '/../../forms/complaints/app/ComplaintController.php';
 
 // Page configuration
-$pageTitle = 'Complaints Dashboard';
+$pageTitle = 'Complaints History';
 $breadcrumbs = [
     ['label' => 'Dashboard', 'url' => STAFF_URL . '/dashboard.php'],
-    ['label' => 'Complaints']
+    ['label' => 'Complaints', 'url' => STAFF_URL . '/complaints/dashboard.php'],
+    ['label' => 'History']
 ];
 $additionalCSS = [
     STAFF_URL . '/assets/css/dashboard.css?v=' . time(),
@@ -24,21 +25,23 @@ $additionalJS = [
 // Initialize controller
 $controller = new ComplaintController();
 
-// Get statistics
-$stats = $controller->getStatistics();
-
 // Get filters from query string
 $filters = [
     'status' => $_GET['status'] ?? '',
     'type' => $_GET['type'] ?? '',
     'municipality' => $_GET['municipality'] ?? '',
+    'date_from' => $_GET['date_from'] ?? '',
+    'date_to' => $_GET['date_to'] ?? '',
     'search' => $_GET['search'] ?? ''
 ];
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-// Get complaints
-$result = $controller->getAll($filters, $page, 20);
+// Get historical complaints
+$result = $controller->getHistoricalComplaints($filters, $page, 20);
+
+// Get statistics for historical complaints only
+$stats = $controller->getStatistics();
 
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -49,37 +52,16 @@ const BASE_URL = '<?php echo BASE_URL; ?>';
 const STAFF_URL = '<?php echo STAFF_URL; ?>';
 </script>
 
-
 <!-- Statistics Cards -->
-<div class="stats-grid">
+<div class="stats-grid stats-grid-3">
     <div class="stat-card">
         <div class="stat-card-header">
-            <span class="stat-card-title">Total Complaints</span>
+            <span class="stat-card-title">Total Historical</span>
             <div class="stat-card-icon total">
-                <i class="fas fa-list"></i>
+                <i class="fas fa-history"></i>
             </div>
         </div>
-        <div class="stat-card-value"><?php echo number_format($stats['total'] ?? 0); ?></div>
-    </div>
-
-    <div class="stat-card new">
-        <div class="stat-card-header">
-            <span class="stat-card-title">New</span>
-            <div class="stat-card-icon new">
-                <i class="fas fa-bell"></i>
-            </div>
-        </div>
-        <div class="stat-card-value"><?php echo number_format($stats['by_status']['NEW'] ?? 0); ?></div>
-    </div>
-
-    <div class="stat-card investigating">
-        <div class="stat-card-header">
-            <span class="stat-card-title">Investigating</span>
-            <div class="stat-card-icon investigating">
-                <i class="fas fa-search"></i>
-            </div>
-        </div>
-        <div class="stat-card-value"><?php echo number_format($stats['by_status']['INVESTIGATING'] ?? 0); ?></div>
+        <div class="stat-card-value"><?php echo number_format($result['total'] ?? 0); ?></div>
     </div>
 
     <div class="stat-card resolved">
@@ -91,23 +73,38 @@ const STAFF_URL = '<?php echo STAFF_URL; ?>';
         </div>
         <div class="stat-card-value"><?php echo number_format($stats['by_status']['RESOLVED'] ?? 0); ?></div>
     </div>
+
+    <div class="stat-card closed">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Closed</span>
+            <div class="stat-card-icon closed">
+                <i class="fas fa-times-circle"></i>
+            </div>
+        </div>
+        <div class="stat-card-value"><?php echo number_format($stats['by_status']['CLOSED'] ?? 0); ?></div>
+    </div>
 </div>
 
 <!-- Data Table -->
 <div class="data-table-container">
     <div class="table-header">
-        <h2 class="table-title">All Complaints</h2>
+        <h2 class="table-title">Complaint History</h2>
         <div class="table-filters">
             <div class="filter-group">
                 <label for="statusFilter">Status:</label>
                 <select id="statusFilter" class="filter-select" onchange="applyFilters()">
                     <option value="">All</option>
-                    <option value="NEW" <?php echo $filters['status'] === 'NEW' ? 'selected' : ''; ?>>New</option>
-                    <option value="INVESTIGATING" <?php echo $filters['status'] === 'INVESTIGATING' ? 'selected' : ''; ?>>Investigating</option>
-                    <option value="IN_PROGRESS" <?php echo $filters['status'] === 'IN_PROGRESS' ? 'selected' : ''; ?>>In Progress</option>
                     <option value="RESOLVED" <?php echo $filters['status'] === 'RESOLVED' ? 'selected' : ''; ?>>Resolved</option>
                     <option value="CLOSED" <?php echo $filters['status'] === 'CLOSED' ? 'selected' : ''; ?>>Closed</option>
                 </select>
+            </div>
+            <div class="filter-group">
+                <label for="dateFrom">From:</label>
+                <input type="date" id="dateFrom" class="filter-select" value="<?php echo htmlspecialchars($filters['date_from']); ?>" onchange="applyFilters()">
+            </div>
+            <div class="filter-group">
+                <label for="dateTo">To:</label>
+                <input type="date" id="dateTo" class="filter-select" value="<?php echo htmlspecialchars($filters['date_to']); ?>" onchange="applyFilters()">
             </div>
             <div class="search-box">
                 <i class="fas fa-search"></i>
@@ -130,7 +127,7 @@ const STAFF_URL = '<?php echo STAFF_URL; ?>';
                     <th>Type</th>
                     <th>Municipality</th>
                     <th>Status</th>
-                    <th>Date Submitted</th>
+                    <th>Resolution Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -139,7 +136,7 @@ const STAFF_URL = '<?php echo STAFF_URL; ?>';
                     <tr>
                         <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-secondary);">
                             <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
-                            No complaints found
+                            No historical complaints found
                         </td>
                     </tr>
                 <?php else: ?>
@@ -155,7 +152,7 @@ const STAFF_URL = '<?php echo STAFF_URL; ?>';
                                     <?php echo htmlspecialchars($complaint['status']); ?>
                                 </span>
                             </td>
-                            <td><?php echo date('M d, Y', strtotime($complaint['created_at'])); ?></td>
+                            <td><?php echo date('M d, Y', strtotime($complaint['updated_at'])); ?></td>
                             <td>
                                 <button 
                                     class="btn btn-primary btn-sm" 
@@ -209,5 +206,28 @@ const STAFF_URL = '<?php echo STAFF_URL; ?>';
         </div>
     </div>
 </div>
+
+<script>
+function applyFilters() {
+    const status = document.getElementById('statusFilter').value;
+    const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+    const search = document.getElementById('searchInput').value;
+    
+    const params = new URLSearchParams();
+    if (status) params.set('status', status);
+    if (dateFrom) params.set('date_from', dateFrom);
+    if (dateTo) params.set('date_to', dateTo);
+    if (search) params.set('search', search);
+    
+    window.location.href = 'history.php?' + params.toString();
+}
+
+function changePage(page) {
+    const params = new URLSearchParams(window.location.search);
+    params.set('page', page);
+    window.location.href = 'history.php?' + params.toString();
+}
+</script>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

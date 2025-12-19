@@ -288,21 +288,122 @@ if (isset($_GET['ref'])) {
         }
         @media (max-width: 767px) {
             .complaint-container {
-                padding: 25px 20px;
-                margin: 20px 15px;
+                padding: 15px 12px;
+                margin: 15px 10px;
+                border-width: 2px;
             }
-            .detail-row {
-                grid-template-columns: 1fr;
-                gap: 5px;
+            .complaint-header {
+                padding-bottom: 12px;
+                margin-bottom: 20px;
+                border-width: 2px;
+            }
+            .complaint-header h1 {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+            .reference-code {
+                font-size: 13px;
+                padding: 6px 10px;
+                border-radius: 6px;
             }
             .status-badge {
                 margin-left: 0;
-                margin-top: 10px;
+                margin-top: 8px;
                 display: block;
                 text-align: center;
+                padding: 5px 12px;
+                font-size: 11px;
+                border-radius: 15px;
+                border-width: 1.5px;
+            }
+            .detail-section {
+                margin-bottom: 20px;
+            }
+            .detail-section h3 {
+                font-size: 15px;
+                margin-bottom: 10px;
+                padding-bottom: 8px;
+                border-width: 1.5px;
+            }
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: 3px;
+                margin-bottom: 10px;
+                padding: 8px 10px;
+                border-radius: 6px;
+            }
+            .location-row {
+                grid-template-columns: auto 1fr auto 1fr !important;
+                gap: 6px;
+                align-items: center;
+            }
+            .location-row .detail-label {
+                font-size: 10px;
+            }
+            .location-row .detail-value {
+                font-size: 11px;
+            }
+            .location-row .detail-label:nth-child(3)::before {
+                content: " | ";
+                margin: 0 4px;
+                color: var(--text-gray);
+                font-weight: normal;
+            }
+            .detail-label {
+                font-size: 11px;
+                font-weight: 600;
+            }
+            .detail-value {
+                font-size: 12px;
+            }
+            .back-link {
+                font-size: 13px;
+                margin-bottom: 15px;
+            }
+            .error-box {
+                padding: 15px 18px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                border-width: 3px;
+            }
+            .error-box h2 {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+            .error-box p {
+                font-size: 13px;
+            }
+            .comment-item {
+                padding: 10px 12px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                border-left-width: 3px;
+            }
+            .comment-meta {
+                font-size: 11px;
+                margin-bottom: 6px;
+            }
+            .comment-message {
+                font-size: 12px;
+            }
+            .btn-secondary {
+                padding: 5px 12px;
+                font-size: 10px;
+                border-radius: 6px;
+                border-width: 1.5px;
+            }
+            .btn-primary {
+                padding: 8px 16px;
+                font-size: 12px;
+                border-radius: 8px;
             }
             #map {
-                height: 200px;
+                height: 180px;
+                border-radius: 8px;
+                border-width: 1.5px;
+            }
+            .complaint-photo {
+                border-radius: 8px;
             }
         }
     </style>
@@ -351,7 +452,7 @@ if (isset($_GET['ref'])) {
 
                 <div class="detail-section">
                     <h3>📍 Location Information</h3>
-                    <div class="detail-row" style="grid-template-columns: 180px 1fr 180px 1fr;">
+                    <div class="detail-row location-row" style="grid-template-columns: 180px 1fr 180px 1fr;">
                         <div class="detail-label">Municipality:</div>
                         <div class="detail-value"><?php echo e($complaint['municipality']); ?></div>
                         <div class="detail-label">Barangay:</div>
@@ -441,7 +542,24 @@ if (isset($_GET['ref'])) {
                 <?php if ($complaint['photo_path']): ?>
                 <div class="detail-section">
                     <h3>📷 Attached Photo</h3>
-                    <img src="<?php echo e($complaint['photo_path']); ?>" alt="Complaint Photo" class="complaint-photo">
+                    <?php
+                    // Construct full URL for the photo
+                    $photoUrl = $complaint['photo_path'];
+                    if (!str_starts_with($photoUrl, 'http')) {
+                        // Complaint photos are stored with path 'assets/uploads/filename.jpg'
+                        // They are actually in forms/complaints/public/assets/uploads/
+                        if (str_starts_with($photoUrl, 'assets/uploads/')) {
+                            $photoUrl = BASE_URL . '/forms/complaints/public/' . $photoUrl;
+                        } else {
+                            // If it's a relative path, prepend BASE_URL
+                            $photoUrl = BASE_URL . '/' . ltrim($photoUrl, '/');
+                        }
+                    }
+                    ?>
+                    <img src="<?php echo e($photoUrl); ?>" alt="Complaint Photo" class="complaint-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display: none; padding: 40px; text-align: center; background: #f3f4f6; border-radius: 8px; color: #9ca3af;">
+                        <p>📷 Image not available</p>
+                    </div>
                 </div>
                 <?php endif; ?>
 

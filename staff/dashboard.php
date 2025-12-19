@@ -38,10 +38,20 @@ try {
     // Total submissions across all forms
     $totalSubmissions = $complaintsStats['total'] + ($reqStats['total'] ?? 0); // Added requisitions
     
+    // Online staffs count
+    $onlineStmt = $conn->query("
+        SELECT COUNT(DISTINCT user_id) as online_count
+        FROM sessions
+        WHERE expires_at > NOW()
+    ");
+    $onlineStats = $onlineStmt->fetch_assoc();
+    $onlineStaffs = $onlineStats['online_count'] ?? 0;
+    
 } catch (Exception $e) {
     error_log("Dashboard stats error: " . $e->getMessage());
     $complaintsStats = ['total' => 0, 'new' => 0, 'investigating' => 0, 'resolved' => 0];
     $totalSubmissions = 0;
+    $onlineStaffs = 0;
 }
 
 include __DIR__ . '/includes/header.php';
@@ -50,7 +60,7 @@ include __DIR__ . '/includes/header.php';
 <!-- Welcome Section -->
 <div class="welcome-section">
     <div class="welcome-content">
-        <h2>Welcome back, <?php echo htmlspecialchars($currentUser['full_name']); ?>! 👋</h2>
+        <h2>Welcome back 👋<br><?php echo htmlspecialchars($currentUser['full_name']); ?></h2>
         <p>Here's an overview of all form submissions and their current status.</p>
     </div>
     <div class="welcome-datetime">
@@ -85,20 +95,49 @@ setInterval(updateDateTime, 1000);
 <!-- Quick Stats -->
 <div class="quick-stats">
     <div class="quick-stat-card">
-        <h3>Total Submissions</h3>
-        <div class="value"><?php echo number_format($totalSubmissions ?? 0); ?></div>
+        <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-content">
+            <h3>Online Staffs</h3>
+            <div class="value"><?php echo number_format($onlineStaffs ?? 0); ?></div>
+        </div>
     </div>
     <div class="quick-stat-card">
-        <h3>Pending Review</h3>
-        <div class="value"><?php echo number_format($complaintsStats['new'] ?? 0); ?></div>
+        <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+            <i class="fas fa-file-alt"></i>
+        </div>
+        <div class="stat-content">
+            <h3>Total Submissions</h3>
+            <div class="value"><?php echo number_format($totalSubmissions ?? 0); ?></div>
+        </div>
     </div>
     <div class="quick-stat-card">
-        <h3>In Progress</h3>
-        <div class="value"><?php echo number_format($complaintsStats['investigating'] ?? 0); ?></div>
+        <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+            <h3>Pending Review</h3>
+            <div class="value"><?php echo number_format($complaintsStats['new'] ?? 0); ?></div>
+        </div>
     </div>
     <div class="quick-stat-card">
-        <h3>Resolved</h3>
-        <div class="value"><?php echo number_format($complaintsStats['resolved'] ?? 0); ?></div>
+        <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+            <i class="fas fa-spinner"></i>
+        </div>
+        <div class="stat-content">
+            <h3>In Progress</h3>
+            <div class="value"><?php echo number_format($complaintsStats['investigating'] ?? 0); ?></div>
+        </div>
+    </div>
+    <div class="quick-stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+            <h3>Resolved</h3>
+            <div class="value"><?php echo number_format($complaintsStats['resolved'] ?? 0); ?></div>
+        </div>
     </div>
 </div>
 

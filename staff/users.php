@@ -37,9 +37,30 @@ try {
         ORDER BY u.created_at DESC
     ");
     $users = $stmt->fetch_all(MYSQLI_ASSOC);
+    
+    // Calculate statistics
+    $totalStaff = count($users);
+    $onlineStaff = 0;
+    $onlineApprovers = 0;
+    
+    foreach ($users as $user) {
+        if ($user['is_online']) {
+            $onlineStaff++;
+            
+            // Check if user has approver role
+            $roles = explode(',', $user['role']);
+            $roles = array_map('trim', $roles);
+            if (in_array('approver', $roles)) {
+                $onlineApprovers++;
+            }
+        }
+    }
 } catch (Exception $e) {
     error_log("Get users error: " . $e->getMessage());
     $users = [];
+    $totalStaff = 0;
+    $onlineStaff = 0;
+    $onlineApprovers = 0;
 }
 
 include __DIR__ . '/includes/header.php';
@@ -49,6 +70,22 @@ include __DIR__ . '/includes/header.php';
 <div class="page-header">
     <h2 class="page-title">User Management</h2>
     <p class="page-description">Manage staff and admin accounts</p>
+</div>
+
+<!-- Statistics Cards -->
+<div class="quick-stats" style="margin-bottom: 30px;">
+    <div class="quick-stat-card">
+        <h3>All Staff</h3>
+        <div class="value"><?php echo number_format($totalStaff); ?></div>
+    </div>
+    <div class="quick-stat-card">
+        <h3>Online Staffs</h3>
+        <div class="value"><?php echo number_format($onlineStaff); ?></div>
+    </div>
+    <div class="quick-stat-card">
+        <h3>Online Approvers</h3>
+        <div class="value"><?php echo number_format($onlineApprovers); ?></div>
+    </div>
 </div>
 
 <!-- Users Container -->

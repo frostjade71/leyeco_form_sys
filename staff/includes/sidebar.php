@@ -18,6 +18,9 @@ $isRequisitionSection = strpos($currentPath, '/requisition/') !== false;
                 <p>Staff Portal</p>
             </div>
         </a>
+        <button class="sidebar-close" onclick="toggleSidebar()" aria-label="Close sidebar">
+            <i class="fas fa-times"></i>
+        </button>
     </div>
     
     <nav class="sidebar-nav">

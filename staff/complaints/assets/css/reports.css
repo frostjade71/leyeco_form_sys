@@ -1,4 +1,4 @@
-/* Requisition Reports Styles */
+/* Reports Page Styles */
 
 .report-form {
     max-width: 100%;
@@ -74,16 +74,62 @@
     min-width: 700px;
 }
 
+/* Card Spacing */
+.card {
+    margin-bottom: 24px;
+}
+
+/* Print Styles */
 @media print {
     .sidebar,
     .header,
-    .card-header button,
-    .report-form {
+    .breadcrumbs,
+    .btn,
+    .report-form,
+    .card:first-child,
+    .page-header,
+    button {
         display: none !important;
     }
     
     .main-content {
-        margin: 0 !important;
+        margin-left: 0 !important;
+        padding: 20px !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        page-break-inside: avoid;
+    }
+
+    .card-header {
+        background: none !important;
+        color: #000 !important;
+        border-bottom: 2px solid #000 !important;
+        padding: 10px 0 !important;
+    }
+
+    .card-title {
+        color: #000 !important;
+    }
+    
+    .data-table {
+        font-size: 12px;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 8px !important;
+    }
+    
+    .status-badge {
+        border: 1px solid #000 !important;
+        padding: 2px 8px !important;
+    }
+    
+    @page {
+        margin: 1cm;
     }
 }
 
@@ -125,5 +171,14 @@
 
     .report-header p {
         font-size: 11px;
+    }
+
+    .data-table th {
+        font-size: 9px;
+    }
+
+    .status-badge {
+        padding: 3px 8px;
+        font-size: 10px;
     }
 }

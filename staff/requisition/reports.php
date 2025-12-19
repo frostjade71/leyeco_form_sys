@@ -140,7 +140,7 @@ include __DIR__ . '/../includes/header.php';
                 }
                 ?>
             </h3>
-            <button class="btn btn-outline" onclick="window.print()">
+            <button class="btn btn-info" onclick="window.print()">
                 <i class="fas fa-print"></i> Print Report
             </button>
         </div>
@@ -151,99 +151,105 @@ include __DIR__ . '/../includes/header.php';
             </div>
             
             <?php if ($reportType === 'summary'): ?>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Department</th>
-                            <th>Total</th>
-                            <th>Pending</th>
-                            <th>Approved</th>
-                            <th>Rejected</th>
-                            <th>Approval Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($reportData as $row): ?>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($row['department']); ?></td>
-                                <td><strong><?php echo $row['total']; ?></strong></td>
-                                <td><?php echo $row['pending']; ?></td>
-                                <td><?php echo $row['approved']; ?></td>
-                                <td><?php echo $row['rejected']; ?></td>
-                                <td>
-                                    <?php 
-                                    $rate = $row['total'] > 0 ? round(($row['approved'] / $row['total']) * 100, 1) : 0;
-                                    echo $rate . '%';
-                                    ?>
-                                </td>
+                                <th>Department</th>
+                                <th>Total</th>
+                                <th>Pending</th>
+                                <th>Approved</th>
+                                <th>Rejected</th>
+                                <th>Approval Rate</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($reportData as $row): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['department']); ?></td>
+                                    <td><strong><?php echo $row['total']; ?></strong></td>
+                                    <td><?php echo $row['pending']; ?></td>
+                                    <td><?php echo $row['approved']; ?></td>
+                                    <td><?php echo $row['rejected']; ?></td>
+                                    <td>
+                                        <?php 
+                                        $rate = $row['total'] > 0 ? round(($row['approved'] / $row['total']) * 100, 1) : 0;
+                                        echo $rate . '%';
+                                        ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
                 
             <?php elseif ($reportType === 'detailed'): ?>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>RF Number</th>
-                            <th>Requester</th>
-                            <th>Department</th>
-                            <th>Items</th>
-                            <th>Status</th>
-                            <th>Level</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($reportData as $row): ?>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($row['rf_control_number']); ?></td>
-                                <td><?php echo htmlspecialchars($row['requester_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['department']); ?></td>
-                                <td><?php echo $row['item_count']; ?></td>
-                                <td>
-                                    <span class="status-badge <?php echo $row['status']; ?>">
-                                        <?php echo strtoupper($row['status']); ?>
-                                    </span>
-                                </td>
-                                <td>Level <?php echo $row['current_approval_level']; ?></td>
-                                <td><?php echo date('M d, Y', strtotime($row['created_at'])); ?></td>
+                                <th>RF Number</th>
+                                <th>Requester</th>
+                                <th>Department</th>
+                                <th>Items</th>
+                                <th>Status</th>
+                                <th>Level</th>
+                                <th>Date</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($reportData as $row): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['rf_control_number']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['requester_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['department']); ?></td>
+                                    <td><?php echo $row['item_count']; ?></td>
+                                    <td>
+                                        <span class="status-badge <?php echo $row['status']; ?>">
+                                            <?php echo strtoupper($row['status']); ?>
+                                        </span>
+                                    </td>
+                                    <td>Level <?php echo $row['current_approval_level']; ?></td>
+                                    <td><?php echo date('M d, Y', strtotime($row['created_at'])); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
                 
             <?php elseif ($reportType === 'approval'): ?>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>RF Number</th>
-                            <th>Requester</th>
-                            <th>Department</th>
-                            <th>Level</th>
-                            <th>Approver</th>
-                            <th>Decision</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($reportData as $row): ?>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($row['rf_control_number']); ?></td>
-                                <td><?php echo htmlspecialchars($row['requester_name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['department']); ?></td>
-                                <td>Level <?php echo $row['approval_level']; ?></td>
-                                <td><?php echo htmlspecialchars($row['approver_name']); ?></td>
-                                <td>
-                                    <span class="status-badge <?php echo $row['status']; ?>">
-                                        <?php echo strtoupper($row['status']); ?>
-                                    </span>
-                                </td>
-                                <td><?php echo date('M d, Y h:i A', strtotime($row['approved_at'])); ?></td>
+                                <th>RF Number</th>
+                                <th>Requester</th>
+                                <th>Department</th>
+                                <th>Level</th>
+                                <th>Approver</th>
+                                <th>Decision</th>
+                                <th>Date</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($reportData as $row): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['rf_control_number']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['requester_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['department']); ?></td>
+                                    <td>Level <?php echo $row['approval_level']; ?></td>
+                                    <td><?php echo htmlspecialchars($row['approver_name']); ?></td>
+                                    <td>
+                                        <span class="status-badge <?php echo $row['status']; ?>">
+                                            <?php echo strtoupper($row['status']); ?>
+                                        </span>
+                                    </td>
+                                    <td><?php echo date('M d, Y h:i A', strtotime($row['approved_at'])); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php endif; ?>
         </div>
     </div>

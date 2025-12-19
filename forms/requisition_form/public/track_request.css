@@ -134,23 +134,30 @@ body {
 .status-badge {
     padding: 8px 16px;
     border-radius: 20px;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .status-pending {
-    background-color: #FEF3C7;
-    color: #92400E;
+    background-color: #ffa700;
+    color: #FFFFFF;
 }
 
 .status-approved {
-    background-color: #D1FAE5;
-    color: #065F46;
+    background-color: #10B981;
+    color: #FFFFFF;
 }
 
 .status-rejected {
-    background-color: #FEE2E2;
-    color: #991B1B;
+    background-color: #EF4444;
+    color: #FFFFFF;
+}
+
+.status-completed {
+    background-color: #3B82F6;
+    color: #FFFFFF;
 }
 
 .details-grid {
@@ -372,18 +379,126 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .container {
+        padding: 10px !important;
+    }
+    
+    .track-container {
+        margin: 0;
+    }
+    
+    .search-card {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+    
+    .search-card h2 {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+    }
+    
+    .search-card p {
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+    
     .search-form {
         flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search-input {
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 6px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 6px;
+    }
+    
+    .error-card {
+        padding: 25px 20px;
+        border-radius: 8px;
+    }
+    
+    .error-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+    
+    .error-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+    
+    .error-card p {
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+    
+    .details-card {
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .card-header {
+        padding: 15px 15px;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .card-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .status-badge {
+        padding: 5px 12px;
+        font-size: 11px;
     }
     
     .details-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 20px 15px;
     }
     
-    .card-header {
-        flex-direction: column;
-        gap: 12px;
-        text-align: center;
+    .detail-item label {
+        font-size: 11px;
+    }
+    
+    .detail-item div {
+        font-size: 14px;
+    }
+    
+    .rf-number {
+        font-size: 1.1rem;
+    }
+    
+    .items-card {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+    
+    .items-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    .timeline-card {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+    
+    .timeline-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
     }
     
     .timeline {
@@ -392,19 +507,42 @@ body {
     
     .timeline-marker {
         left: -30px;
-        width: 24px;
-        height: 24px;
-        font-size: 0.75rem;
+        width: 22px;
+        height: 22px;
+        font-size: 11px;
+    }
+    
+    .timeline-content {
+        padding: 10px 12px;
     }
     
     .timeline-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+        gap: 6px;
+    }
+    
+    .timeline-header h4 {
+        font-size: 13px;
+    }
+    
+    .timeline-status {
+        padding: 3px 8px;
+        font-size: 10px;
+    }
+    
+    .timeline-role {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+    
+    .timeline-details p {
+        font-size: 12px;
     }
     
     .actions-card {
         flex-direction: column;
+        gap: 10px;
     }
     
     .table-responsive {
@@ -413,6 +551,11 @@ body {
     
     .items-table th,
     .items-table td {
-        padding: 8px;
+        padding: 8px 6px;
+        font-size: 12px;
+    }
+    
+    .items-table th {
+        font-size: 11px;
     }
 }

@@ -142,6 +142,10 @@ require_once __DIR__ . '/../includes/header.php';
                     <div class="timeline-content">Energization of San Miguel, Leyte</div>
                 </div>
                 <div class="timeline-item">
+                    <div class="timeline-date">February 25, 1978</div>
+                    <div class="timeline-content">First Annual General Membership Assembly (AGMA) at Agro-Industrial School, Alangalang</div>
+                </div>
+                <div class="timeline-item">
                     <div class="timeline-date">September 19, 1979</div>
                     <div class="timeline-content">Energization of Jaro, Leyte</div>
                 </div>
@@ -168,14 +172,6 @@ require_once __DIR__ . '/../includes/header.php';
                 <div class="timeline-item">
                     <div class="timeline-date">March 8, 1983</div>
                     <div class="timeline-content">Tapped to NPC Tongonan Geothermal Plant, Kananga, Leyte</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">February 25, 1978</div>
-                    <div class="timeline-content">First Annual General Membership Assembly (AGMA) at Agro-Industrial School, Alangalang</div>
-                </div> 
-                <div class="timeline-item">
-                    <div class="timeline-date"> March 8, 1983 </div>
-                    <div class="timeline-content"> LEYECO III was tapped to NPC Tongonan Geothermal Plant, Kananga, Leyte where the power is sustained by 5MVA substation located at Tunga, Leyte</div>
                 </div>
             </div>
 

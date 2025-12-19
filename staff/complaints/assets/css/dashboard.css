@@ -6,6 +6,14 @@
     margin-bottom: 30px;
 }
 
+/* Center 3-card grid */
+.stats-grid-3 {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Stat Card Animations */
 @keyframes fadeInUp {
     from {
@@ -536,33 +544,222 @@
 }
 
 @media (max-width: 768px) {
+    /* Stats Grid - Smaller and more compact - 2 per row */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 16px;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .stat-card {
+        padding: 10px;
+        border-radius: 6px;
+    }
+
+    .stat-card-header {
+        margin-bottom: 6px;
+    }
+
+    .stat-card-title {
+        font-size: 10px;
+    }
+
+    .stat-card-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+
+    .stat-card-value {
+        font-size: 20px;
+    }
+
+    .stat-card-footer {
+        margin-top: 4px;
+        font-size: 10px;
+    }
+
+    /* Data Table Container - Prevent horizontal page scroll */
+    .data-table-container {
+        border-radius: 8px;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
     .table-header {
         flex-direction: column;
         align-items: stretch;
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    .table-title {
+        font-size: 14px;
     }
 
     .table-filters {
         flex-direction: column;
+        gap: 10px;
+    }
+
+    .filter-group {
+        gap: 6px;
+    }
+
+    .filter-group label {
+        font-size: 12px;
+    }
+
+    .filter-select {
+        padding: 6px 10px;
+        font-size: 12px;
+        border-radius: 4px;
     }
 
     .search-box input {
         width: 100%;
+        padding: 6px 10px 6px 32px;
+        font-size: 12px;
+        border-radius: 4px;
     }
 
-    .data-table {
+    .search-box i {
+        left: 10px;
         font-size: 12px;
+    }
+
+    /* Table Wrapper - Horizontal scroll for table only */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 15px;
+    }
+
+    .data-table-container > .data-table,
+    .data-table {
+        min-width: 600px; /* Ensure table has minimum width to scroll */
+        font-size: 11px;
     }
 
     .data-table th,
     .data-table td {
-        padding: 10px 8px;
+        padding: 8px 6px;
+        font-size: 11px;
+    }
+
+    .data-table th {
+        font-size: 9px;
+    }
+
+    .status-badge {
+        padding: 3px 8px;
+        font-size: 10px;
+        border-radius: 10px;
+    }
+
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+
+    .btn-sm i {
+        font-size: 10px;
+    }
+
+    /* Pagination */
+    .pagination {
+        padding: 12px;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .pagination button {
+        padding: 6px 10px;
+        font-size: 12px;
+        border-radius: 4px;
+    }
+
+    .pagination .page-info {
+        font-size: 12px;
+        margin: 0 6px;
+    }
+
+    /* Modal */
+    .modal {
+        padding: 12px;
     }
 
     .modal-content {
         max-height: 95vh;
+        border-radius: 8px;
+    }
+
+    .modal-header {
+        padding: 16px;
+    }
+
+    .modal-title {
+        font-size: 16px;
+    }
+
+    .modal-close {
+        width: 28px;
+        height: 28px;
+        font-size: 20px;
+    }
+
+    .modal-body {
+        padding: 16px;
     }
 
     .detail-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .detail-section {
+        margin-bottom: 16px;
+    }
+
+    .detail-section h3 {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .detail-label {
+        font-size: 11px;
+    }
+
+    .detail-value {
+        font-size: 12px;
+    }
+
+    .timeline {
+        padding-left: 24px;
+    }
+
+    .timeline-item {
+        margin-bottom: 16px;
+    }
+
+    .timeline-content {
+        padding: 10px;
+        border-radius: 6px;
+    }
+
+    .timeline-message {
+        font-size: 12px;
+    }
+
+    .timeline-meta {
+        font-size: 11px;
+    }
+
+    .filter-select {
+        font-size: 11px;
+        padding: 6px 8px;
     }
 }

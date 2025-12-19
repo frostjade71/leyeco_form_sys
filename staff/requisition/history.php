@@ -19,7 +19,8 @@ $breadcrumbs = [
 ];
 $additionalCSS = [
     STAFF_URL . '/assets/css/components.css?v=' . time(),
-    STAFF_URL . '/assets/css/dashboard.css?v=' . time()
+    STAFF_URL . '/assets/css/dashboard.css?v=' . time(),
+    STAFF_URL . '/requisition/assets/css/dashboard.css?v=' . time()
 ];
 
 // Get current user's approval history
@@ -72,60 +73,62 @@ include __DIR__ . '/../includes/header.php';
 <div class="data-table-container">
     <div class="table-header">
         <h2 class="table-title">My Approval History</h2>
-        <p style="color: var(--text-secondary);">Showing your recent approval decisions</p>
+        <p class="table-description">Showing your recent approval decisions</p>
     </div>
 
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>RF Number</th>
-                <th>Requester</th>
-                <th>Department</th>
-                <th>Level</th>
-                <th>My Decision</th>
-                <th>Date</th>
-                <th>Request Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (empty($history)): ?>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
                 <tr>
-                    <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-secondary);">
-                        <i class="fas fa-history" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
-                        No approval history found
-                    </td>
+                    <th>RF Number</th>
+                    <th>Requester</th>
+                    <th>Department</th>
+                    <th>Level</th>
+                    <th>My Decision</th>
+                    <th>Date</th>
+                    <th>Request Status</th>
+                    <th>Actions</th>
                 </tr>
-            <?php else: ?>
-                <?php foreach ($history as $item): ?>
+            </thead>
+            <tbody>
+                <?php if (empty($history)): ?>
                     <tr>
-                        <td>
-                            <strong class="rf-number"><?php echo htmlspecialchars($item['rf_control_number']); ?></strong>
-                        </td>
-                        <td><?php echo htmlspecialchars($item['requester_name']); ?></td>
-                        <td><span class="dept-badge"><?php echo htmlspecialchars($item['department']); ?></span></td>
-                        <td>Level <?php echo $item['approval_level']; ?></td>
-                        <td>
-                            <span class="status-badge <?php echo strtolower($item['status']); ?>">
-                                <?php echo strtoupper(htmlspecialchars($item['status'])); ?>
-                            </span>
-                        </td>
-                        <td><?php echo date('M d, Y h:i A', strtotime($item['approved_at'])); ?></td>
-                        <td>
-                            <span class="status-badge <?php echo strtolower($item['request_status']); ?>">
-                                <?php echo strtoupper(htmlspecialchars($item['request_status'])); ?>
-                            </span>
-                        </td>
-                        <td>
-                            <a href="view_request.php?id=<?php echo $item['requisition_id']; ?>" class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye"></i> View
-                            </a>
+                        <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <i class="fas fa-history" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
+                            No approval history found
                         </td>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                <?php else: ?>
+                    <?php foreach ($history as $item): ?>
+                        <tr>
+                            <td>
+                                <strong class="rf-number"><?php echo htmlspecialchars($item['rf_control_number']); ?></strong>
+                            </td>
+                            <td><?php echo htmlspecialchars($item['requester_name']); ?></td>
+                            <td><span class="dept-badge"><?php echo htmlspecialchars($item['department']); ?></span></td>
+                            <td>Level <?php echo $item['approval_level']; ?></td>
+                            <td>
+                                <span class="status-badge <?php echo strtolower($item['status']); ?>">
+                                    <?php echo strtoupper(htmlspecialchars($item['status'])); ?>
+                                </span>
+                            </td>
+                            <td><?php echo date('M d, Y h:i A', strtotime($item['approved_at'])); ?></td>
+                            <td>
+                                <span class="status-badge <?php echo strtolower($item['request_status']); ?>">
+                                    <?php echo strtoupper(htmlspecialchars($item['request_status'])); ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="view_request.php?id=<?php echo $item['requisition_id']; ?>" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <?php endif; // End approver check ?>

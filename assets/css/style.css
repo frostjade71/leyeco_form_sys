@@ -286,23 +286,24 @@ body {
     .navbar-menu {
         position: fixed;
         top: -100vh;
-        left: 0;
-        right: 0;
-        width: 100%;
+        left: auto;
+        right: 10px;
+        width: 170px;
         height: auto;
-        max-height: calc(100vh - 70px);
+        max-height: calc(100vh - 90px);
         background: linear-gradient(180deg, var(--primary-red) 0%, var(--primary-red-dark) 100%);
         flex-direction: column;
         justify-content: flex-start;
-        padding: 20px 2rem 30px;
+        padding: 12px 15px 15px;
         transition: top 0.4s ease;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         overflow-y: auto;
         z-index: 999;
+        border-radius: 12px;
     }
 
     .navbar-menu.active {
-        top: 70px;
+        top: 80px;
     }
 
     .navbar-nav {
@@ -314,6 +315,7 @@ body {
     .navbar-nav li {
         margin: 0.5rem 0;
         width: 100%;
+        text-align: center;
     }
 
     .navbar-nav a {
@@ -329,7 +331,7 @@ body {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         width: 100%;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
     }
 
     .navbar-toggle {
@@ -358,9 +360,10 @@ body {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 998;
     opacity: 0;
     transition: opacity 0.3s ease;
+    border-radius: 12px;
 }
 
 .mobile-menu-overlay.active {

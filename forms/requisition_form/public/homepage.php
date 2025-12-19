@@ -17,6 +17,9 @@ if (!file_exists($configPath)) {
 }
 require_once $configPath;
 
+// Include helper functions
+require_once __DIR__ . '/../app/functions.php';
+
 // Include the main database configuration
 $dbPath = realpath(__DIR__ . '/../../../config/database.php');
 if (!file_exists($dbPath)) {

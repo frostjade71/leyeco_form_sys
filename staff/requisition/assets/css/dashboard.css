@@ -106,12 +106,116 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    /* Table Wrapper - Horizontal scroll for table only */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 15px;
+    }
+
+    .data-table {
+        min-width: 800px; /* Requisition tables have more columns */
+        font-size: 10px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 8px 4px;
+        font-size: 10px;
+    }
+
+    .data-table th {
+        font-size: 9px;
+    }
+
+    /* RF Number */
+    .rf-number {
+        font-size: 11px;
+    }
+
+    /* Department Badge */
+    .dept-badge {
+        padding: 3px 8px;
+        font-size: 10px;
+        border-radius: 10px;
+    }
+
+    /* Level Indicator */
+    .level-indicator {
+        font-size: 11px;
+    }
+
+    /* Status Badge */
+    .status-badge {
+        padding: 3px 8px;
+        font-size: 10px;
+    }
+
+    /* Button */
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+
+    /* Modal Details */
     .details-grid {
         grid-template-columns: 1fr;
+    }
+
+    .details-section h3 {
+        font-size: 1rem;
+    }
+
+    .detail-item label {
+        font-size: 11px;
+    }
+
+    .detail-item div {
+        font-size: 12px;
+    }
+
+    /* Items Table in Modal */
+    .items-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        min-width: 500px;
+    }
+
+    .items-table th,
+    .items-table td {
+        padding: 8px 6px;
+        font-size: 11px;
+    }
+
+    .items-table th {
+        font-size: 9px;
     }
     
     .modal-actions {
         flex-direction: column;
+    }
+
+    .modal-actions .btn {
+        width: 100%;
+    }
+
+    /* Card headers - match admin dashboard */
+    .card-header {
+        padding: 12px 16px;
+    }
+
+    .card-title {
+        font-size: 14px;
+    }
+
+    .table-title {
+        font-size: 14px;
+    }
+
+    .filter-select {
+        font-size: 11px;
+        padding: 6px 8px;
     }
 }
 

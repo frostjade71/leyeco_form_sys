@@ -17,9 +17,9 @@
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="<?php echo BASE_URL; ?>/public/index.php">Home</a></li>
-                        <li><a href="<?php echo BASE_URL; ?>/forms/request_form.php">Service Request</a></li>
-                        <li><a href="<?php echo BASE_URL; ?>/forms/reconnection_form.php">Reconnection</a></li>
-                        <li><a href="<?php echo BASE_URL; ?>/public/contact.php">Contact Us</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/public/index.php#select-forms">Select Forms</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/public/contact.php#map-section">Find Us</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/public/contact.php#faq-section">FAQ</a></li>
                     </ul>
                 </div>
                 
@@ -37,6 +37,7 @@
     
     <!-- JavaScript -->
     <script src="<?php echo BASE_URL; ?>/assets/js/main.js"></script>
+    <script src="<?php echo BASE_URL; ?>/assets/js/page-loader.js"></script>
     <?php if (isset($additional_js)): ?>
         <?php foreach ($additional_js as $js): ?>
             <script src="<?php echo $js; ?>"></script>
