@@ -12,7 +12,7 @@ $breadcrumbs = [
     ['label' => 'Dashboard', 'url' => STAFF_URL . '/dashboard.php'],
     ['label' => 'Profile & Settings']
 ];
-$additionalCSS = [STAFF_URL . '/assets/css/users.css'];
+$additionalCSS = [STAFF_URL . '/assets/css/profile.css'];
 
 $success = '';
 $error = '';
@@ -89,161 +89,56 @@ include __DIR__ . '/includes/header.php';
     </div>
 <?php endif; ?>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;">
-    <!-- User Profile Display -->
-    <div class="users-container">
-        <div class="users-header">
-            <h3 class="users-title">Your Profile</h3>
-        </div>
-        <div style="padding: 24px;">
-            <div style="text-align: center; margin-bottom: 24px;">
-                <div style="width: 80px; height: 80px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%); display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 32px; font-weight: 700; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);">
-                    <?php echo strtoupper(substr($currentUser['full_name'], 0, 1)); ?>
-                </div>
-            </div>
+<!-- Change Password Card -->
+<div class="profile-card" style="max-width: 600px; margin: 0 auto;">
+    <div class="profile-card-header">
+        <h2><i class="fas fa-key"></i> Change Password</h2>
+    </div>
+    <div class="profile-card-body">
+        <form method="POST" action="">
+            <input type="hidden" name="action" value="change_password">
             
             <div class="form-group">
-                <label>Full Name</label>
+                <label for="currentPassword">Current Password</label>
                 <input 
-                    type="text" 
-                    value="<?php echo htmlspecialchars($currentUser['full_name']); ?>"
-                    disabled
-                    style="background: var(--light-color); cursor: not-allowed;"
+                    type="password" 
+                    id="currentPassword" 
+                    name="current_password" 
+                    required
+                    style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 14px;"
                 >
             </div>
 
             <div class="form-group">
-                <label>Email</label>
+                <label for="newPassword">New Password</label>
                 <input 
-                    type="email" 
-                    value="<?php echo htmlspecialchars($currentUser['email']); ?>"
-                    disabled
-                    style="background: var(--light-color); cursor: not-allowed;"
+                    type="password" 
+                    id="newPassword" 
+                    name="new_password" 
+                    minlength="6"
+                    required
+                    style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 14px;"
                 >
+                <small style="color: var(--text-secondary); font-size: 12px; display: block; margin-top: 4px;">Minimum 6 characters</small>
             </div>
 
             <div class="form-group">
-                <label>Username</label>
+                <label for="confirmPassword">Confirm New Password</label>
                 <input 
-                    type="text" 
-                    value="<?php echo htmlspecialchars($currentUser['username']); ?>"
-                    disabled
-                    style="background: var(--light-color); cursor: not-allowed;"
+                    type="password" 
+                    id="confirmPassword" 
+                    name="confirm_password" 
+                    minlength="6"
+                    required
+                    style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 14px;"
                 >
             </div>
 
-            <div class="form-group" style="margin-bottom: 0;">
-                <label>Role</label>
-                <input 
-                    type="text" 
-                    value="<?php echo ucfirst(htmlspecialchars($currentUser['role'])); ?>"
-                    disabled
-                    style="background: var(--light-color); cursor: not-allowed;"
-                >
-            </div>
-
-            <div style="margin-top: 16px; padding: 12px; background: #FEF3C7; border-left: 4px solid #F59E0B; border-radius: 6px;">
-                <div style="font-size: 12px; color: #92400E;">
-                    <i class="fas fa-info-circle"></i>
-                    <strong>Note:</strong> To update your profile information, please contact an administrator.
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Change Password -->
-    <div class="users-container">
-        <div class="users-header">
-            <h3 class="users-title">Change Password</h3>
-        </div>
-        <div style="padding: 24px;">
-            <form method="POST" action="">
-                <input type="hidden" name="action" value="change_password">
-                
-                <div class="form-group">
-                    <label for="currentPassword">Current Password</label>
-                    <input 
-                        type="password" 
-                        id="currentPassword" 
-                        name="current_password" 
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="newPassword">New Password</label>
-                    <input 
-                        type="password" 
-                        id="newPassword" 
-                        name="new_password" 
-                        minlength="6"
-                        required
-                    >
-                    <small style="color: var(--text-secondary); font-size: 12px;">Minimum 6 characters</small>
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm New Password</label>
-                    <input 
-                        type="password" 
-                        id="confirmPassword" 
-                        name="confirm_password" 
-                        minlength="6"
-                        required
-                    >
-                </div>
-
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fas fa-key"></i>
-                    Change Password
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Account Information -->
-<div class="users-container" style="margin-top: 24px;">
-    <div class="users-header">
-        <h3 class="users-title">Account Information</h3>
-    </div>
-    <div style="padding: 24px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-            <div>
-                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">Account Created</div>
-                <div style="font-size: 14px; font-weight: 600; color: var(--text-primary);">
-                    <?php
-                    $stmt = $conn->prepare("SELECT created_at FROM users WHERE id = ?");
-                    $stmt->bind_param("i", $currentUser['id']);
-                    $stmt->execute();
-                    $result = $stmt->get_result()->fetch_assoc();
-                    echo date('F d, Y', strtotime($result['created_at']));
-                    ?>
-                </div>
-            </div>
-            <div>
-                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">Last Login</div>
-                <div style="font-size: 14px; font-weight: 600; color: var(--text-primary);">
-                    <?php
-                    $stmt = $conn->prepare("SELECT last_login FROM users WHERE id = ?");
-                    $stmt->bind_param("i", $currentUser['id']);
-                    $stmt->execute();
-                    $result = $stmt->get_result()->fetch_assoc();
-                    if ($result['last_login']) {
-                        echo date('F d, Y g:i A', strtotime($result['last_login']));
-                    } else {
-                        echo 'Never';
-                    }
-                    ?>
-                </div>
-            </div>
-            <div>
-                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">Account Status</div>
-                <div style="font-size: 14px; font-weight: 600; color: var(--success-color);">
-                    <i class="fas fa-check-circle"></i> Active
-                </div>
-            </div>
-        </div>
+            <button type="submit" class="btn-change-password">
+                <i class="fas fa-key"></i>
+                Change Password
+            </button>
+        </form>
     </div>
 </div>
 

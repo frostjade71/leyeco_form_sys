@@ -227,3 +227,37 @@
 [data-theme="dark"] .level-indicator {
     color: #FFFFFF;
 }
+
+/* Welcome Section Approval Role */
+.welcome-section .approval-role {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    color: white;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.approval-role i {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .welcome-section .approval-role {
+        padding: 4px 10px;
+        font-size: 11px;
+        margin-top: 6px;
+        border-radius: 12px;
+    }
+    
+    .approval-role i {
+        font-size: 10px;
+    }
+}

@@ -126,22 +126,7 @@ require_once __DIR__ . '/../includes/header.php';
         <p class="section-subtitle">Need to submit a form or request?</p>
         
         <div class="quick-links-grid">
-            <a href="<?php echo BASE_URL; ?>/forms/request_form.php" class="quick-link-card">
-                <div class="quick-link-icon">
-                    <i class="fas fa-file-text"></i>
-                </div>
-                <h3>Service Request</h3>
-                <p>Submit a new service request</p>
-            </a>
-
-            <a href="<?php echo BASE_URL; ?>/forms/reconnection_form.php" class="quick-link-card">
-                <div class="quick-link-icon">
-                    <i class="fas fa-plug"></i>
-                </div>
-                <h3>Reconnection</h3>
-                <p>Request reconnection service</p>
-            </a>
-
+            <!-- 1. Complaints -->
             <a href="<?php echo BASE_URL; ?>/forms/complaints_form.php" class="quick-link-card">
                 <div class="quick-link-icon">
                     <i class="fas fa-exclamation-circle"></i>
@@ -150,6 +135,25 @@ require_once __DIR__ . '/../includes/header.php';
                 <p>Report service issues</p>
             </a>
 
+            <!-- 2. Requisition -->
+            <a href="<?php echo BASE_URL; ?>/forms/requisition_form.php" class="quick-link-card">
+                <div class="quick-link-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>Requisition</h3>
+                <p>Request materials</p>
+            </a>
+
+            <!-- 3. Reconnection -->
+            <a href="<?php echo BASE_URL; ?>/forms/reconnection_form.php" class="quick-link-card">
+                <div class="quick-link-icon">
+                    <i class="fas fa-plug"></i>
+                </div>
+                <h3>Reconnection</h3>
+                <p>Request reconnection service</p>
+            </a>
+
+            <!-- 4. Meter Replacement -->
             <a href="<?php echo BASE_URL; ?>/forms/meter_replacement_form.php" class="quick-link-card">
                 <div class="quick-link-icon">
                     <i class="fas fa-bolt"></i>

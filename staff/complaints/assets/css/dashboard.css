@@ -146,7 +146,7 @@
 }
 
 .table-header {
-    padding: 20px 24px;
+    padding: 16px 20px;
     background: #DC2626;
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -157,7 +157,7 @@
 }
 
 .table-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: #ffffff;
 }
@@ -693,7 +693,7 @@
     }
 
     .modal-content {
-        max-height: 95vh;
+        max-height: 80vh;
         border-radius: 8px;
     }
 
@@ -716,7 +716,7 @@
     }
 
     .detail-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
 

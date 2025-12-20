@@ -151,9 +151,52 @@ require_once __DIR__ . '/../includes/header.php';
             <h3>System Statistics</h3>
             <p class="section-description">Real-time overview of our service</p>
             
+            <?php
+            // Calculate System Statistics
+            try {
+                // 1. Total Forms Submitted
+                // Count all complaints
+                $complaintsTotalStmt = $conn->query("SELECT COUNT(*) as count FROM complaints");
+                $complaintsTotal = $complaintsTotalStmt->fetch_assoc()['count'] ?? 0;
+                
+                // Count all requisitions
+                $reqTotalStmt = $conn->query("SELECT COUNT(*) as count FROM requisition_requests");
+                $reqTotal = $reqTotalStmt->fetch_assoc()['count'] ?? 0;
+                
+                $totalFormsSubmitted = $complaintsTotal + $reqTotal;
+
+                // 2. Active Requests
+                // Complaints: New, Pending (if any), Investigating
+                // Note: 'PENDING' isn't a standard status in complaints schema showed earlier but requested by user, 
+                // schema showed 'NEW', 'INVESTIGATING', 'RESOLVED', 'CLOSED'. We'll stick to user request inclusive filter.
+                $activeComplaintsStmt = $conn->query("
+                    SELECT COUNT(*) as count 
+                    FROM complaints 
+                    WHERE status IN ('NEW', 'PENDING', 'INVESTIGATING')
+                ");
+                $activeComplaints = $activeComplaintsStmt->fetch_assoc()['count'] ?? 0;
+
+                // Requisitions: pending
+                $activeReqStmt = $conn->query("
+                    SELECT COUNT(*) as count 
+                    FROM requisition_requests 
+                    WHERE status = 'pending'
+                ");
+                $activeReq = $activeReqStmt->fetch_assoc()['count'] ?? 0;
+
+                $totalActiveRequests = $activeComplaints + $activeReq;
+                
+            } catch (Exception $e) {
+                // Fallback if db error
+                error_log("Stats calculation error: " . $e->getMessage());
+                $totalFormsSubmitted = 0;
+                $totalActiveRequests = 0;
+            }
+            ?>
+            
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">1,247</div>
+                    <div class="stat-number"><?php echo number_format($totalFormsSubmitted); ?></div>
                     <div class="stat-label">Forms Submitted</div>
                 </div>
                 
@@ -163,7 +206,7 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
                 
                 <div class="stat-card">
-                    <div class="stat-number">40</div>
+                    <div class="stat-number"><?php echo number_format($totalActiveRequests); ?></div>
                     <div class="stat-label">Active Requests</div>
                 </div>
             </div>

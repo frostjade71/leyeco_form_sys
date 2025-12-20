@@ -15,7 +15,10 @@ $breadcrumbs = [
     ['label' => 'Dashboard', 'url' => STAFF_URL . '/dashboard.php'],
     ['label' => 'User Management']
 ];
-$additionalCSS = [STAFF_URL . '/assets/css/users.css'];
+$additionalCSS = [
+    STAFF_URL . '/assets/css/components.css',
+    STAFF_URL . '/assets/css/users.css'
+];
 $additionalJS = [STAFF_URL . '/assets/js/users.js'];
 
 // Get all users with their online status
@@ -73,18 +76,34 @@ include __DIR__ . '/includes/header.php';
 </div>
 
 <!-- Statistics Cards -->
-<div class="quick-stats" style="margin-bottom: 30px;">
-    <div class="quick-stat-card">
-        <h3>All Staff</h3>
-        <div class="value"><?php echo number_format($totalStaff); ?></div>
+<!-- Statistics Cards -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">All Staff</span>
+            <div class="stat-card-icon total">
+                <i class="fas fa-users"></i>
+            </div>
+        </div>
+        <div class="stat-card-value"><?php echo number_format($totalStaff); ?></div>
     </div>
-    <div class="quick-stat-card">
-        <h3>Online Staffs</h3>
-        <div class="value"><?php echo number_format($onlineStaff); ?></div>
+    <div class="stat-card online">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Online Staffs</span>
+            <div class="stat-card-icon online">
+                <i class="fas fa-user-check"></i>
+            </div>
+        </div>
+        <div class="stat-card-value"><?php echo number_format($onlineStaff); ?></div>
     </div>
-    <div class="quick-stat-card">
-        <h3>Online Approvers</h3>
-        <div class="value"><?php echo number_format($onlineApprovers); ?></div>
+    <div class="stat-card approver">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Online Approvers</span>
+            <div class="stat-card-icon approver">
+                <i class="fas fa-user-shield"></i>
+            </div>
+        </div>
+        <div class="stat-card-value"><?php echo number_format($onlineApprovers); ?></div>
     </div>
 </div>
 
@@ -98,114 +117,116 @@ include __DIR__ . '/includes/header.php';
         </button>
     </div>
 
-    <table class="users-table">
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Last Login</th>
-                <th>Created</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (empty($users)): ?>
+    <div class="table-responsive">
+        <table class="users-table">
+            <thead>
                 <tr>
-                    <td colspan="7">
-                        <div class="empty-state">
-                            <i class="fas fa-users"></i>
-                            <p>No users found</p>
-                        </div>
-                    </td>
+                    <th>User</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th>Created</th>
+                    <th>Actions</th>
                 </tr>
-            <?php else: ?>
-                <?php foreach ($users as $user): ?>
+            </thead>
+            <tbody>
+                <?php if (empty($users)): ?>
                     <tr>
-                        <td>
-                            <div class="user-info">
-                                <div class="user-avatar-small">
-                                    <?php echo strtoupper(substr($user['full_name'], 0, 1)); ?>
-                                </div>
-                                <div class="user-details">
-                                    <h4><?php echo htmlspecialchars($user['full_name']); ?></h4>
-                                    <p><?php echo htmlspecialchars($user['email']); ?></p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <code style="background: var(--light-color); padding: 4px 8px; border-radius: 4px; font-size: 13px; color: var(--text-primary); font-family: 'Courier New', monospace;">
-                                <?php echo htmlspecialchars($user['username']); ?>
-                            </code>
-                        </td>
-                        <td>
-                            <?php 
-                            $roles = explode(',', $user['role']);
-                            foreach ($roles as $role): 
-                                $role = trim($role);
-                            ?>
-                                <span class="role-badge <?php echo strtolower($role); ?>" style="margin: 2px;">
-                                    <?php echo htmlspecialchars($role); ?>
-                                </span>
-                            <?php endforeach; ?>
-                        </td>
-                        <td>
-                            <div class="status-indicator">
-                                <?php if ($user['is_online']): ?>
-                                    <span class="status-dot online"></span>
-                                    Online
-                                <?php elseif ($user['is_active']): ?>
-                                    <span class="status-dot active"></span>
-                                    Active
-                                <?php else: ?>
-                                    <span class="status-dot inactive"></span>
-                                    Inactive
-                                <?php endif; ?>
-                            </div>
-                        </td>
-                        <td>
-                            <?php 
-                            if ($user['last_login']) {
-                                echo date('M d, Y g:i A', strtotime($user['last_login']));
-                            } else {
-                                echo '<span style="color: var(--text-secondary);">Never</span>';
-                            }
-                            ?>
-                        </td>
-                        <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button 
-                                    class="btn-icon" 
-                                    onclick="editUser(<?php echo $user['id']; ?>)"
-                                    title="Edit User"
-                                >
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <?php if ($user['id'] != $currentUser['id']): ?>
-                                    <button 
-                                        class="btn-icon" 
-                                        onclick="toggleUserStatus(<?php echo $user['id']; ?>, <?php echo $user['is_active'] ? 'false' : 'true'; ?>)"
-                                        title="<?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>"
-                                    >
-                                        <i class="fas fa-<?php echo $user['is_active'] ? 'ban' : 'check'; ?>"></i>
-                                    </button>
-                                    <button 
-                                        class="btn-icon danger" 
-                                        onclick="deleteUser(<?php echo $user['id']; ?>)"
-                                        title="Delete User"
-                                    >
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                <?php endif; ?>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="fas fa-users"></i>
+                                <p>No users found</p>
                             </div>
                         </td>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                <?php else: ?>
+                    <?php foreach ($users as $user): ?>
+                        <tr>
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar-small">
+                                        <?php echo strtoupper(substr($user['full_name'], 0, 1)); ?>
+                                    </div>
+                                    <div class="user-details">
+                                        <h4><?php echo htmlspecialchars($user['full_name']); ?></h4>
+                                        <p><?php echo htmlspecialchars($user['email']); ?></p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <code style="background: var(--light-color); padding: 4px 8px; border-radius: 4px; font-size: 13px; color: var(--text-primary); font-family: 'Courier New', monospace;">
+                                    <?php echo htmlspecialchars($user['username']); ?>
+                                </code>
+                            </td>
+                            <td>
+                                <?php 
+                                $roles = explode(',', $user['role']);
+                                foreach ($roles as $role): 
+                                    $role = trim($role);
+                                ?>
+                                    <span class="role-badge <?php echo strtolower($role); ?>" style="margin: 2px;">
+                                        <?php echo htmlspecialchars($role); ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </td>
+                            <td>
+                                <div class="status-indicator">
+                                    <?php if ($user['is_online']): ?>
+                                        <span class="status-dot online"></span>
+                                        Online
+                                    <?php elseif ($user['is_active']): ?>
+                                        <span class="status-dot active"></span>
+                                        Active
+                                    <?php else: ?>
+                                        <span class="status-dot inactive"></span>
+                                        Inactive
+                                    <?php endif; ?>
+                                </div>
+                            </td>
+                            <td>
+                                <?php 
+                                if ($user['last_login']) {
+                                    echo date('M d, Y g:i A', strtotime($user['last_login']));
+                                } else {
+                                    echo '<span style="color: var(--text-secondary);">Never</span>';
+                                }
+                                ?>
+                            </td>
+                            <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button 
+                                        class="btn-icon" 
+                                        onclick="editUser(<?php echo $user['id']; ?>)"
+                                        title="Edit User"
+                                    >
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <?php if ($user['id'] != $currentUser['id']): ?>
+                                        <button 
+                                            class="btn-icon" 
+                                            onclick="toggleUserStatus(<?php echo $user['id']; ?>, <?php echo $user['is_active'] ? 'false' : 'true'; ?>)"
+                                            title="<?php echo $user['is_active'] ? 'Deactivate' : 'Activate'; ?>"
+                                        >
+                                            <i class="fas fa-<?php echo $user['is_active'] ? 'ban' : 'check'; ?>"></i>
+                                        </button>
+                                        <button 
+                                            class="btn-icon danger" 
+                                            onclick="deleteUser(<?php echo $user['id']; ?>)"
+                                            title="Delete User"
+                                        >
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Add/Edit User Modal -->

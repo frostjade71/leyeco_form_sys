@@ -612,20 +612,27 @@ class ComplaintController {
                 SELECT 
                     u.id,
                     u.full_name,
-                    COUNT(DISTINCT cc.id) as comment_count,
-                    COUNT(DISTINCT CASE WHEN cc.message LIKE 'Status changed to:%' THEN cc.id END) as status_updates,
-                    COUNT(DISTINCT CASE WHEN cc.message LIKE 'Dispatch details updated%' THEN cc.id END) as dispatch_updates
+                    COUNT(cc.id) as comment_count,
+                    SUM(CASE WHEN cc.message LIKE 'Status changed to:%' THEN 1 ELSE 0 END) as status_updates,
+                    SUM(CASE WHEN cc.message LIKE 'Dispatch details updated%' THEN 1 ELSE 0 END) as dispatch_updates
                 FROM users u
                 LEFT JOIN complaint_comments cc ON u.id = cc.user_id
                 WHERE u.role IN ('admin', 'staff')
                 $dateCondition
                 GROUP BY u.id, u.full_name
                 HAVING comment_count > 0
-                ORDER BY (comment_count + status_updates + dispatch_updates) DESC
+                ORDER BY comment_count DESC
                 LIMIT 10
             ";
 
             $stmt = $this->db->prepare($sql);
+            
+            // Check if prepare failed
+            if ($stmt === false) {
+                error_log("SQL prepare failed in getStaffPerformance: " . $this->db->error);
+                error_log("SQL query: " . $sql);
+                return [];
+            }
             
             if (!empty($params)) {
                 $bindParams = [];

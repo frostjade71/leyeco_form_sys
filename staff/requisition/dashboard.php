@@ -127,7 +127,7 @@ include __DIR__ . '/../includes/header.php';
 <div class="welcome-section">
     <div class="welcome-content">
         <h2>Welcome back, <?php echo htmlspecialchars($currentUser['full_name']); ?>! 👋</h2>
-        <p><?php echo htmlspecialchars($approverRole); ?></p>
+        <p class="approval-role"><i class="fas fa-user-shield"></i> <?php echo htmlspecialchars($approverRole); ?></p>
     </div>
     <div class="welcome-datetime">
         <div class="datetime-display">
@@ -223,7 +223,7 @@ setInterval(updateDateTime, 1000);
 <!-- Data Table -->
 <div class="data-table-container">
     <div class="table-header">
-        <h2 class="table-title">All Requisition Requests</h2>
+        <h2 class="table-title"><i class="fas fa-list"></i> All Requisition Requests</h2>
         <div class="table-filters">
             <div class="filter-group">
                 <label for="statusFilter">Status:</label>

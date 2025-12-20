@@ -2,13 +2,20 @@
 .card-header {
     background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
     color: white;
-    padding: 20px 24px;
+    padding: 16px 20px;
     border-bottom: none;
 }
 
 .card-header .card-title {
     color: white;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-header .card-title i {
+    font-size: 16px;
 }
 
 /* Card Spacing - Desktop and Mobile */
@@ -75,5 +82,81 @@
     /* Progress bar adjustments */
     .progress-bar {
         height: 6px;
+    }
+}
+
+/* Search Box in Card Header */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-box-mini {
+    position: relative;
+    width: 200px;
+}
+
+.search-box-mini input {
+    width: 100%;
+    padding: 6px 30px 6px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 0.875rem;
+    outline: none;
+}
+
+.search-box-mini input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-box-mini input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.search-box-mini i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    pointer-events: none;
+}
+
+/* RF Number Colors */
+.rf-number {
+    color: #DC2626; /* Red in light mode */
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    text-decoration: none;
+}
+
+.rf-number:hover {
+    text-decoration: underline;
+}
+
+/* Dark Mode */
+[data-theme="dark"] .rf-number {
+    color: #FBBF24; /* Yellow in dark mode */
+}
+
+/* Mobile Search Box */
+@media (max-width: 768px) {
+    .search-box-mini {
+        width: 140px;
+    }
+
+    .search-box-mini input {
+        padding: 4px 24px 4px 8px;
+        font-size: 11px;
+    }
+    
+    .search-box-mini i {
+        font-size: 11px;
+        right: 8px;
     }
 }

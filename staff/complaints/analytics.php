@@ -93,7 +93,7 @@ include __DIR__ . '/../includes/header.php';
     <!-- Top Municipalities Chart -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Top Municipalities by Complaints</h3>
+            <h3 class="card-title"><i class="fas fa-map-marker-alt"></i> Top Municipalities by Complaints</h3>
         </div>
         <div class="chart-container">
             <canvas id="municipalitiesChart"></canvas>
@@ -103,7 +103,7 @@ include __DIR__ . '/../includes/header.php';
     <!-- Top Complaint Types Chart -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Top Complaint Types</h3>
+            <h3 class="card-title"><i class="fas fa-tags"></i> Top Complaint Types</h3>
         </div>
         <div class="chart-container">
             <canvas id="typesChart"></canvas>
@@ -114,7 +114,7 @@ include __DIR__ . '/../includes/header.php';
 <!-- Monthly Trends Chart -->
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Monthly Trends (Last 6 Months)</h3>
+        <h3 class="card-title"><i class="fas fa-chart-line"></i> Monthly Trends (Last 6 Months)</h3>
     </div>
     <div class="chart-container">
         <canvas id="trendsChart"></canvas>
@@ -127,7 +127,7 @@ include __DIR__ . '/../includes/header.php';
 <!-- Staff Performance Table -->
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Top Performing Staff</h3>
+        <h3 class="card-title"><i class="fas fa-trophy"></i> Top Performing Staff</h3>
         <p class="card-description" style="color: white; font-size: 14px; margin-top: 8px;">
             Based on status updates, dispatch updates, and comments
         </p>
@@ -169,138 +169,218 @@ include __DIR__ . '/../includes/header.php';
 </div>
 
 <script>
-// Chart.js configuration
+// Get current theme colors
+function getThemeColors() {
+    const styles = getComputedStyle(document.documentElement);
+    return {
+        textPrimary: styles.getPropertyValue('--text-primary').trim(),
+        textSecondary: styles.getPropertyValue('--text-secondary').trim(),
+        borderColor: styles.getPropertyValue('--border-color').trim(),
+        isDark: document.documentElement.getAttribute('data-theme') === 'dark'
+    };
+}
+
+// Chart.js configuration with dynamic theme support
 Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue('--text-primary');
 
-// Top Municipalities Chart
-const municipalitiesData = <?php echo json_encode($analytics['top_municipalities'] ?? []); ?>;
-if (municipalitiesData.length > 0) {
-    new Chart(document.getElementById('municipalitiesChart'), {
-        type: 'bar',
-        data: {
-            labels: municipalitiesData.map(item => item.municipality),
-            datasets: [{
-                label: 'Complaints',
-                data: municipalitiesData.map(item => item.count),
-                backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                borderColor: 'rgba(59, 130, 246, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
+// Function to get chart options with theme colors
+function getChartOptions(type, customOptions = {}) {
+    const colors = getThemeColors();
+    
+    const baseOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: colors.textPrimary,
+                    font: {
+                        size: 12
                     }
                 }
             }
         }
-    });
-}
-
-// Top Complaint Types Chart
-const typesData = <?php echo json_encode($analytics['top_types'] ?? []); ?>;
-if (typesData.length > 0) {
-    new Chart(document.getElementById('typesChart'), {
-        type: 'doughnut',
-        data: {
-            labels: typesData.map(item => item.type),
-            datasets: [{
-                data: typesData.map(item => item.count),
-                backgroundColor: [
-                    'rgba(220, 38, 38, 0.8)',
-                    'rgba(251, 146, 60, 0.8)',
-                    'rgba(250, 204, 21, 0.8)',
-                    'rgba(34, 197, 94, 0.8)',
-                    'rgba(59, 130, 246, 0.8)',
-                    'rgba(168, 85, 247, 0.8)',
-                    'rgba(236, 72, 153, 0.8)',
-                    'rgba(148, 163, 184, 0.8)',
-                    'rgba(99, 102, 241, 0.8)',
-                    'rgba(14, 165, 233, 0.8)'
-                ],
-                borderWidth: 2,
-                borderColor: '#fff'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right'
-                }
-            }
-        }
-    });
-}
-
-// Monthly Trends Chart
-const trendsData = <?php echo json_encode(array_reverse($analytics['monthly_trends'] ?? [])); ?>;
-if (trendsData.length > 0) {
-    new Chart(document.getElementById('trendsChart'), {
-        type: 'line',
-        data: {
-            labels: trendsData.map(item => {
-                const date = new Date(item.month + '-01');
-                return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-            }),
-            datasets: [
-                {
-                    label: 'Total Complaints',
-                    data: trendsData.map(item => item.total),
-                    borderColor: 'rgba(220, 38, 38, 1)',
-                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                    tension: 0.4,
-                    fill: true
+    };
+    
+    // Add scales for bar and line charts
+    if (type === 'bar' || type === 'line') {
+        baseOptions.scales = {
+            x: {
+                ticks: {
+                    color: colors.textSecondary
                 },
-                {
-                    label: 'Resolved',
-                    data: trendsData.map(item => item.resolved),
-                    borderColor: 'rgba(34, 197, 94, 1)',
-                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                },
-                {
-                    label: 'Closed',
-                    data: trendsData.map(item => item.closed),
-                    borderColor: 'rgba(148, 163, 184, 1)',
-                    backgroundColor: 'rgba(148, 163, 184, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top'
+                grid: {
+                    color: colors.borderColor,
+                    borderColor: colors.borderColor
                 }
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
-                    }
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: colors.textSecondary,
+                    stepSize: 1
+                },
+                grid: {
+                    color: colors.borderColor,
+                    borderColor: colors.borderColor
                 }
             }
+        };
+    }
+    
+    // Merge with custom options
+    return Object.assign({}, baseOptions, customOptions);
+}
+
+// Store chart instances
+let municipalitiesChart, typesChart, trendsChart;
+
+// Function to create/update charts
+function createCharts() {
+    const colors = getThemeColors();
+    
+    // Top Municipalities Chart
+    const municipalitiesData = <?php echo json_encode($analytics['top_municipalities'] ?? []); ?>;
+    if (municipalitiesData.length > 0) {
+        const ctx1 = document.getElementById('municipalitiesChart');
+        if (municipalitiesChart) {
+            municipalitiesChart.destroy();
+        }
+        municipalitiesChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: municipalitiesData.map(item => item.municipality),
+                datasets: [{
+                    label: 'Complaints',
+                    data: municipalitiesData.map(item => item.count),
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: getChartOptions('bar', {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            })
+        });
+    }
+    
+    // Top Complaint Types Chart
+    const typesData = <?php echo json_encode($analytics['top_types'] ?? []); ?>;
+    if (typesData.length > 0) {
+        const ctx2 = document.getElementById('typesChart');
+        if (typesChart) {
+            typesChart.destroy();
+        }
+        typesChart = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: typesData.map(item => item.type),
+                datasets: [{
+                    data: typesData.map(item => item.count),
+                    backgroundColor: [
+                        'rgba(220, 38, 38, 0.8)',
+                        'rgba(251, 146, 60, 0.8)',
+                        'rgba(250, 204, 21, 0.8)',
+                        'rgba(34, 197, 94, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(168, 85, 247, 0.8)',
+                        'rgba(236, 72, 153, 0.8)',
+                        'rgba(148, 163, 184, 0.8)',
+                        'rgba(99, 102, 241, 0.8)',
+                        'rgba(14, 165, 233, 0.8)'
+                    ],
+                    borderWidth: 2,
+                    borderColor: colors.isDark ? '#1f2937' : '#ffffff'
+                }]
+            },
+            options: getChartOptions('doughnut', {
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: colors.textPrimary
+                        }
+                    }
+                }
+            })
+        });
+    }
+    
+    // Monthly Trends Chart
+    const trendsData = <?php echo json_encode(array_reverse($analytics['monthly_trends'] ?? [])); ?>;
+    if (trendsData.length > 0) {
+        const ctx3 = document.getElementById('trendsChart');
+        if (trendsChart) {
+            trendsChart.destroy();
+        }
+        trendsChart = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: trendsData.map(item => {
+                    const date = new Date(item.month + '-01');
+                    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                }),
+                datasets: [
+                    {
+                        label: 'Total Complaints',
+                        data: trendsData.map(item => item.total),
+                        borderColor: 'rgba(220, 38, 38, 1)',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Resolved',
+                        data: trendsData.map(item => item.resolved),
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Closed',
+                        data: trendsData.map(item => item.closed),
+                        borderColor: 'rgba(148, 163, 184, 1)',
+                        backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: getChartOptions('line', {
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: colors.textPrimary
+                        }
+                    }
+                }
+            })
+        });
+    }
+}
+
+// Initial chart creation
+createCharts();
+
+// Listen for theme changes
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+            createCharts();
         }
     });
-}
+});
+
+observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+});
 </script>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

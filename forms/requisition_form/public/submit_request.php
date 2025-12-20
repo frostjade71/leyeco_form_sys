@@ -76,6 +76,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Page configuration
 $page_title = 'Submit Request - Requisition System';
 $additional_css = ['/forms/requisition_form/public/request_form.css'];
+$additional_js = [
+    'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+    '/forms/requisition_form/assets/js/request_form.js'
+];
 
 require_once __DIR__ . '/../../../includes/header.php';
 ?>
@@ -201,9 +205,6 @@ const BASE_URL = '<?php echo BASE_URL; ?>';
     </div>
 </div>
 
-<!-- Include html2canvas for screenshot functionality -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <script>
 // Copy RF number and redirect to track page
 function copyAndTrack() {
@@ -257,7 +258,4 @@ function exportModalAsImage() {
 }
 </script>
 
-<script src="<?php echo BASE_URL; ?>/forms/requisition_form/assets/js/request_form.js"></script>
-
-</body>
-</html>
+<?php require_once __DIR__ . '/../../../includes/footer.php'; ?>

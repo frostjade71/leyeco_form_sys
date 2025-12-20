@@ -89,6 +89,36 @@ try {
     ");
     $weeklyPageViews = $weeklyPageViewsStmt ? $weeklyPageViewsStmt->fetch_assoc()['count'] : 0;
     
+    // Daily Page Visits for Last 7 Days (for chart)
+    $dailyVisitsStmt = $conn->query("
+        SELECT 
+            DATE(visited_at) as visit_date,
+            COUNT(*) as count
+        FROM page_visits
+        WHERE page = 'public/index.php'
+        AND visited_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+        GROUP BY DATE(visited_at)
+        ORDER BY visit_date ASC
+    ");
+    $dailyVisitsData = $dailyVisitsStmt ? $dailyVisitsStmt->fetch_all(MYSQLI_ASSOC) : [];
+    
+    // Fill in missing days with 0 counts
+    $dailyVisits = [];
+    for ($i = 6; $i >= 0; $i--) {
+        $date = date('Y-m-d', strtotime("-$i days"));
+        $found = false;
+        foreach ($dailyVisitsData as $row) {
+            if ($row['visit_date'] === $date) {
+                $dailyVisits[] = ['date' => $date, 'count' => (int)$row['count']];
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $dailyVisits[] = ['date' => $date, 'count' => 0];
+        }
+    }
+    
     // Staff Analytics - Using existing tables
 
     
@@ -116,6 +146,62 @@ try {
     ");
     $newStaffAccounts = $newStaffStmt ? $newStaffStmt->fetch_assoc()['count'] : 0;
     
+    // Daily Staff Activity for Last 7 Days (for chart)
+    $dailyStaffActivityStmt = $conn->query("
+        SELECT 
+            DATE(created_at) as activity_date,
+            COUNT(DISTINCT user_id) as count
+        FROM sessions
+        WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+        GROUP BY DATE(created_at)
+        ORDER BY activity_date ASC
+    ");
+    $dailyStaffActivityData = $dailyStaffActivityStmt ? $dailyStaffActivityStmt->fetch_all(MYSQLI_ASSOC) : [];
+    
+    // Fill in missing days with 0 counts
+    $dailyStaffActivity = [];
+    for ($i = 6; $i >= 0; $i--) {
+        $date = date('Y-m-d', strtotime("-$i days"));
+        $found = false;
+        foreach ($dailyStaffActivityData as $row) {
+            if ($row['activity_date'] === $date) {
+                $dailyStaffActivity[] = ['date' => $date, 'count' => (int)$row['count']];
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $dailyStaffActivity[] = ['date' => $date, 'count' => 0];
+        }
+    }
+    
+    // Staff by Role Distribution (for chart)
+    $staffByRoleStmt = $conn->query("
+        SELECT 
+            role,
+            COUNT(*) as count
+        FROM users
+        GROUP BY role
+        ORDER BY count DESC
+    ");
+    $staffByRole = $staffByRoleStmt ? $staffByRoleStmt->fetch_all(MYSQLI_ASSOC) : [];
+    
+    // System Status for Welcome Section
+    // Total Submissions (Complaints + Requisitions)
+    $totalComplaints = $conn->query("SELECT COUNT(*) as count FROM complaints")->fetch_assoc()['count'] ?? 0;
+    $totalRequisitions = $conn->query("SELECT COUNT(*) as count FROM requisition_requests")->fetch_assoc()['count'] ?? 0;
+    $totalSubmissions = $totalComplaints + $totalRequisitions;
+    
+    $totalUsers = $conn->query("SELECT COUNT(*) as count FROM users")->fetch_assoc()['count'] ?? 0;
+    $onlineStaff = $conn->query("
+        SELECT COUNT(DISTINCT s.user_id) as count 
+        FROM sessions s 
+        WHERE s.expires_at > NOW()
+    ")->fetch_assoc()['count'] ?? 0;
+    
+    // Database Connection Status
+    $dbConnected = true; // If we got here, connection is successful
+    
 } catch (Exception $e) {
     error_log("Analytics error: " . $e->getMessage());
     $complaintsByType = [];
@@ -127,14 +213,96 @@ try {
     $totalPageViews = 0;
     $dailyPageViews = 0;
     $weeklyPageViews = 0;
+    $dailyVisits = [];
     $activeStaffToday = 0;
     $activeStaffWeek = 0;
     $newStaffAccounts = 0;
+    $dailyStaffActivity = [];
+    $staffByRole = [];
+    $totalComplaints = 0;
+    $totalRequisitions = 0;
+    $totalSubmissions = 0;
+    $totalUsers = 0;
+    $onlineStaff = 0;
+    $dbConnected = false; // Connection failed if we're in catch block
 }
 
 include __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Welcome Section -->
+<div class="welcome-section">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <div class="datetime-display">
+                <div class="date-text" id="currentDate"></div>
+                <div class="time-text" id="currentTime"></div>
+            </div>
+        </div>
+        <div class="system-status">
+            <div class="status-item">
+                <div class="status-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="status-info">
+                    <span class="status-value"><?php echo number_format($totalSubmissions); ?></span>
+                    <span class="status-label">Total Submissions</span>
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="status-info">
+                    <span class="status-value"><?php echo number_format($totalUsers); ?></span>
+                    <span class="status-label">Total Users</span>
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="status-info">
+                    <span class="status-value"><?php echo number_format($onlineStaff); ?></span>
+                    <span class="status-label">Online Now</span>
+                </div>
+            </div>
+            <div class="status-item db-status">
+                <div class="status-icon" style="background: linear-gradient(135deg, <?php echo $dbConnected ? '#10b981 0%, #059669' : '#ef4444 0%, #dc2626'; ?> 100%);">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="status-info">
+                    <span class="status-value db-indicator">
+                        <span class="db-dot <?php echo $dbConnected ? 'connected' : 'disconnected'; ?>"></span>
+                        <?php echo $dbConnected ? 'Connected' : 'Disconnected'; ?>
+                    </span>
+                    <span class="status-label">Database</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateDateTime() {
+    const now = new Date();
+    
+    // Format date: December 15, 2025
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr = now.toLocaleDateString('en-US', dateOptions);
+    
+    // Format time: 1:16 PM
+    const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+    const timeStr = now.toLocaleTimeString('en-US', timeOptions);
+    
+    document.getElementById('currentDate').textContent = dateStr;
+    document.getElementById('currentTime').textContent = timeStr;
+}
+
+// Update immediately and then every second
+updateDateTime();
+setInterval(updateDateTime, 1000);
+</script>
 
 <!-- Page Visits Section -->
 <div class="analytics-section-card">
@@ -174,6 +342,31 @@ include __DIR__ . '/includes/header.php';
                     <h3>Total Page Views (Weekly)</h3>
                     <div class="overview-value"><?php echo number_format($weeklyPageViews); ?></div>
                     <p class="overview-label">Last 7 days</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page Visits Charts -->
+        <div class="charts-grid">
+            <!-- Daily Visits Bar Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-chart-bar"></i> Daily Visits (Last 7 Days)</h3>
+                    <p>Homepage visits per day for the past week</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="dailyVisitsChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Page Views Comparison -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-chart-pie"></i> Page Views Overview</h3>
+                    <p>Comparison of total, weekly, and daily page views</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="pageViewsComparisonChart"></canvas>
                 </div>
             </div>
         </div>
@@ -219,6 +412,31 @@ include __DIR__ . '/includes/header.php';
                     <h3>New Staff Accounts</h3>
                     <div class="overview-value"><?php echo number_format($newStaffAccounts); ?></div>
                     <p class="overview-label">Last 30 days</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Staff Analytics Charts -->
+        <div class="charts-grid">
+            <!-- Daily Staff Activity Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-chart-line"></i> Daily Staff Activity (Last 7 Days)</h3>
+                    <p>Active staff members per day for the past week</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="dailyStaffActivityChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Staff by Role Distribution -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3><i class="fas fa-user-tag"></i> Staff Distribution by Role</h3>
+                    <p>Breakdown of staff members by their assigned roles</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="staffByRoleChart"></canvas>
                 </div>
             </div>
         </div>
@@ -344,6 +562,16 @@ const typeData = <?php echo json_encode($complaintsByType); ?>;
 const municipalityData = <?php echo json_encode($topMunicipalities); ?>;
 const statusData = <?php echo json_encode($statusDistribution); ?>;
 const trendsData = <?php echo json_encode($monthlyTrends); ?>;
+
+// Page Visits data
+const dailyVisitsData = <?php echo json_encode($dailyVisits); ?>;
+const totalPageViews = <?php echo $totalPageViews; ?>;
+const weeklyPageViews = <?php echo $weeklyPageViews; ?>;
+const dailyPageViews = <?php echo $dailyPageViews; ?>;
+
+// Staff Analytics data
+const dailyStaffActivityData = <?php echo json_encode($dailyStaffActivity); ?>;
+const staffByRoleData = <?php echo json_encode($staffByRole); ?>;
 
 // Color palette
 const colors = {
@@ -523,6 +751,200 @@ new Chart(trendsCtx, {
             },
             x: {
                 grid: { display: false }
+            }
+        }
+    }
+});
+
+// ============================================
+// PAGE VISITS CHARTS
+// ============================================
+
+// Daily Visits Bar Chart (Last 7 Days)
+const dailyVisitsCtx = document.getElementById('dailyVisitsChart').getContext('2d');
+new Chart(dailyVisitsCtx, {
+    type: 'bar',
+    data: {
+        labels: dailyVisitsData.map(item => {
+            const date = new Date(item.date);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }),
+        datasets: [{
+            label: 'Visits',
+            data: dailyVisitsData.map(item => item.count),
+            backgroundColor: colors.purple,
+            borderRadius: 6,
+            barThickness: 40
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return 'Visits: ' + context.parsed.y;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { precision: 0 },
+                grid: { color: 'rgba(0,0,0,0.05)' }
+            },
+            x: {
+                grid: { display: false }
+            }
+        }
+    }
+});
+
+// Page Views Comparison Doughnut Chart
+const pageViewsComparisonCtx = document.getElementById('pageViewsComparisonChart').getContext('2d');
+new Chart(pageViewsComparisonCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Today', 'This Week (Remaining)', 'All Time (Remaining)'],
+        datasets: [{
+            data: [
+                dailyPageViews,
+                Math.max(0, weeklyPageViews - dailyPageViews),
+                Math.max(0, totalPageViews - weeklyPageViews)
+            ],
+            backgroundColor: [colors.teal, colors.blue, colors.purple],
+            borderWidth: 2,
+            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim()
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 15,
+                    usePointStyle: true,
+                    font: { size: 12 }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const total = totalPageViews;
+                        const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : 0;
+                        return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                    }
+                }
+            }
+        }
+    }
+});
+
+// ============================================
+// STAFF ANALYTICS CHARTS
+// ============================================
+
+// Daily Staff Activity Line Chart (Last 7 Days)
+const dailyStaffActivityCtx = document.getElementById('dailyStaffActivityChart').getContext('2d');
+new Chart(dailyStaffActivityCtx, {
+    type: 'line',
+    data: {
+        labels: dailyStaffActivityData.map(item => {
+            const date = new Date(item.date);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }),
+        datasets: [{
+            label: 'Active Staff',
+            data: dailyStaffActivityData.map(item => item.count),
+            borderColor: colors.green,
+            backgroundColor: colors.green + '20',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointRadius: 5,
+            pointBackgroundColor: colors.green,
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointHoverRadius: 7
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                mode: 'index',
+                intersect: false,
+                callbacks: {
+                    label: function(context) {
+                        return 'Active Staff: ' + context.parsed.y;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { precision: 0 },
+                grid: { color: 'rgba(0,0,0,0.05)' }
+            },
+            x: {
+                grid: { display: false }
+            }
+        }
+    }
+});
+
+// Staff by Role Distribution Doughnut Chart
+const staffByRoleCtx = document.getElementById('staffByRoleChart').getContext('2d');
+const roleColors = {
+    'admin': colors.red,
+    'staff': colors.blue,
+    'approver': colors.orange
+};
+
+new Chart(staffByRoleCtx, {
+    type: 'doughnut',
+    data: {
+        labels: staffByRoleData.map(item => {
+            // Handle comma-separated roles (e.g., "staff, approver")
+            return item.role.split(',').map(role => 
+                role.trim().charAt(0).toUpperCase() + role.trim().slice(1)
+            ).join(', ');
+        }),
+        datasets: [{
+            data: staffByRoleData.map(item => item.count),
+            backgroundColor: staffByRoleData.map(item => roleColors[item.role] || colors.primary),
+            borderWidth: 2,
+            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim()
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 15,
+                    usePointStyle: true,
+                    font: { size: 12 }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const total = staffByRoleData.reduce((sum, item) => sum + item.count, 0);
+                        const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : 0;
+                        return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                    }
+                }
             }
         }
     }

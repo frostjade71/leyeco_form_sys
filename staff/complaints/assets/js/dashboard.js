@@ -112,12 +112,6 @@ function renderComplaintDetails(complaint) {
             <h3>Basic Information</h3>
             <div class="detail-grid">
                 <div class="detail-item">
-                    <div class="detail-label">Reference Code</div>
-                    <div class="detail-value"><strong>${escapeHtml(
-                      complaint.reference_code
-                    )}</strong></div>
-                </div>
-                <div class="detail-item">
                     <div class="detail-label">Type</div>
                     <div class="detail-value">${escapeHtml(
                       complaint.type
@@ -130,6 +124,12 @@ function renderComplaintDetails(complaint) {
     complaint.status
   )}</span>
                     </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Reference Code</div>
+                    <div class="detail-value"><strong>${escapeHtml(
+                      complaint.reference_code
+                    )}</strong></div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Date Submitted</div>
@@ -558,3 +558,22 @@ function formatDateTimeLocal(dateString) {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
+
+// Auto-open modal if 'view' parameter is present in URL
+document.addEventListener('DOMContentLoaded', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const viewId = urlParams.get('view');
+  
+  if (viewId) {
+    // Open the modal with the complaint ID
+    viewComplaint(parseInt(viewId));
+    
+    // Remove the 'view' parameter from URL without reloading
+    const newUrl = window.location.pathname + '?' + 
+      Array.from(urlParams.entries())
+        .filter(([key]) => key !== 'view')
+        .map(([key, value]) => `${key}=${value}`)
+        .join('&');
+    window.history.replaceState({}, '', newUrl || window.location.pathname);
+  }
+});

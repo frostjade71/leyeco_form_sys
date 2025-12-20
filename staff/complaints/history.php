@@ -88,7 +88,7 @@ const STAFF_URL = '<?php echo STAFF_URL; ?>';
 <!-- Data Table -->
 <div class="data-table-container">
     <div class="table-header">
-        <h2 class="table-title">Complaint History</h2>
+        <h2 class="table-title"><i class="fas fa-history"></i> Complaint History</h2>
         <div class="table-filters">
             <div class="filter-group">
                 <label for="statusFilter">Status:</label>

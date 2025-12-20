@@ -145,7 +145,7 @@ include __DIR__ . '/../includes/header.php';
     <!-- Department Breakdown -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Requests by Department</h3>
+            <h3 class="card-title"><i class="fas fa-building"></i> Requests by Department</h3>
         </div>
         <div class="chart-container">
             <div class="table-responsive">
@@ -179,7 +179,7 @@ include __DIR__ . '/../includes/header.php';
     <!-- Approval Performance -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Approval Performance</h3>
+            <h3 class="card-title"><i class="fas fa-tasks"></i> Approval Performance</h3>
         </div>
         <div class="chart-container">
             <div class="table-responsive">
@@ -220,7 +220,7 @@ include __DIR__ . '/../includes/header.php';
 <!-- Monthly Trends -->
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Monthly Trends (Last 6 Months)</h3>
+        <h3 class="card-title"><i class="fas fa-chart-line"></i> Monthly Trends (Last 6 Months)</h3>
     </div>
     <div class="chart-container">
         <div class="table-responsive">
@@ -258,7 +258,11 @@ include __DIR__ . '/../includes/header.php';
 <!-- Recent Activity -->
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Recent Approval Activity</h3>
+        <h3 class="card-title"><i class="fas fa-history"></i> Recent Approval Activity</h3>
+        <div class="search-box-mini">
+            <input type="text" id="activitySearch" placeholder="Search RF Number" onkeyup="filterActivity()">
+            <i class="fas fa-search"></i>
+        </div>
     </div>
     <div class="chart-container">
         <div class="table-responsive">
@@ -297,5 +301,51 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 </div>
+
+<script>
+function filterActivity() {
+    const input = document.getElementById('activitySearch');
+    const filter = input.value.toUpperCase();
+    
+    // Find the Recent Approval Activity table
+    // It's in the last card, which has the title "Recent Approval Activity"
+    const cards = document.querySelectorAll('.card');
+    let targetTable = null;
+    
+    cards.forEach(card => {
+        const title = card.querySelector('.card-title');
+        if (title && title.textContent.includes('Recent Approval Activity')) {
+            targetTable = card.querySelector('table');
+        }
+    });
+
+    if (!targetTable) return;
+
+    const tr = targetTable.getElementsByTagName('tr');
+
+    // Loop through all table rows, and hide those who don't match the search query
+    // Start from 1 to skip header
+    for (let i = 1; i < tr.length; i++) {
+        const row = tr[i];
+        const rfCell = row.cells[0]; // RF Number
+        const requesterCell = row.cells[1]; // Requester
+        const approverCell = row.cells[3]; // Approver
+        
+        if (rfCell || requesterCell || approverCell) {
+            const rfText = rfCell.textContent || rfCell.innerText;
+            const requesterText = requesterCell.textContent || requesterCell.innerText;
+            const approverText = approverCell ? (approverCell.textContent || approverCell.innerText) : '';
+            
+            if (rfText.toUpperCase().indexOf(filter) > -1 || 
+                requesterText.toUpperCase().indexOf(filter) > -1 || 
+                approverText.toUpperCase().indexOf(filter) > -1) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        }
+    }
+}
+</script>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

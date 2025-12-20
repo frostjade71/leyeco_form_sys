@@ -72,7 +72,7 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="data-table-container">
     <div class="table-header">
-        <h2 class="table-title">My Approval History</h2>
+        <h2 class="table-title"><i class="fas fa-history"></i> My Approval History</h2>
         <p class="table-description">Showing your recent approval decisions</p>
     </div>
 

@@ -92,7 +92,7 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Generate Report</h3>
+        <h3 class="card-title"><i class="fas fa-file-alt"></i> Generate Report</h3>
     </div>
     <div style="padding: 24px;">
         <form method="GET" class="report-form">

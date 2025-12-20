@@ -40,7 +40,11 @@
     <script src="<?php echo BASE_URL; ?>/assets/js/page-loader.js"></script>
     <?php if (isset($additional_js)): ?>
         <?php foreach ($additional_js as $js): ?>
-            <script src="<?php echo $js; ?>"></script>
+            <?php if (strpos($js, 'http') === 0): ?>
+                <script src="<?php echo $js; ?>"></script>
+            <?php else: ?>
+                <script src="<?php echo BASE_URL . $js; ?>"></script>
+            <?php endif; ?>
         <?php endforeach; ?>
     <?php endif; ?>
 </body>

@@ -587,17 +587,33 @@
         margin-bottom: 1rem;
     }
     
+    /* Smaller Contact Cards for Mobile */
     .contact-card,
     .quick-link-card,
     .faq-item {
-        padding: 1rem;
+        padding: 0.75rem;
     }
     
     .contact-icon {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .contact-card h3 {
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .contact-card p {
+        font-size: 0.75rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .contact-card a {
+        font-size: 0.75rem;
     }
     
     .quick-link-icon {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
     }
 }
