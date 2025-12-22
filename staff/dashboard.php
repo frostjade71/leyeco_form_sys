@@ -215,21 +215,45 @@ setInterval(updateDateTime, 1000);
                 <?php
                 // Get all staff members with online status and last activity
                 try {
-                    $onlineStaffStmt = $conn->query("
-                        SELECT 
-                            u.id, 
-                            u.full_name, 
-                            u.role, 
-                            u.last_login,
-                            MAX(CASE WHEN s.expires_at > NOW() THEN 1 ELSE 0 END) as is_online,
-                            MAX(s.last_activity) as last_activity
-                        FROM users u
-                        LEFT JOIN sessions s ON u.id = s.user_id AND s.expires_at > NOW()
-                        WHERE (u.role LIKE '%admin%' OR u.role LIKE '%staff%' OR u.role LIKE '%approver%')
-                        GROUP BY u.id, u.full_name, u.role, u.last_login
-                        ORDER BY is_online DESC, last_activity DESC, u.last_login DESC
-                        LIMIT 5
-                    ");
+                    // Check if last_activity column exists
+                    $checkColumn = $conn->query("SHOW COLUMNS FROM sessions LIKE 'last_activity'");
+                    $hasLastActivity = $checkColumn && $checkColumn->num_rows > 0;
+                    
+                    if ($hasLastActivity) {
+                        // New query with last_activity
+                        $onlineStaffStmt = $conn->query("
+                            SELECT 
+                                u.id, 
+                                u.full_name, 
+                                u.role, 
+                                u.last_login,
+                                MAX(CASE WHEN s.expires_at > NOW() THEN 1 ELSE 0 END) as is_online,
+                                MAX(s.last_activity) as last_activity
+                            FROM users u
+                            LEFT JOIN sessions s ON u.id = s.user_id AND s.expires_at > NOW()
+                            WHERE (u.role LIKE '%admin%' OR u.role LIKE '%staff%' OR u.role LIKE '%approver%')
+                            GROUP BY u.id, u.full_name, u.role, u.last_login
+                            ORDER BY is_online DESC, last_activity DESC, u.last_login DESC
+                            LIMIT 5
+                        ");
+                    } else {
+                        // Fallback query without last_activity (for servers without migration)
+                        $onlineStaffStmt = $conn->query("
+                            SELECT 
+                                u.id, 
+                                u.full_name, 
+                                u.role, 
+                                u.last_login,
+                                MAX(CASE WHEN s.expires_at > NOW() THEN 1 ELSE 0 END) as is_online,
+                                NULL as last_activity
+                            FROM users u
+                            LEFT JOIN sessions s ON u.id = s.user_id AND s.expires_at > NOW()
+                            WHERE (u.role LIKE '%admin%' OR u.role LIKE '%staff%' OR u.role LIKE '%approver%')
+                            GROUP BY u.id, u.full_name, u.role, u.last_login
+                            ORDER BY is_online DESC, u.last_login DESC
+                            LIMIT 5
+                        ");
+                    }
                     $hasStaff = false;
                     while ($staff = $onlineStaffStmt->fetch_assoc()):
                         $hasStaff = true;

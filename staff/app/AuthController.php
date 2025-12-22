@@ -80,12 +80,35 @@ class AuthController {
         $ipAddress = $_SERVER['REMOTE_ADDR'] ?? null;
         $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
 
-        $stmt = $this->conn->prepare("
-            INSERT INTO sessions (user_id, session_token, ip_address, user_agent, expires_at, last_activity)
-            VALUES (?, ?, ?, ?, ?, NOW())
-        ");
-        $stmt->bind_param("issss", $user['id'], $sessionToken, $ipAddress, $userAgent, $expiresAt);
-        $stmt->execute();
+        // Try to insert with last_activity column (new schema)
+        // Fall back to old schema if column doesn't exist
+        try {
+            $stmt = $this->conn->prepare("
+                INSERT INTO sessions (user_id, session_token, ip_address, user_agent, expires_at, last_activity)
+                VALUES (?, ?, ?, ?, ?, NOW())
+            ");
+            if ($stmt) {
+                $stmt->bind_param("issss", $user['id'], $sessionToken, $ipAddress, $userAgent, $expiresAt);
+                $stmt->execute();
+            } else {
+                // Fallback: Column might not exist, try without last_activity
+                $stmt = $this->conn->prepare("
+                    INSERT INTO sessions (user_id, session_token, ip_address, user_agent, expires_at)
+                    VALUES (?, ?, ?, ?, ?)
+                ");
+                $stmt->bind_param("issss", $user['id'], $sessionToken, $ipAddress, $userAgent, $expiresAt);
+                $stmt->execute();
+            }
+        } catch (Exception $e) {
+            // If first insert failed, try without last_activity column
+            error_log("Session insert error, trying fallback: " . $e->getMessage());
+            $stmt = $this->conn->prepare("
+                INSERT INTO sessions (user_id, session_token, ip_address, user_agent, expires_at)
+                VALUES (?, ?, ?, ?, ?)
+            ");
+            $stmt->bind_param("issss", $user['id'], $sessionToken, $ipAddress, $userAgent, $expiresAt);
+            $stmt->execute();
+        }
 
         $_SESSION['session_token'] = $sessionToken;
 
@@ -134,12 +157,17 @@ class AuthController {
         $_SESSION['last_activity'] = time();
         
         // Update last_activity in database for this session
+        // (Gracefully handle if column doesn't exist yet on this server)
         if (isset($_SESSION['session_token'])) {
             try {
                 $stmt = $this->conn->prepare("UPDATE sessions SET last_activity = NOW() WHERE session_token = ?");
-                $stmt->bind_param("s", $_SESSION['session_token']);
-                $stmt->execute();
+                if ($stmt) {
+                    $stmt->bind_param("s", $_SESSION['session_token']);
+                    $stmt->execute();
+                }
+                // If prepare() returns false, column might not exist yet - that's ok, just skip
             } catch (Exception $e) {
+                // Silently fail - this is not critical for login functionality
                 error_log("Failed to update session activity: " . $e->getMessage());
             }
         }
