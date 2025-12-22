@@ -213,7 +213,7 @@ setInterval(updateDateTime, 1000);
             </div>
             <div class="online-staffs-list">
                 <?php
-                // Get all staff members with online status
+                // Get all staff members with online status and last activity
                 try {
                     $onlineStaffStmt = $conn->query("
                         SELECT 
@@ -221,12 +221,13 @@ setInterval(updateDateTime, 1000);
                             u.full_name, 
                             u.role, 
                             u.last_login,
-                            MAX(CASE WHEN s.expires_at > NOW() THEN 1 ELSE 0 END) as is_online
+                            MAX(CASE WHEN s.expires_at > NOW() THEN 1 ELSE 0 END) as is_online,
+                            MAX(s.last_activity) as last_activity
                         FROM users u
-                        LEFT JOIN sessions s ON u.id = s.user_id
+                        LEFT JOIN sessions s ON u.id = s.user_id AND s.expires_at > NOW()
                         WHERE (u.role LIKE '%admin%' OR u.role LIKE '%staff%' OR u.role LIKE '%approver%')
                         GROUP BY u.id, u.full_name, u.role, u.last_login
-                        ORDER BY is_online DESC, u.last_login DESC
+                        ORDER BY is_online DESC, last_activity DESC, u.last_login DESC
                         LIMIT 5
                     ");
                     $hasStaff = false;
@@ -236,28 +237,45 @@ setInterval(updateDateTime, 1000);
                         $roleDisplay = ucfirst($staff['role']);
                         $isOnline = $staff['is_online'] == 1;
                         
-                        // Calculate time since last login
-                        if ($staff['last_login']) {
+                        // Calculate activity status
+                        if ($isOnline && $staff['last_activity']) {
+                            // User has active session - use last_activity from sessions table
+                            $lastActivity = strtotime($staff['last_activity']);
+                            $timeAgo = time() - $lastActivity;
+                            
+                            if ($timeAgo < 300) { // Less than 5 minutes
+                                $activityText = 'Active Now';
+                                $activityClass = 'active-now';
+                            } elseif ($timeAgo < 1800) { // 5-30 minutes
+                                $minutes = floor($timeAgo / 60);
+                                $activityText = 'Active ' . $minutes . ' min' . ($minutes > 1 ? 's' : '') . ' ago';
+                                $activityClass = 'active-recent';
+                            } else {
+                                // Should rarely happen (session should expire after 30 min)
+                                $activityText = 'Active Now';
+                                $activityClass = 'active-now';
+                            }
+                        } elseif ($staff['last_login']) {
+                            // User is offline - show when they last logged in
                             $lastLogin = strtotime($staff['last_login']);
                             $timeAgo = time() - $lastLogin;
                             
-                            if ($isOnline) {
-                                $activityText = 'Active Now';
+                            if ($timeAgo < 3600) { // Less than 1 hour
+                                $minutes = floor($timeAgo / 60);
+                                $activityText = 'Inactive for ' . $minutes . ' min' . ($minutes > 1 ? 's' : '');
+                                $activityClass = 'inactive';
+                            } elseif ($timeAgo < 86400) { // Less than 1 day
+                                $hours = floor($timeAgo / 3600);
+                                $activityText = 'Inactive for ' . $hours . ' hour' . ($hours > 1 ? 's' : '');
+                                $activityClass = 'inactive';
                             } else {
-                                // Offline - show last seen
-                                if ($timeAgo < 3600) {
-                                    $minutes = floor($timeAgo / 60);
-                                    $activityText = 'Active ' . $minutes . ' min' . ($minutes > 1 ? 's' : '') . ' ago';
-                                } elseif ($timeAgo < 86400) {
-                                    $hours = floor($timeAgo / 3600);
-                                    $activityText = 'Active ' . $hours . ' hour' . ($hours > 1 ? 's' : '') . ' ago';
-                                } else {
-                                    $days = floor($timeAgo / 86400);
-                                    $activityText = 'Active ' . $days . ' day' . ($days > 1 ? 's' : '') . ' ago';
-                                }
+                                $days = floor($timeAgo / 86400);
+                                $activityText = 'Inactive for ' . $days . ' day' . ($days > 1 ? 's' : '');
+                                $activityClass = 'inactive';
                             }
                         } else {
                             $activityText = 'Never logged in';
+                            $activityClass = 'inactive';
                         }
                 ?>
                 <div class="online-staff-item">

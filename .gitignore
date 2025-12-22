@@ -3,7 +3,7 @@ config/database.php
 config/config.php
 
 # Secured Database  database/main
-database/main
+
 
 # Environment files
 .env

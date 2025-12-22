@@ -81,8 +81,8 @@ class AuthController {
         $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
 
         $stmt = $this->conn->prepare("
-            INSERT INTO sessions (user_id, session_token, ip_address, user_agent, expires_at)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO sessions (user_id, session_token, ip_address, user_agent, expires_at, last_activity)
+            VALUES (?, ?, ?, ?, ?, NOW())
         ");
         $stmt->bind_param("issss", $user['id'], $sessionToken, $ipAddress, $userAgent, $expiresAt);
         $stmt->execute();
@@ -130,8 +130,19 @@ class AuthController {
             return false;
         }
 
-        // Update last activity
+        // Update last activity in PHP session
         $_SESSION['last_activity'] = time();
+        
+        // Update last_activity in database for this session
+        if (isset($_SESSION['session_token'])) {
+            try {
+                $stmt = $this->conn->prepare("UPDATE sessions SET last_activity = NOW() WHERE session_token = ?");
+                $stmt->bind_param("s", $_SESSION['session_token']);
+                $stmt->execute();
+            } catch (Exception $e) {
+                error_log("Failed to update session activity: " . $e->getMessage());
+            }
+        }
 
         return true;
     }
@@ -188,10 +199,24 @@ class AuthController {
     }
 
     /**
-     * Clean expired sessions
+     * Clean expired sessions (by expiration time or inactivity)
      */
     public function cleanExpiredSessions() {
+        // Delete sessions that have expired by time
         $stmt = $this->conn->prepare("DELETE FROM sessions WHERE expires_at < NOW()");
+        $stmt->execute();
+        
+        // Delete sessions that have been inactive for too long
+        $this->cleanInactiveSessions();
+    }
+    
+    /**
+     * Clean inactive sessions (no activity for INACTIVITY_TIMEOUT period)
+     */
+    public function cleanInactiveSessions() {
+        $inactivityThreshold = date('Y-m-d H:i:s', time() - INACTIVITY_TIMEOUT);
+        $stmt = $this->conn->prepare("DELETE FROM sessions WHERE last_activity < ?");
+        $stmt->bind_param("s", $inactivityThreshold);
         $stmt->execute();
     }
 }

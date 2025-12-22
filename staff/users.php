@@ -121,12 +121,30 @@ include __DIR__ . '/includes/header.php';
         <table class="users-table">
             <thead>
                 <tr>
-                    <th>User</th>
-                    <th>Username</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Last Login</th>
-                    <th>Created</th>
+                    <th class="sortable" data-sort="name">
+                        User 
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="username">
+                        Username 
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="role">
+                        Role 
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="status">
+                        Status 
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="lastlogin">
+                        Last Login 
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
+                    <th class="sortable" data-sort="created">
+                        Created 
+                        <i class="fas fa-sort sort-icon"></i>
+                    </th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -176,8 +194,8 @@ include __DIR__ . '/includes/header.php';
                                         <span class="status-dot online"></span>
                                         Online
                                     <?php elseif ($user['is_active']): ?>
-                                        <span class="status-dot active"></span>
-                                        Active
+                                        <span class="status-dot offline"></span>
+                                        Offline
                                     <?php else: ?>
                                         <span class="status-dot inactive"></span>
                                         Inactive

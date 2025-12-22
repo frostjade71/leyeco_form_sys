@@ -17,6 +17,11 @@ require_once __DIR__ . '/../../config/database.php';
 if (!defined('SESSION_LIFETIME')) {
     define('SESSION_LIFETIME', 3600 * 8); // 8 hours
 }
+
+// Inactivity timeout - auto logout after 30 minutes of no activity
+if (!defined('INACTIVITY_TIMEOUT')) {
+    define('INACTIVITY_TIMEOUT', 1800); // 30 minutes
+}
 if (!defined('SESSION_NAME')) {
     define('SESSION_NAME', 'LEYECO_STAFF_SESSION');
 }

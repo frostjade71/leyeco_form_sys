@@ -226,3 +226,91 @@ document.getElementById('userModal')?.addEventListener('click', function(e) {
         closeUserModal();
     }
 });
+
+// ============================================
+// TABLE SORTING FUNCTIONALITY
+// ============================================
+
+// Initialize table sorting
+document.addEventListener('DOMContentLoaded', function() {
+    const table = document.querySelector('.users-table');
+    if (!table) return;
+    
+    const headers = table.querySelectorAll('th.sortable');
+    let currentSort = { column: null, direction: 'asc' };
+    
+    headers.forEach(header => {
+        header.addEventListener('click', function() {
+            const sortType = this.getAttribute('data-sort');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            // Determine sort direction
+            if (currentSort.column === sortType) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.direction = 'asc';
+            }
+            currentSort.column = sortType;
+            
+            // Remove sort classes from all headers
+            headers.forEach(h => {
+                h.classList.remove('sort-asc', 'sort-desc');
+            });
+            
+            // Add sort class to current header
+            this.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            
+            // Sort rows
+            rows.sort((a, b) => {
+                let aValue, bValue;
+                
+                switch(sortType) {
+                    case 'name':
+                        aValue = a.querySelector('.user-details h4')?.textContent.trim().toLowerCase() || '';
+                        bValue = b.querySelector('.user-details h4')?.textContent.trim().toLowerCase() || '';
+                        break;
+                    case 'username':
+                        aValue = a.querySelectorAll('td')[1]?.textContent.trim().toLowerCase() || '';
+                        bValue = b.querySelectorAll('td')[1]?.textContent.trim().toLowerCase() || '';
+                        break;
+                    case 'role':
+                        aValue = a.querySelectorAll('td')[2]?.textContent.trim().toLowerCase() || '';
+                        bValue = b.querySelectorAll('td')[2]?.textContent.trim().toLowerCase() || '';
+                        break;
+                    case 'status':
+                        const statusOrder = { 'online': 3, 'offline': 2, 'inactive': 1 };
+                        aValue = statusOrder[a.querySelector('.status-indicator')?.textContent.trim().toLowerCase()] || 0;
+                        bValue = statusOrder[b.querySelector('.status-indicator')?.textContent.trim().toLowerCase()] || 0;
+                        break;
+                    case 'lastlogin':
+                        const aLogin = a.querySelectorAll('td')[4]?.textContent.trim();
+                        const bLogin = b.querySelectorAll('td')[4]?.textContent.trim();
+                        aValue = aLogin === 'Never' ? 0 : new Date(aLogin).getTime() || 0;
+                        bValue = bLogin === 'Never' ? 0 : new Date(bLogin).getTime() || 0;
+                        break;
+                    case 'created':
+                        aValue = new Date(a.querySelectorAll('td')[5]?.textContent.trim()).getTime() || 0;
+                        bValue = new Date(b.querySelectorAll('td')[5]?.textContent.trim()).getTime() || 0;
+                        break;
+                    default:
+                        aValue = '';
+                        bValue = '';
+                }
+                
+                if (typeof aValue === 'string') {
+                    return currentSort.direction === 'asc' 
+                        ? aValue.localeCompare(bValue)
+                        : bValue.localeCompare(aValue);
+                } else {
+                    return currentSort.direction === 'asc' 
+                        ? aValue - bValue
+                        : bValue - aValue;
+                }
+            });
+            
+            // Re-append sorted rows
+            rows.forEach(row => tbody.appendChild(row));
+        });
+    });
+});
