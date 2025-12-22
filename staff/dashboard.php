@@ -230,7 +230,7 @@ setInterval(updateDateTime, 1000);
                                 MAX(CASE WHEN s.expires_at > NOW() THEN 1 ELSE 0 END) as is_online,
                                 MAX(s.last_activity) as last_activity
                             FROM users u
-                            LEFT JOIN sessions s ON u.id = s.user_id AND s.expires_at > NOW()
+                            LEFT JOIN sessions s ON u.id = s.user_id
                             WHERE (u.role LIKE '%admin%' OR u.role LIKE '%staff%' OR u.role LIKE '%approver%')
                             GROUP BY u.id, u.full_name, u.role, u.last_login
                             ORDER BY is_online DESC, last_activity DESC, u.last_login DESC
@@ -247,7 +247,7 @@ setInterval(updateDateTime, 1000);
                                 MAX(CASE WHEN s.expires_at > NOW() THEN 1 ELSE 0 END) as is_online,
                                 NULL as last_activity
                             FROM users u
-                            LEFT JOIN sessions s ON u.id = s.user_id AND s.expires_at > NOW()
+                            LEFT JOIN sessions s ON u.id = s.user_id
                             WHERE (u.role LIKE '%admin%' OR u.role LIKE '%staff%' OR u.role LIKE '%approver%')
                             GROUP BY u.id, u.full_name, u.role, u.last_login
                             ORDER BY is_online DESC, u.last_login DESC
