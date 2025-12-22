@@ -242,10 +242,21 @@ class AuthController {
      * Clean inactive sessions (no activity for INACTIVITY_TIMEOUT period)
      */
     public function cleanInactiveSessions() {
-        $inactivityThreshold = date('Y-m-d H:i:s', time() - INACTIVITY_TIMEOUT);
-        $stmt = $this->conn->prepare("DELETE FROM sessions WHERE last_activity < ?");
-        $stmt->bind_param("s", $inactivityThreshold);
-        $stmt->execute();
+        // Only clean inactive sessions if last_activity column exists
+        try {
+            $inactivityThreshold = date('Y-m-d H:i:s', time() - INACTIVITY_TIMEOUT);
+            $stmt = $this->conn->prepare("DELETE FROM sessions WHERE last_activity < ?");
+            
+            // Check if prepare succeeded (column might not exist on this server)
+            if ($stmt) {
+                $stmt->bind_param("s", $inactivityThreshold);
+                $stmt->execute();
+            }
+            // If prepare() failed, column doesn't exist - skip cleanup
+        } catch (Exception $e) {
+            // Silently fail - column doesn't exist yet
+            error_log("cleanInactiveSessions skipped: " . $e->getMessage());
+        }
     }
 }
 ?>
