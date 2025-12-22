@@ -30,6 +30,11 @@ try {
 }
 
 // Get user activity statistics
+// Initialize default values
+$userComplaints = 0;
+$userRequisitions = 0;
+$userApprovals = 0;
+
 try {
     // Count user's complaint submissions
     $complaintsStmt = $conn->prepare("
@@ -37,9 +42,13 @@ try {
         FROM complaints 
         WHERE created_by = ?
     ");
-    $complaintsStmt->bind_param("i", $currentUser['id']);
-    $complaintsStmt->execute();
-    $userComplaints = $complaintsStmt->get_result()->fetch_assoc()['count'] ?? 0;
+    if ($complaintsStmt) {
+        $complaintsStmt->bind_param("i", $currentUser['id']);
+        $complaintsStmt->execute();
+        $userComplaints = $complaintsStmt->get_result()->fetch_assoc()['count'] ?? 0;
+    } else {
+        error_log("Profile: complaints table query failed - " . $conn->error);
+    }
     
     // Count user's requisition submissions (if applicable)
     $requisitionsStmt = $conn->prepare("
@@ -47,21 +56,28 @@ try {
         FROM requisition_requests 
         WHERE created_by = ?
     ");
-    $requisitionsStmt->bind_param("i", $currentUser['id']);
-    $requisitionsStmt->execute();
-    $userRequisitions = $requisitionsStmt->get_result()->fetch_assoc()['count'] ?? 0;
+    if ($requisitionsStmt) {
+        $requisitionsStmt->bind_param("i", $currentUser['id']);
+        $requisitionsStmt->execute();
+        $userRequisitions = $requisitionsStmt->get_result()->fetch_assoc()['count'] ?? 0;
+    } else {
+        error_log("Profile: requisition_requests table query failed - " . $conn->error);
+    }
     
     // Count approvals if user is an approver
-    $userApprovals = 0;
     if (strpos(strtolower($currentUser['role']), 'approver') !== false) {
         $approvalsStmt = $conn->prepare("
             SELECT COUNT(*) as count 
             FROM requisition_approvals 
             WHERE approver_id = ?
         ");
-        $approvalsStmt->bind_param("i", $currentUser['id']);
-        $approvalsStmt->execute();
-        $userApprovals = $approvalsStmt->get_result()->fetch_assoc()['count'] ?? 0;
+        if ($approvalsStmt) {
+            $approvalsStmt->bind_param("i", $currentUser['id']);
+            $approvalsStmt->execute();
+            $userApprovals = $approvalsStmt->get_result()->fetch_assoc()['count'] ?? 0;
+        } else {
+            error_log("Profile: requisition_approvals table query failed - " . $conn->error);
+        }
     }
     
 } catch (Exception $e) {
